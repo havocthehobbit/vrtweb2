@@ -32,6 +32,13 @@
 /main/web_ui/startdevwc.bat
 /main/web_ui/startdevc.sh
 
+/main/web_ui/src/components/cviews
+/main/web_ui/src/components/views/custom
+/main/web_ui/src/components/views/custom_*
+/main/web_ui/src/components/custom_*
+/main/web_ui/src/custom_*
+
+
 # misc node
 /main/node_serv/.DS_Store
 /main/node_serv/.env.local
@@ -52,8 +59,10 @@
 /main/node_serv/startdevc.sh
 /main/node_serv/cstartdev.sh
 
-
 /main/node_serv/modules/custom_*
+/main/node_serv/custom_*
+/main/custom_*
+/custom_*
 
 #data
 /main/data/settings.json

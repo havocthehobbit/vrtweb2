@@ -11,7 +11,7 @@ let settings=new settingsMod({}).settings
 console.log("starting : ", settings.name , " ," , new Date())
 
 let ApiInst=require('./l_node_modules/apiInit.js').ApiInst
-let MongoInst=require('./l_node_modules/mongodb.js').MongoInst
+
 let gdb=require("./modules/generalDbFns.js").generalDbFns
 let lgsO=require("./l_node_modules/logs.js").logs
 let lgs=new lgsO("../logs/log.txt")
@@ -21,9 +21,11 @@ let tof=$cn.tof
 
 lgs.add(`start ${settings.name} ${settings.host}`)
 
+let DnMain={ db : undefined}
 // init DB and set global db client 
 if (settings.dbtype==="mongodb" ){
-    MongoInst.initAdmin({ "host" : settings.dbHost, "dbname" : settings.dbName , consolelogdebug : true},()=>{
+    let MongoInst=require('./l_node_modules/mongodb.js').MongoInst
+    MongoInst.initAdmin({ "host" : settings.dbHost, "dbname" : settings.dbName , consolelogdebug : false},()=>{
         let dbName=settings.dbName
         if (MongoInst.statusAdmin===true ){ 
             let dbA=MongoInst.dbAdmin
@@ -44,6 +46,7 @@ if (settings.dbtype==="mongodb" ){
                     if (MongoInst.status===true){
                         let db=MongoInst.db                       
                         gdb.db=db
+                        DnMain.db=db
 
                         var users = db.collection('users')
                         
@@ -134,8 +137,7 @@ app.post("/logout",function(req,res){
     res.jsonp(ret_data)
 })
 
-app.post("/login" ,function(req , res){
-    cl("debug : 000")
+app.post("/login" ,function(req , res){    
     loginUser( req.body , {req : req , res : res} , function(ret_data){
         res.jsonp(ret_data)
 
@@ -182,18 +184,17 @@ var loginUser=function( params ){
      
     var login_confirmed=false;
     var found_userid=false
-    cl("debug : -1")
+    
     gdb.users.getUser({userid : bd.userid}, function(data){ // mopngo fetch
         if ($cn.isUndefined(data)){
             data=data2;
         }
-        cl("debug : 0")
-        if (typeof(bd.userid)!==undefined){
-            cl("debug : 1")
+        
+        if (typeof(bd.userid)!==undefined){            
             if (typeof(bd.password)!==undefined){                              
                     if (data.userid===bd.userid){
                         found_userid=true
-                        cl("debug : user id match")
+                        
                         if (data.password===bd.password){
                             login_confirmed=true;
                             ret_data.data.loggedin=true;
