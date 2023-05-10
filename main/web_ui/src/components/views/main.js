@@ -17,6 +17,30 @@ export const stylec={
     labels : {},
 }
 
+let background=(()=>{
+    return (
+        <div 
+            style={{
+                position : "absolute",
+                top : 0,
+                left : 0,
+                zIndex : -10,
+                background : "linear-gradient(purple, darkblue)",
+                width : "100%",
+                height : "100%",
+                position : "absolute",
+                textAlign: "center",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                minHeight: "100vh",
+
+            }}
+        />  
+    )
+})()
+
 export class Main extends Component {
     constructor(props){
         super(props)
@@ -72,29 +96,7 @@ export class Main extends Component {
         const {isLoggedIn, testStuff}=tt.state // same as let isLoggedIn=tt.state.isLogged in, except you can add other var from state object ,in one line with shorter syntax
         const {isLoggedInSet}=tt // similar to above line 
 
-        let background=(()=>{
-            return (
-                <div 
-                    style={{
-                        position : "absolute",
-                        top : 0,
-                        left : 0,
-                        zIndex : -10,
-                        background : "linear-gradient(purple, darkblue)",
-                        width : "100%",
-                        height : "100%",
-                        position : "absolute",
-                        textAlign: "center",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        minHeight: "100vh",
-
-                    }}
-                />  
-            )
-        })()
+        
 
 
         let homepageE
@@ -146,21 +148,20 @@ export class Main extends Component {
 
         
 
-        return (
-            <div
-                style={{  height : "100%", width : "100%" , 
-                        top : 0 , left : 0, margin : 0
+        return (            
+                <div
+                    style={{  height : "100%", width : "100%" , 
+                            top : 0 , left : 0, margin : 0
 
-                }}
-            >    
-                {background} 
-                
-                {homepageE}
-
-                
-                {generalViewE}     
-                
-            </div>
+                    }}
+                >    
+                    {background} 
+                    
+                    {homepageE}
+                    
+                    {generalViewE}     
+                    
+                </div>            
         )
     }
 }

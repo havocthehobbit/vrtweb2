@@ -32,9 +32,6 @@ if (settings.dbtype==="mongodb" ){
                     
             dbA.listDatabases()
             .then((dbrs)=>{
-                //console.log("databases : " , dbrs.databases)
-                //console.log("==========\n")
-
                 let dbExists=false
                 dbrs.databases.forEach((r,i) => {
                     if (r.name===dbName){
@@ -49,31 +46,18 @@ if (settings.dbtype==="mongodb" ){
                         DnMain.db=db
 
                         var users = db.collection('users')
-                        
-                        /*
-                        users.findOne({})
-                        .then((dt)=>{ console.log("f1 : ", dt)})
-                        .catch((err)=>{})
-                        */
 
                         users.find({ userid : "admin"}).toArray()
                         .then((dt)=>{ 
-                            if (dt.length===0){                   
-
+                            if (dt.length===0){ 
                                 users.updateOne( { "userid" : "admin"} ,{ "$set" : { "email" : "...@....com"}}, {upsert : true })
                                 .then((dt)=>{
                                     console.log("\n\admin user inserted")
                                 })
                                 .catch((err)=>{ cl("err : ", dt) })
                                 }
-                            
-                    
-                    
                         })
                         .catch((err)=>{ cl("err : ", dt) })
-                        
-
-                        
                     }
                 })
                 
@@ -91,10 +75,6 @@ let httpAppParams= { useHttpServer : true}
 
 gdb.progParams.adminProgParamResetPass( httpAppParams , ()=>{})
 gdb.progParams.adminProgParamListUsers( httpAppParams , ()=>{})
-
-
-
-//cl( "httpServer : " , useHttpServer )
 
 let app
 if (httpAppParams.useHttpServer===true){ // prevent starting https server if a prog parameter requires something , like prompt input
@@ -116,9 +96,6 @@ if (httpAppParams.useHttpServer===true){ // prevent starting https server if a p
 app.get("/test" ,function(req , res){    
         res.send( "testing get" )    
 })
-
-
-
 
 app.post("/logout",function(req,res){
     var ret_data={
@@ -143,8 +120,6 @@ app.post("/login" ,function(req , res){
 
     } )
 })
-
-
 
 var loginUser=function( params ){
     let cb=function(){}
@@ -178,14 +153,10 @@ var loginUser=function( params ){
     }
 
     var bd=params; 
-
-    
-    //console.log("all users " , data.data)
-     
     var login_confirmed=false;
     var found_userid=false
     
-    gdb.users.getUser({userid : bd.userid}, function(data){ // mopngo fetch
+    gdb.users.getUser({userid : bd.userid}, function(data){ 
         if ($cn.isUndefined(data)){
             data=data2;
         }
@@ -217,11 +188,7 @@ var loginUser=function( params ){
                                             //maxAge : oneDayToSeconds ,  // was ignoring this for some reason and expiring withing 5 minuts 
                                             expires : expires,
                                             httpOnly: true , 
-                                    
                                 })
-
-                               
-
                                 // sessionUserUpdate in DB
 
                                 ret_data.sent_resposne=true
@@ -230,7 +197,6 @@ var loginUser=function( params ){
                                 
                                 return; 
                             })
-
                         }else{
                             if (!ret_data.sent_resposne){
                                 ret_data.sent_resposne=true
@@ -238,7 +204,6 @@ var loginUser=function( params ){
                                 cb(ret_data)
                             }
                         }
-                        
                     }
                     if (!login_confirmed){
                         if (!ret_data.sent_resposne){
@@ -255,7 +220,6 @@ var loginUser=function( params ){
                         }
                         return
                     }
-                //})
             }else{
                 if (!ret_data.sent_resposne){
                     ret_data.sent_resposne=true
@@ -263,7 +227,6 @@ var loginUser=function( params ){
                    cb(ret_data)
                 }
             }
-            
         }else{
             if (!ret_data.sent_resposne){
                 ret_data.sent_resposne=true
@@ -271,9 +234,7 @@ var loginUser=function( params ){
                 cb(ret_data)
             }
         }
-
     })
-
 }
 
 let verifyJWTroute=function(req,res,next ){
@@ -286,8 +247,6 @@ let verifyJWTroute=function(req,res,next ){
     if (!token || $cn.isUndefined(token)){
         token=req.cookies.token
     }
-    
-
     if (!token || $cn.isUndefined(token)){        
         res.locals.decodedID= ""
         res.locals.rt_jwt_isAuth=false;

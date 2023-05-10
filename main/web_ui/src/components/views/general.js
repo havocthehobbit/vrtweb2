@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React,{ lazy,Component } from 'react';
 import "../../App.css";
 import { ContextStore } from '../common/contextStore';
 import { Logout } from '../login/logout';
@@ -11,6 +11,42 @@ import { Devmain } from '../testing/devmain';
 import { $cn } from '../common/libNative';
 import $gl from '../common/globallib'
 import "./general.css"
+//import Item1 from '../cviews/old/menus/item1';
+
+var Main=lazy(() =>{    
+    let file='main.jsx';
+     return import(`../cviews/${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
+    .catch(() => ({ default: () => <div></div> }))
+})
+
+var RightBar=lazy(() =>{    
+    let file='rightbar.jsx';
+     return import(`../cviews/${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
+    .catch(() => ({ default: () => <div></div> }))
+})
+
+let MenuItems=[]
+
+for (let i=0;i < 3; i++){
+    let tmp=lazy(() =>{    
+        //let file=`1menus/item${i}.jsx`;
+        let file=`menus/item${i}.jsx`;
+         return import(`../cviews/${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
+        //.catch(() => ({ default: () => <div></div> }))
+        .catch((err)=>{             
+            let retE={default: () => undefined }             
+            console.log("err :",err)
+            return retE
+        })
+        .then((retE)=>{                        
+            //MenuItems.push(retE)    
+            return retE
+        })
+    })
+    //console.log("tmp :" , tmp)
+    MenuItems.push(tmp)    
+}
+
 
 export class GeneralView extends Component {
     static contextType=ContextStore
@@ -295,51 +331,7 @@ export class GeneralView extends Component {
             })            
         }
         
-        
-
-        let rightBar
-        rightBar=(()=>{
-            let E=[]
-            let count=10
-            let i=0
-            let size=0
-            let testarrInit=4
-            for (i in new Array(testarrInit).fill()){                
-                E.push(
-                    <div
-                        key={i}
-                        style={{ background : "lightyellow",
-                                width : 50,height : 50,margin : 1, 
-                                borderRadius : 8,border : "thick purple solid"
-                        }}
-                    >
-
-                    </div>
-                )
-                  
-                size++
-            }
-
-            E.push(
-                <div
-                    key={size}
-                    style={{ background : "white",
-                                width : 50,height : 50,margin : 1, 
-                                borderRadius : 8,border : "thick purple solid",
-                                position : "relative"
-                        }}
-                >
-                    <label                        
-                        style={{fontSize : 55, fontWeight : "bold", position : "absolute", left : "12%", top : "40%" ,
-                                lineHeight : 0,color : "grey"
-                        }}
-                    >+</label>
-                </div>
-            )
-
-            return (E)
-        })()
-
+     
         let dev=(
             ()=>{ 
                 if (true){                                
@@ -406,16 +398,35 @@ export class GeneralView extends Component {
                                 alignItems: "center",
                                 justifyContent: "center",
                 }}>
-                        {/* my home */}
-                          
+                        {/* my home */}                        
+                        <React.Suspense fallback={<div/>}>
+                            <Main />
+                        </React.Suspense>                          
                 </div>
+                <React.Suspense fallback={<div/>}>
+                    <RightBar/>
+                    
+                    {(()=>{
+                        console.log("Mmm :", MenuItems)
+                    })()}
+                </React.Suspense>
 
-                <div style={{position : "absolute",background : $gl.color.BlueViolet + "99",top: 0,right : 0,width : 60,
-                            padding : 3,height : "100%",margin : 0, borderRadius : 0, zIndex:1200,
-                            display : rightBarC.display
-                                }}>
-                        {rightBar}
-                </div>                                
+                {(()=>{
+                    let Earr=[]
+                    MenuItems.forEach((r,i)=>{
+                        let RE=r//MenuItems[i]
+                        console.log("RE :" , RE)
+                        Earr.push(
+                                    <React.Suspense key={i} fallback={<div>temp - {i}</div>}>
+                                        <RE/>
+                                    </React.Suspense>
+                                )
+                    })
+                    return Earr
+                                
+                            
+                })()}
+                
                 
             </div>
         )

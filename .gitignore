@@ -4,7 +4,7 @@
 /main/web_ui/node_modules
 /main/web_ui/.pnp
 /main/web_ui/.pnp.js
-/main/web_ui/components/custom
+
 
 /main/node_serv/node_modules
 /main/node_serv/.pnp
@@ -32,6 +32,7 @@
 /main/web_ui/startdevwc.bat
 /main/web_ui/startdevc.sh
 
+/main/web_ui/src/components/custom
 /main/web_ui/src/components/cviews
 /main/web_ui/src/components/views/custom
 /main/web_ui/src/components/views/custom_*
