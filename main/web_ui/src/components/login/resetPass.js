@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+import { ContextStore } from "../common/contextStore";
 
 export class Logout extends Component {
     static contextType=ContextStore

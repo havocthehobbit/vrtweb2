@@ -14,14 +14,14 @@ import "./general.css"
 //import Item1 from '../cviews/old/menus/item1';
 
 var Main=lazy(() =>{    
-    let file='main.jsx';
-     return import(`../cviews/${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
+    let file='cviews/main.jsx';
+     return import(`../${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
     .catch(() => ({ default: () => <div></div> }))
 })
 
 var RightBar=lazy(() =>{    
-    let file='rightbar.jsx';
-     return import(`../cviews/${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
+    let file='cviews/rightbar.jsx';
+     return import(`../${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
     .catch(() => ({ default: () => <div></div> }))
 })
 
@@ -30,8 +30,8 @@ let MenuItems=[]
 for (let i=0;i < 3; i++){
     let tmp=lazy(() =>{    
         //let file=`1menus/item${i}.jsx`;
-        let file=`menus/item${i}.jsx`;
-         return import(`../cviews/${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
+        let file=`cviews/menus/item${i}.jsx`;
+         return import(`../${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
         //.catch(() => ({ default: () => <div></div> }))
         .catch((err)=>{             
             let retE={default: () => undefined }             
@@ -390,6 +390,10 @@ export class GeneralView extends Component {
                     
                     <div style={{ clear : "left"}}/>
                 </div>
+
+                <React.Suspense fallback={<div/>}>
+                            <Main />
+                </React.Suspense>                          
                     
                 { /* views */ }
                 <div style={{ position : "relative", top : 60, 
@@ -399,9 +403,7 @@ export class GeneralView extends Component {
                                 justifyContent: "center",
                 }}>
                         {/* my home */}                        
-                        <React.Suspense fallback={<div/>}>
-                            <Main />
-                        </React.Suspense>                          
+                        
                 </div>
                 <React.Suspense fallback={<div/>}>
                     <RightBar/>

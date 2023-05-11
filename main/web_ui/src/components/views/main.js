@@ -1,4 +1,4 @@
-import React,{ Component } from 'react';
+import React,{ Component,lazy,Suspense } from 'react';
 import "../../App.css";
 import { ContextStore } from '../common/contextStore';
 import { Homepage } from './homepage';
@@ -40,6 +40,14 @@ let background=(()=>{
         />  
     )
 })()
+
+var Background=lazy(() =>{    
+    let file='cviews/Background.jsx';
+     return import(`../${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
+    .catch(() => ({ default: () => background }))
+})
+
+
 
 export class Main extends Component {
     constructor(props){
@@ -96,9 +104,6 @@ export class Main extends Component {
         const {isLoggedIn, testStuff}=tt.state // same as let isLoggedIn=tt.state.isLogged in, except you can add other var from state object ,in one line with shorter syntax
         const {isLoggedInSet}=tt // similar to above line 
 
-        
-
-
         let homepageE
         homepageE=(()=>{
             if (isLoggedIn!==true){
@@ -154,9 +159,11 @@ export class Main extends Component {
                             top : 0 , left : 0, margin : 0
 
                     }}
-                >    
-                    {background} 
-                    
+                >   
+                    <React.Suspense fallback={<div></div>}>
+                        <Background/>
+                    </React.Suspense>
+                                        
                     {homepageE}
                     
                     {generalViewE}     
