@@ -28,8 +28,8 @@ export class Homepage extends Component {
                 
             >  
                 <Login />
-                <RegisterButton/>
-                <SocialRegisterButton/>
+                
+                {/* <RegisterButton/> <SocialRegisterButton/> */}
                 {/* <img 
                     style={{ width : 400}}
                     src={logo} alt={logo} 

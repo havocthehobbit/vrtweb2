@@ -1,4 +1,4 @@
-import React,{ lazy,Component } from 'react';
+import React,{ lazy,Component, Suspense } from 'react';
 import "../../App.css";
 import { ContextStore } from '../common/contextStore';
 import { Logout } from '../login/logout';
@@ -47,6 +47,16 @@ for (let i=0;i < 3; i++){
     
     MenuItems.push(tmp)    
 }
+
+
+let MainMenu=lazy(() =>{    
+    let file='cviews/menus/main.jsx';
+     return import(`../${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
+    //.catch(() => ({ default: () => <MenuMain/>  }))
+    //.catch(() => ({ default: () => <MenuMain/>  }))
+    .catch(() => ({ default: MenuMain }) )
+    
+})
 
 
 export class GeneralView extends Component {
@@ -343,6 +353,8 @@ export class GeneralView extends Component {
          //               setup={ tt.menuSetup} obj={tt}
         let MenuMainE=(()=>{
             let E
+
+            /*
             E=(()=>{
                 let Earr=[]
                 MenuItems.forEach((r,i)=>{
@@ -361,19 +373,21 @@ export class GeneralView extends Component {
             })()
             
             return E
+            */
 
-            E= (
-                <div
-                    style={{ position : "absolute", top : 0, left : 0,zIndex :99999 }}
-                >
-                    <h1>{menuItemsCount}</h1>
-                    <MenuMain
-                        {...menuProps}
-                    >
-
-                    </MenuMain>
-                </div>
-            )
+           
+                E= (
+                    <div
+                        style={{ position : "absolute", top : 0, left : 0,zIndex :99999 }}
+                    >                        
+                        <React.Suspense fallback={<div/>}>
+                            <MainMenu {...menuProps} />
+                        </React.Suspense>                                                 
+                        
+                    </div>
+                )
+            
+            
 
             return E
 
