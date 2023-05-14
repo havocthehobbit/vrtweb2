@@ -26,7 +26,7 @@ var RightBar=lazy(() =>{
 })
 
 let MenuItems=[]
-
+let menuItemsCount=0
 for (let i=0;i < 3; i++){
     let tmp=lazy(() =>{    
         //let file=`1menus/item${i}.jsx`;
@@ -35,15 +35,16 @@ for (let i=0;i < 3; i++){
         //.catch(() => ({ default: () => <div></div> }))
         .catch((err)=>{             
             let retE={default: () => undefined }             
-            console.log("err :",err)
+            console.log("menu err :",err)
             return retE
         })
         .then((retE)=>{                        
-            //MenuItems.push(retE)    
+            //MenuItems.push(retE)   
+            menuItemsCount++
             return retE
         })
     })
-    //console.log("tmp :" , tmp)
+    
     MenuItems.push(tmp)    
 }
 
@@ -330,7 +331,53 @@ export class GeneralView extends Component {
                 }
             })            
         }
-        
+
+
+        let menuProps={
+            style : { background : "transparent", position : "relative", width : undefined, height : undefined},
+                        items: tt.menuItems, tt : tt,
+                        setup: tt.menuSetup, obj : tt,
+        }
+        //style={{ background : "transparent", position : "relative", width : undefined, height : undefined}}
+         //               items={tt.menuItems} tt={tt}
+         //               setup={ tt.menuSetup} obj={tt}
+        let MenuMainE=(()=>{
+            let E
+            E=(()=>{
+                let Earr=[]
+                MenuItems.forEach((r,i)=>{
+                    let RE=r//MenuItems[i] 
+                                           
+                        Earr.push(
+                                    <React.Suspense key={i} fallback={<div>temp - {i}</div>}>
+                                        <h1>{menuItemsCount}</h1>
+                                        <RE/>
+                                    </React.Suspense>
+                        )
+                    
+                })
+                return Earr                            
+                        
+            })()
+            
+            return E
+
+            E= (
+                <div
+                    style={{ position : "absolute", top : 0, left : 0,zIndex :99999 }}
+                >
+                    <h1>{menuItemsCount}</h1>
+                    <MenuMain
+                        {...menuProps}
+                    >
+
+                    </MenuMain>
+                </div>
+            )
+
+            return E
+
+        })()
      
         let dev=(
             ()=>{ 
@@ -347,17 +394,7 @@ export class GeneralView extends Component {
                 {dev}
 
                 {/* menu */}
-                <div
-                    style={{ position : "absolute", top : 0, left : 0,zIndex :99999 }}
-                >
-                    <MenuMain
-                        style={{ background : "transparent", position : "relative", width : undefined, height : undefined}}
-                        items={tt.menuItems} tt={tt}
-                        setup={ tt.menuSetup} obj={tt}
-                    >
-
-                    </MenuMain>
-                </div>
+                {MenuMainE}
 
                  {/* logout profile */}
                 <div 
@@ -408,26 +445,11 @@ export class GeneralView extends Component {
                 <React.Suspense fallback={<div/>}>
                     <RightBar/>
                     
-                    {(()=>{
+                    {/*(()=>{
                         console.log("Mmm :", MenuItems)
-                    })()}
+                    })()*/}
                 </React.Suspense>
 
-                {(()=>{
-                    let Earr=[]
-                    MenuItems.forEach((r,i)=>{
-                        let RE=r//MenuItems[i]
-                        console.log("RE :" , RE)
-                        Earr.push(
-                                    <React.Suspense key={i} fallback={<div>temp - {i}</div>}>
-                                        <RE/>
-                                    </React.Suspense>
-                                )
-                    })
-                    return Earr
-                                
-                            
-                })()}
                 
                 
             </div>
