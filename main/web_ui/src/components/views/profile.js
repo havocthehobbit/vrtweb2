@@ -1,4 +1,11 @@
-import React, { Component} from "react"
+import React, { Component,lazy,Suspense} from "react"
+
+
+var ProfileDyn=lazy(() =>{    
+    let file='cviews/profile.jsx';
+     return import(`../../${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
+    .catch(() => ({ default: () => <p style={{ fontSize : 16,padding : 0,margin : 0,cursor:"pointer"}}>My Profile.</p> }))
+})
 
 export class Profile extends Component {
 
@@ -117,7 +124,7 @@ export class ProfileIcon extends Component {
                 <div
                     style={style}                    
                 >
-                    <p style={{ fontSize : 16,padding : 0,margin : 0,cursor:"pointer"}}>My Profile</p>                
+                    <ProfileDyn/>                
                 </div>
             )
 
