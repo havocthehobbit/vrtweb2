@@ -79,7 +79,7 @@ gdb.progParams.adminProgParamListUsers( httpAppParams , ()=>{})
 let app
 if (httpAppParams.useHttpServer===true){ // prevent starting https server if a prog parameter requires something , like prompt input
     // initlise http server
-    ApiInst.init({}, ()=>{
+    ApiInst.init({ db : gdb.db, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs}, ()=>{
         // initialisation of listener complete        
     })
     app=ApiInst.app
@@ -93,9 +93,9 @@ if (httpAppParams.useHttpServer===true){ // prevent starting https server if a p
 //==============================================================================================================
 //==============================================================================================================
 
-app.get("/test" ,function(req , res){    
-        res.send( "testing get" )    
-})
+//app.get("/test" ,function(req , res){    
+//        res.send( "testing get" )    
+//})
 
 app.post("/logout",function(req,res){
     var ret_data={

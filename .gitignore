@@ -61,6 +61,7 @@
 /main/node_serv/cstartdev.sh
 
 /main/node_serv/modules/custom_*
+/main/node_serv/modules/customdb_*
 /main/node_serv/custom_*
 /main/custom_*
 /custom_*

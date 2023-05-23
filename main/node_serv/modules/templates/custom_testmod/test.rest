@@ -1,0 +1,18 @@
+# "Rest Client" vscode plugin
+POST http://127.0.0.1:3001/test123 HTTP/1.1
+content-type: application/json
+
+{
+    "type": "getData",
+    "test": "test"
+}
+
+###
+
+POST http://127.0.0.1:3001/test123 HTTP/1.1
+content-type: application/json
+
+{
+    "type": "getData",
+    "test": "test"
+}
