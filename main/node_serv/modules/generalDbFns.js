@@ -440,7 +440,7 @@ feach( files  , function(f,i){
 })
 
 // runs js code in custom_ and run initial main.auto_run if it exists
-let mds
+let mds={}
 feach(auto_mod_folders , function(file,i){ // if starts with  l_node_modules_auto_ then auto load file in                       
         //console.log(files, i )
         var temp_DIR = path.join(filespath, file);
