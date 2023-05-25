@@ -452,6 +452,27 @@ feach( mds, (r,p)=>{
     if (r.db){
         feach( r.db, (r2,p2)=>{
             generalDbFns[p2]={ ...generalDbFns[p2],...r2}
+            let typeCatoredFor=false
+            feach( generalDbFns[p2], (r3,p3)=>{
+                typeCatoredFor=true
+                if (typeof(generalDbFns[p2][p3])==="function"){
+
+                    
+                    let nf=generalDbFns[p2][p3]
+                    generalDbFns[p2][p3]=(...args)=>{ // pre run this function so we can pass some standard values through it to use
+                        let nr={
+                            generalDbFns   : generalDbFns,
+                            schemas : schemas,
+                        }
+                        //nf.apply(this,[nr])
+                        nf(nr,...args)
+                    }
+                }
+              
+                
+
+                
+            })
         })
     }
     if (r.schemas){
