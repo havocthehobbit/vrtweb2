@@ -13,7 +13,7 @@ let generalDbFns={
     name : "generalproj",
     db : undefined,
     users : {
-        getUser : (params, cbp)=>{
+        getUser : (franeworkData, params, cbp)=>{
             let db=generalDbFns.db 
             let temp=""
             let details=undefined       
@@ -56,7 +56,7 @@ let generalDbFns={
             })
         },
  
-        getUsers : (params, cbp)=>{
+        getUsers : (franeworkData, params, cbp)=>{
             let db=generalDbFns.db
             let temp=""
             let details=undefined
@@ -97,7 +97,7 @@ let generalDbFns={
 
         
         
-        setUserPass : (params, cbp)=>{
+        setUserPass : (franeworkData, params, cbp)=>{
             let db=generalDbFns.db 
             let temp=""
             let details=undefined       
@@ -150,7 +150,7 @@ let generalDbFns={
             })
         },
 
-        getOrder : (params, cbp)=>{
+        getOrder : (franeworkData, params, cbp)=>{
             let db=generalDbFns.db 
             let temp=""
             let details=undefined 
@@ -187,7 +187,7 @@ let generalDbFns={
                 cb([], err)
             })
         },
-        getOrders : (params, cbp)=>{
+        getOrders : (franeworkData, params, cbp)=>{
             let db=generalDbFns.db
             let temp=""
             let details=undefined
@@ -228,7 +228,7 @@ let generalDbFns={
     },
 
     progParams : {
-        adminProgParamResetPass: (params, cbp)=>{
+        adminProgParamResetPass: (franeworkData, params, cbp)=>{
             let tt=generalDbFns
             progargs.params(function (val, index, array) {     
                 if (val==="--adminpass" || val==="-adminpass" || val==="--resetadmin" || val==="-resetadmin" || val==="--adminreset" || val==="-adminreset"
@@ -259,7 +259,7 @@ let generalDbFns={
             });
         },
         
-        adminProgParamListUsers: (params, cbp)=>{
+        adminProgParamListUsers: (franeworkData, params, cbp)=>{
             let tt=generalDbFns
             progargs.params(function (val, index, array) {     
                 if (val.toLowerCase()==="--listusers" || val.toLowerCase()==="-listusers"  ){
