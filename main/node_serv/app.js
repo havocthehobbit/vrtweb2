@@ -179,7 +179,7 @@ var loginUser=function( params ){
                                     var token=newtoken;
                                 }
                                 ret_data.data.auth=true
-                                //ret_data.data.token=token
+                                ret_data.data.token=token
                                 const oneDayToSeconds = 24 * 60 * 60;
 
                                 const expires=new Date(Number(new Date()) + ApiInst.cookieExpires) //10 * 365 * 24 * 60 * 60 * 1000 === 315360000000, or 10 years in milliseconds                                

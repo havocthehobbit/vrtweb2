@@ -16,3 +16,31 @@ content-type: application/json
     "type": "getData",
     "test": "test"
 }
+
+###
+
+###
+
+POST http://127.0.0.1:3001/login HTTP/1.1
+content-type: application/json
+Origin: *
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: X-Requested-With
+
+{ "userid" : "???" , "password" : "????"  }
+
+
+
+###
+# token header "x-auth-token: ?????RANDOM_VALID_JWT_TOKEN?????"
+POST http://127.0.0.1:3001/testa HTTP/1.1
+content-type: application/json
+Origin: *
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: X-Requested-With
+x-auth-token: ?????RANDOM_VALID_JWT_TOKEN?????
+
+{
+    "type": "getData",
+    "test": "test"
+}
