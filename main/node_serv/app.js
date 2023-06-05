@@ -267,6 +267,7 @@ let verifyJWTroute=function(req,res,next ){
     }
 }
 
+
 app.post("/isAuth", verifyJWTroute ,function(req,res){
     let ret_data={
         data : { loggedin : false  , auth : false },
