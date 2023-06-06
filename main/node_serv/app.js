@@ -75,224 +75,228 @@ let httpAppParams= { useHttpServer : true}
 
 gdb.progParams.adminProgParamResetPass( httpAppParams , ()=>{})
 gdb.progParams.adminProgParamListUsers( httpAppParams , ()=>{})
+gdb.progParams.addUsersProgParamResetPass( httpAppParams , ()=>{})
 
 let app
-if (httpAppParams.useHttpServer===true){ // prevent starting https server if a prog parameter requires something , like prompt input
-    // initlise http server
-    ApiInst.init({ db : gdb.db, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs}, ()=>{
-        // initialisation of listener complete        
-    })
-    app=ApiInst.app
-}else{
-    app={
-            get:()=>{},
-            post:()=>{}
-        }
-}
 
-//==============================================================================================================
-//==============================================================================================================
-
-//app.get("/test" ,function(req , res){    
-//        res.send( "testing get" )    
-//})
-
-app.post("/logout",function(req,res){
-    var ret_data={
-        data : { loggedin : false  , auth : false },
-        status : 0,
-        error : ""
+setTimeout(()=>{
+    if (httpAppParams.useHttpServer===true){ // prevent starting https server if a prog parameter requires something , like prompt input
+        // initlise http server
+        ApiInst.init({ db : gdb.db, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs}, ()=>{
+            // initialisation of listener complete        
+        })
+        app=ApiInst.app
+    }else{
+        app={
+                get:()=>{},
+                post:()=>{}
+            }
     }
 
-    res.cookie('token',"",{ 
-        maxAge : 0 , 
-        httpOnly: true , 
-    })
+    //==============================================================================================================
+    //==============================================================================================================
 
-    ret_data.status=true
+    //app.get("/test" ,function(req , res){    
+    //        res.send( "testing get" )    
+    //})
 
-    res.jsonp(ret_data)
-})
+    app.post("/logout",function(req,res){
+        var ret_data={
+            data : { loggedin : false  , auth : false },
+            status : 0,
+            error : ""
+        }
 
-app.post("/login" ,function(req , res){    
-    loginUser( req.body , {req : req , res : res} , function(ret_data){
+        res.cookie('token',"",{ 
+            maxAge : 0 , 
+            httpOnly: true , 
+        })
+
+        ret_data.status=true
+
         res.jsonp(ret_data)
+    })
 
-    } )
-})
+    app.post("/login" ,function(req , res){    
+        loginUser( req.body , {req : req , res : res} , function(ret_data){
+            res.jsonp(ret_data)
 
-var loginUser=function( params ){
-    let cb=function(){}
-    var fn1 = function(){}
-    var reqres={}
+        } )
+    })
 
-    if (arguments.length >2 ){
-        fn1=arguments[2]
-    }
-    if (arguments.length >1 ){
-        reqres=arguments[1]
-    }
+    var loginUser=function( params ){
+        let cb=function(){}
+        var fn1 = function(){}
+        var reqres={}
 
-    if (!$cn.isUndefined(fn1)){
-        cb=fn1
-    }
-
-    var data={
-        data : {},
-        status : 0,
-        error : ""
-    }
-
-    var data2=data;
-
-    var ret_data={
-        data : { loggedin : false  , auth : false },
-        status : 0,
-        error : "",
-        sent_resposne : false
-    }
-
-    var bd=params; 
-    var login_confirmed=false;
-    var found_userid=false
-    
-    gdb.users.getUser({userid : bd.userid}, function(data){ 
-        if ($cn.isUndefined(data)){
-            data=data2;
+        if (arguments.length >2 ){
+            fn1=arguments[2]
         }
+        if (arguments.length >1 ){
+            reqres=arguments[1]
+        }
+
+        if (!$cn.isUndefined(fn1)){
+            cb=fn1
+        }
+
+        var data={
+            data : {},
+            status : 0,
+            error : ""
+        }
+
+        var data2=data;
+
+        var ret_data={
+            data : { loggedin : false  , auth : false },
+            status : 0,
+            error : "",
+            sent_resposne : false
+        }
+
+        var bd=params; 
+        var login_confirmed=false;
+        var found_userid=false
         
-        if (typeof(bd.userid)!==undefined){            
-            if (typeof(bd.password)!==undefined){                              
-                    if (data.userid===bd.userid){
-                        found_userid=true
-                        
-                        if (data.password===bd.password){
-                            login_confirmed=true;
-                            ret_data.data.loggedin=true;
-                            ret_data.status=true
-                        
-                            ApiInst.jwt.sign({ userid : bd.userid } , settings.jwtSecret, ApiInst.jwtoptions  , function(err , newtoken){
-                                var curr_date=new Date()
-                                if (err){
-                                    console.log("error registoring user token " , err )
-                                }else{
-                                    var token=newtoken;
-                                }
-                                ret_data.data.auth=true
-                                ret_data.data.token=token
-                                const oneDayToSeconds = 24 * 60 * 60;
+        gdb.users.getUser({userid : bd.userid}, function(data){ 
+            if ($cn.isUndefined(data)){
+                data=data2;
+            }
+            
+            if (typeof(bd.userid)!==undefined){            
+                if (typeof(bd.password)!==undefined){                              
+                        if (data.userid===bd.userid){
+                            found_userid=true
+                            
+                            if (data.password===bd.password){
+                                login_confirmed=true;
+                                ret_data.data.loggedin=true;
+                                ret_data.status=true
+                            
+                                ApiInst.jwt.sign({ userid : bd.userid } , settings.jwtSecret, ApiInst.jwtoptions  , function(err , newtoken){
+                                    var curr_date=new Date()
+                                    if (err){
+                                        console.log("error registoring user token " , err )
+                                    }else{
+                                        var token=newtoken;
+                                    }
+                                    ret_data.data.auth=true
+                                    ret_data.data.token=token
+                                    const oneDayToSeconds = 24 * 60 * 60;
 
-                                const expires=new Date(Number(new Date()) + ApiInst.cookieExpires) //10 * 365 * 24 * 60 * 60 * 1000 === 315360000000, or 10 years in milliseconds                                
-                                
-                                reqres.res.cookie('token', token, { 
-                                            //maxAge : oneDayToSeconds ,  // was ignoring this for some reason and expiring withing 5 minuts 
-                                            expires : expires,
-                                            httpOnly: true , 
+                                    const expires=new Date(Number(new Date()) + ApiInst.cookieExpires) //10 * 365 * 24 * 60 * 60 * 1000 === 315360000000, or 10 years in milliseconds                                
+                                    
+                                    reqres.res.cookie('token', token, { 
+                                                //maxAge : oneDayToSeconds ,  // was ignoring this for some reason and expiring withing 5 minuts 
+                                                expires : expires,
+                                                httpOnly: true , 
+                                    })
+                                    // sessionUserUpdate in DB
+
+                                    ret_data.sent_resposne=true
+
+                                    cb(ret_data)
+                                    
+                                    return; 
                                 })
-                                // sessionUserUpdate in DB
-
+                            }else{
+                                if (!ret_data.sent_resposne){
+                                    ret_data.sent_resposne=true
+                                    ret_data.error="bad userid or password"
+                                    cb(ret_data)
+                                }
+                            }
+                        }
+                        if (!login_confirmed){
+                            if (!ret_data.sent_resposne){
                                 ret_data.sent_resposne=true
-
-                                cb(ret_data)
-                                
-                                return; 
-                            })
-                        }else{
+                                cb(ret_data) 
+                            }
+                            return
+                        }
+                        if (!found_userid){
                             if (!ret_data.sent_resposne){
                                 ret_data.sent_resposne=true
                                 ret_data.error="bad userid or password"
-                                cb(ret_data)
+                                cb(ret_data) 
                             }
+                            return
                         }
+                }else{
+                    if (!ret_data.sent_resposne){
+                        ret_data.sent_resposne=true
+                        ret_data.error="password not entered"
+                    cb(ret_data)
                     }
-                    if (!login_confirmed){
-                        if (!ret_data.sent_resposne){
-                            ret_data.sent_resposne=true
-                            cb(ret_data) 
-                        }
-                        return
-                    }
-                    if (!found_userid){
-                        if (!ret_data.sent_resposne){
-                            ret_data.sent_resposne=true
-                            ret_data.error="bad userid or password"
-                            cb(ret_data) 
-                        }
-                        return
-                    }
+                }
             }else{
                 if (!ret_data.sent_resposne){
                     ret_data.sent_resposne=true
-                    ret_data.error="password not entered"
-                   cb(ret_data)
+                    ret_data.error="userid not entered"
+                    cb(ret_data)
                 }
-            }
-        }else{
-            if (!ret_data.sent_resposne){
-                ret_data.sent_resposne=true
-                ret_data.error="userid not entered"
-                cb(ret_data)
-            }
-        }
-    })
-}
-
-let verifyJWTroute=function(req,res,next ){
-    let token = req.headers["x-auth-token"] // no longer using x-auth-token so this can be ignored, its just "token" now , set by res.cookie('token' ...
-    
-    let envMainJwtTokenKey=settings.jwtSecret
-
-    res.locals.rt_jwt_isAuth=false;
-    
-    if (!token || $cn.isUndefined(token)){
-        token=req.cookies.token
-    }
-    if (!token || $cn.isUndefined(token)){        
-        res.locals.decodedID= ""
-        res.locals.rt_jwt_isAuth=false;
-        res.locals.token=token
-        next()
-    }else{
-        ApiInst.jwt.verify(token , envMainJwtTokenKey , function(err , decoded){
-            if ( err){
-                next()
-            }else{
-                res.locals.decodedID= decoded.id
-                res.locals.decoded= decoded
-                res.locals.rt_jwt_isAuth=true;
-                res.locals.token=token                
-                next()
             }
         })
     }
-}
 
-
-app.post("/isAuth", verifyJWTroute ,function(req,res){
-    let ret_data={
-        data : { loggedin : false  , auth : false },
-        status : 0,
-        error : ""
-    }
-
-    let auth=false;    
-                
-    if ( res.locals.rt_jwt_isAuth ){
-        if (res.locals.decoded.userid===req.body.userid){            
-            auth=true;
-        }
+    let verifyJWTroute=function(req,res,next ){
+        let token = req.headers["x-auth-token"] // no longer using x-auth-token so this can be ignored, its just "token" now , set by res.cookie('token' ...
         
+        let envMainJwtTokenKey=settings.jwtSecret
+
+        res.locals.rt_jwt_isAuth=false;
+        
+        if (!token || $cn.isUndefined(token)){
+            token=req.cookies.token
+        }
+        if (!token || $cn.isUndefined(token)){        
+            res.locals.decodedID= ""
+            res.locals.rt_jwt_isAuth=false;
+            res.locals.token=token
+            next()
+        }else{
+            ApiInst.jwt.verify(token , envMainJwtTokenKey , function(err , decoded){
+                if ( err){
+                    next()
+                }else{
+                    res.locals.decodedID= decoded.id
+                    res.locals.decoded= decoded
+                    res.locals.rt_jwt_isAuth=true;
+                    res.locals.token=token                
+                    next()
+                }
+            })
+        }
     }
 
-    if (auth){
-        ret_data.data.loggedin=true ;
-        ret_data.data.auth=true ;
-        ret_data.status=true ;
-    }
 
-    res.jsonp( ret_data )
+    app.post("/isAuth", verifyJWTroute ,function(req,res){
+        let ret_data={
+            data : { loggedin : false  , auth : false },
+            status : 0,
+            error : ""
+        }
 
-})
+        let auth=false;    
+                    
+        if ( res.locals.rt_jwt_isAuth ){
+            if (res.locals.decoded.userid===req.body.userid){            
+                auth=true;
+            }
+            
+        }
 
+        if (auth){
+            ret_data.data.loggedin=true ;
+            ret_data.data.auth=true ;
+            ret_data.status=true ;
+        }
+
+        res.jsonp( ret_data )
+
+    })
+
+},2000)
 
 

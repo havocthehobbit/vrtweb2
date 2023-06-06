@@ -31,6 +31,8 @@
 
 
 /main/web_ui/package.json
+/main/web_ui/package-lock.json
+
 /main/web_ui/packagejson.sh
 /main/web_ui/packagejson.bat
 
@@ -58,6 +60,7 @@
 
 
 /main/node_serv/package.json
+/main/node_serv/package-lock.json
 /main/node_serv/packagejson.sh
 /main/node_serv/packagejson.bat
 

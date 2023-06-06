@@ -93,9 +93,7 @@ let generalDbFns={
             .catch((err)=>{
                 cb([], err)
             })
-        },
-
-        
+        },        
         
         setUserPass : (franeworkData, params, cbp)=>{
             let db=generalDbFns.db 
@@ -149,88 +147,99 @@ let generalDbFns={
                 cb([], err)
             })
         },
-
-        getOrder : (franeworkData, params, cbp)=>{
-            let db=generalDbFns.db 
-            let temp=""
-            let details=undefined 
-            let view=undefined      
-
-            let cb=()=>{}
-            if (typeof(cbp)==="function"){cb=cbp}
-
-            searchBy={}
-            temp="id"
-            if (tof(params[temp])!=="undefined"){
-                searchBy[temp]=params[temp]
-            }
-            temp="title"
-            if (tof(params[temp])!=="undefined"){
-                searchBy[temp]=params[temp]
-            }     
-
-            temp="details"
-            if (tof(params[temp])!=="undefined"){
-                details=params[temp]
-            }
-            temp="view"
-            if (tof(params[temp])!=="undefined"){
-                details=params[temp]
-            }
-
-            let users=db.collection("orders")
-            users.findOne(searchBy)
-            .then((dt)=>{
-                cb(dt)
-            })
-            .catch((err)=>{
-                cb([], err)
-            })
-        },
-        getOrders : (franeworkData, params, cbp)=>{
+        
+        addUser : (franeworkData, params, cbp)=>{
             let db=generalDbFns.db
             let temp=""
-            let details=undefined
-            let view=undefined
+            let details={}
+            
             
             let cb=()=>{}
-            if (typeof(cbp)==="function"){cb=cbp}
-
-            searchBy={}
-            temp="type"
-            if (tof(params[temp])!=="undefined"){
-                searchBy[temp]=params[temp]
+            if (typeof(cbp)==="function"){
+                cb=cbp
             }
+
+            temp="userid"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                cb([], { "error" : "no userid"})
+            }
+
+            temp="password"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]="123"
+            }
+
+            temp="email"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]="...@....com"
+            }
+            
+            temp="group"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]="users"
+            }
+
+            temp="groups"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]=[]
+            }
+
+            temp="roles"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]=[]
+            }
+            
             temp="active"
             if (tof(params[temp])!=="undefined"){
-                searchBy[temp]=params[temp]
+                details[temp]=params[temp]
+            }else{
+                details[temp]=true
             }
-            temp="details"
-            if (tof(params[temp])!=="undefined"){
-                details=params[temp]
-            }
-            temp="view"
-            if (tof(params[temp])!=="undefined"){
-                details=params[temp]
-            }
-        
-            let users=db.collection("orders")
-            users.find(searchBy).toArray()
-            .then((dt)=>{
-                cb(dt)
-            })
-            .catch((err)=>{
-                cb([], err)
-            })
-        },
 
-        
+            temp="resetOnPassLogin"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]=false
+            }
+            
+            details["uuid"]=crypto.randomUUID()
+            details["dateCreated"]=new Date()
+            
+            let users=db.collection("users")
+            users.find({ userid : details.userid}).toArray()
+                        .then((dt)=>{ 
+                            if (dt.length===0){ 
+                                users.updateOne( { "userid" : details.userid } ,{ "$set" : details},{upsert : true })
+                                .then((dt)=>{
+                                    cb(dt)
+                                })
+                                .catch((err)=>{ 
+                                    cl("err : ", dt) 
+                                })
+                            }
+                        })
+                        .catch((err)=>{  cb([], err) 
+                        })
+        },
 
         
     },
 
     progParams : {
-        adminProgParamResetPass: (franeworkData, params, cbp)=>{
+        adminProgParamResetPass: (params, cbp)=>{
             let tt=generalDbFns
             progargs.params(function (val, index, array) {     
                 if (val==="--adminpass" || val==="-adminpass" || val==="--resetadmin" || val==="-resetadmin" || val==="--adminreset" || val==="-adminreset"
@@ -261,7 +270,7 @@ let generalDbFns={
             });
         },
         
-        adminProgParamListUsers: (franeworkData, params, cbp)=>{
+        adminProgParamListUsers: (params, cbp)=>{
             let tt=generalDbFns
             progargs.params(function (val, index, array) {     
                 if (val.toLowerCase()==="--listusers" || val.toLowerCase()==="-listusers"  ){
@@ -296,6 +305,55 @@ let generalDbFns={
                 }        
             });
         },
+
+        addUsersProgParamResetPass: (params, cbp)=>{
+            let tt=generalDbFns
+            //console.log("params",franeworkData)
+            progargs.params(function (val, index, array) {     
+                if (val==="--adduser" || val==="-adduser" || val==="--useradd" || val==="-useradd" || val==="--newuser" || val==="-newuser"){
+                    params.useHttpServer=false
+                    setTimeout(
+                        ()=>{
+                            cl("\n\n================")                            
+                                let detailsS=array[index + 1] 
+                                if (typeof(detailsS)==="undefined"){
+                                    cl("error user completed successfully...")                        
+                                    process.exit()
+                                }
+                                
+                                let details
+                                try {
+                                    console.log("detailsS :",detailsS)
+                                    details=JSON.parse(detailsS)
+                                } catch (error) {
+                                    cl("error parsing user object completed successfully...")                        
+                                    process.exit()
+                                }
+
+                                //console.log(array[index] + 1 )                                
+                                tt.users.addUser(details,(dt0,err)=>{
+                                    if (tof(err)!=="undefined"){cl(err)}
+                                    //tt.users.getUser({userid : "admin"},(dt)=>{    
+                                        cl("adding user completed successfully...")                        
+                                        process.exit()
+                                    //})                        
+                                })
+                                
+                            
+                        }
+                        ,
+                        3000
+                    )
+                    
+                    
+                }        
+            });
+        },
+      
+
+        
+
+        
 
     }
 
