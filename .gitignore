@@ -31,6 +31,9 @@
 
 
 /main/web_ui/package.json
+/main/web_ui/packagejson.sh
+/main/web_ui/packagejson.bat
+
 /main/web_ui/startdevwc.bat
 /main/web_ui/startdevc.sh
 
@@ -55,6 +58,8 @@
 
 
 /main/node_serv/package.json
+/main/node_serv/packagejson.sh
+/main/node_serv/packagejson.bat
 
 /main/node_serv/l_node_modules_auto_*
 /main/node_serv/cust_folder_*
