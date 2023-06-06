@@ -1,0 +1,14 @@
+{
+  "name": "vrtw2",
+  "desc": "vrtw2",
+  "env": "test",
+  "host": "127.0.0.1",
+  "port": "3001",
+  "pathFrontEndPublic": "../web_ui/build",
+  "dbName": "vrtw2",
+  "dbHost": "127.0.0.1",
+  "dbtype": "mongodb",
+  "jwtSecret": "jwtSecret69",
+  "cookieSecret": "iamacookiesecret4321",
+  "cookieExpires": 315360000000
+}

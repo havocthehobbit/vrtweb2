@@ -29,6 +29,8 @@
 /main/web_ui/yarn-debug.log*
 /main/web_ui/yarn-error.log*
 
+
+/main/web_ui/package.json
 /main/web_ui/startdevwc.bat
 /main/web_ui/startdevc.sh
 
@@ -51,6 +53,9 @@
 /main/node_serv/yarn-debug.log*
 /main/node_serv/yarn-error.log*
 
+
+/main/node_serv/package.json
+
 /main/node_serv/l_node_modules_auto_*
 /main/node_serv/cust_folder_*
 /main/node_serv/cust_*.js
@@ -72,6 +77,7 @@
 /main/data/db1
 /main/data/dbs
 /main/data/usershome
+/main/data/public
 
 
 #
