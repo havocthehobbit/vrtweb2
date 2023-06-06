@@ -76,6 +76,7 @@ let httpAppParams= { useHttpServer : true}
 gdb.progParams.adminProgParamResetPass( httpAppParams , ()=>{})
 gdb.progParams.adminProgParamListUsers( httpAppParams , ()=>{})
 gdb.progParams.addUsersProgParamResetPass( httpAppParams , ()=>{})
+gdb.progParams.setUserPassProgParamResetPass( httpAppParams , ()=>{})
 
 let app
 
@@ -160,6 +161,7 @@ setTimeout(()=>{
         var found_userid=false
         
         gdb.users.getUser({userid : bd.userid}, function(data){ 
+            console.log("data",data)
             if ($cn.isUndefined(data)){
                 data=data2;
             }

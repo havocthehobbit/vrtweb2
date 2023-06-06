@@ -16,9 +16,9 @@ let generalDbFns={
         getUser : (franeworkData, params, cbp)=>{
             let db=generalDbFns.db 
             let temp=""
-            let details=undefined       
+            let details={}
             let view=undefined       
-
+            
             let cb=()=>{}
             if (typeof(cbp)==="function"){
                 cb=cbp
@@ -27,24 +27,31 @@ let generalDbFns={
             searchBy={}
             temp="userid"
             if (tof(params[temp])!=="undefined"){
-                details=params[temp]
+                searchBy[temp]=params[temp]
+            }   
+
+            temp="userid"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
             }        
             temp="id"
             if (tof(params[temp])!=="undefined"){
-                details=params[temp]
+                details[temp]=params[temp]
             }                
             temp="email"
             if (tof(params[temp])!=="undefined"){
-                details=params[temp]
+                details[temp]=params[temp]
             }        
             temp="details"
             if (tof(params[temp])!=="undefined"){
-                details=params[temp]
+                details[temp]=params[temp]
             }        
             temp="view"
             if (tof(params[temp])!=="undefined"){
-                details=params[temp]
+                details[temp]=params[temp]
             }
+
+            console.log("details s",searchBy)
 
             let users=db.collection("users")
             users.findOne(searchBy)
@@ -110,12 +117,9 @@ let generalDbFns={
             searchBy={}
             temp="userid"
             if (tof(params[temp])!=="undefined"){
-                details=params[temp]
-            }        
-            temp="id"
-            if (tof(params[temp])!=="undefined"){
-                details=params[temp]
-            }
+                searchBy[temp]=params[temp]
+            }       
+            
 
             temp="pass"
             if (tof(params[temp])!=="undefined"){
@@ -349,7 +353,54 @@ let generalDbFns={
                 }        
             });
         },
-      
+
+        setUserPassProgParamResetPass: (params, cbp)=>{
+            let tt=generalDbFns
+            //console.log("params",franeworkData)
+            progargs.params(function (val, index, array) {     
+                if (val==="--resetuser" || val==="-resetuser" || val==="--userreset" || val==="-userreset" || val==="--userresetpass" || val==="-userresetpass"
+                || val==="--resetuserpass" || val==="-resetuserpass" || val==="--resetuserpasswords" || val==="-resetuserpassword"
+                || val==="--passwordsreset" || val==="-passwordsreset"
+                ){
+                    params.useHttpServer=false
+                    setTimeout(
+                        ()=>{
+                            cl("\n\n================")                            
+                                let detailsS=array[index + 1] 
+                                if (typeof(detailsS)==="undefined"){
+                                    cl("error user completed successfully...")                        
+                                    process.exit()
+                                }
+                                
+                                let details
+                                try {
+                                    console.log("detailsS :",detailsS)
+                                    details=JSON.parse(detailsS)
+                                } catch (error) {
+                                    cl("error parsing user object completed successfully...")                        
+                                    process.exit()
+                                }
+
+                                //console.log(array[index] + 1 )                                
+                                tt.users.setUserPass(details,(dt0,err)=>{
+                                    if (tof(err)!=="undefined"){cl(err)}
+                                    //tt.users.getUser({userid : "admin"},(dt)=>{    
+                                        cl("adding user completed successfully...")                        
+                                        process.exit()
+                                    //})                        
+                                })
+                                
+                            
+                        }
+                        ,
+                        3000
+                    )
+                    
+                    
+                }        
+            });
+        },
+        
 
         
 
