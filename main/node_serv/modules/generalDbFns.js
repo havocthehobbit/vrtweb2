@@ -25,36 +25,13 @@ let generalDbFns={
             }
 
             searchBy={}
-            temp="userid"
+            temp="searchBy"
             if (tof(params[temp])!=="undefined"){
-                searchBy[temp]=params[temp]
-            }   
+                searchBy=params[temp]
+            }            
 
-            temp="userid"
-            if (tof(params[temp])!=="undefined"){
-                details[temp]=params[temp]
-            }        
-            temp="id"
-            if (tof(params[temp])!=="undefined"){
-                details[temp]=params[temp]
-            }                
-            temp="email"
-            if (tof(params[temp])!=="undefined"){
-                details[temp]=params[temp]
-            }        
-            temp="details"
-            if (tof(params[temp])!=="undefined"){
-                details[temp]=params[temp]
-            }        
-            temp="view"
-            if (tof(params[temp])!=="undefined"){
-                details[temp]=params[temp]
-            }
-
-            console.log("details s",searchBy)
-
-            let users=db.collection("users")
-            users.findOne(searchBy)
+            let coll=db.collection("users")
+            coll.findOne(searchBy)
             .then((dt)=>{
                 cb(dt)
             })
@@ -74,7 +51,11 @@ let generalDbFns={
                 cb=cbp
             }
 
-            searchBy={}        
+            searchBy={}    
+            temp="searchBy"
+            if (tof(params[temp])!=="undefined"){
+                searchBy=params[temp]
+            }    
             temp="type"
             if (tof(params[temp])!=="undefined"){
                 searchBy[temp]=params[temp]
@@ -115,6 +96,10 @@ let generalDbFns={
             }
 
             searchBy={}
+            temp="searchBy"
+            if (tof(params[temp])!=="undefined"){
+                searchBy=params[temp]
+            }
             temp="userid"
             if (tof(params[temp])!=="undefined"){
                 searchBy[temp]=params[temp]
@@ -237,6 +222,275 @@ let generalDbFns={
                         })
                         .catch((err)=>{  cb([], err) 
                         })
+        },
+
+        addGroup : (franeworkData, params, cbp)=>{
+            let db=generalDbFns.db
+            let temp=""
+            let details={}
+
+            let cb=()=>{}
+            if (typeof(cbp)==="function"){
+                cb=cbp
+            }
+
+            temp="groupid"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                cb([], { "error" : "no groupid"})
+            }
+
+            temp="type"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]=""
+            }
+
+            temp="sub_groups"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]=[]
+            }
+
+            temp="roles"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]=[]
+            }
+
+            temp="active"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]=true
+            }
+
+            
+            details["uuid"]=crypto.randomUUID()
+            details["dateCreated"]=new Date()
+            
+            let coll=db.collection("groups")
+            coll.find({ userid : details.userid}).toArray()
+                        .then((dt)=>{ 
+                            if (dt.length===0){ 
+                                coll.updateOne( { "groupid" : details.groupid } ,{ "$set" : details},{upsert : true })
+                                .then((dt)=>{
+                                    cb(dt)
+                                })
+                                .catch((err)=>{ 
+                                    cl("err : ", dt) 
+                                })
+                            }
+                        })
+                        .catch((err)=>{  cb([], err) 
+                        })
+        },
+
+        getGroup : (franeworkData, params, cbp)=>{
+            let db=generalDbFns.db 
+            let temp=""
+            let details={}
+            let view=undefined       
+            
+            let cb=()=>{}
+            if (typeof(cbp)==="function"){
+                cb=cbp
+            }
+
+            searchBy={}
+            temp="userid"
+            if (tof(params[temp])!=="undefined"){
+                searchBy[temp]=params[temp]
+            }               
+
+            searchBy={}
+            temp="searchBy"
+            if (tof(params[temp])!=="undefined"){
+                searchBy=params[temp]
+            }
+            temp="uuid"
+            if (tof(params[temp])!=="undefined"){
+                searchBy[temp]=params[temp]
+            }
+
+            let coll=db.collection("groups")
+            coll.findOne(searchBy)
+            .then((dt)=>{
+                cb(dt)
+            })
+            .catch((err)=>{
+                cb([], err)
+            })
+        },
+ 
+        getGroups : (franeworkData, params, cbp)=>{
+            let db=generalDbFns.db
+            let temp=""
+            let details=undefined
+            let view=undefined
+            
+            let cb=()=>{}
+            if (typeof(cbp)==="function"){
+                cb=cbp
+            }
+
+            searchBy={}        
+            temp="searchBy"
+            if (tof(params[temp])!=="undefined"){
+                searchBy=params[temp]
+            }
+            temp="type"
+            if (tof(params[temp])!=="undefined"){
+                searchBy[temp]=params[temp]
+            }
+            temp="active"
+            if (tof(params[temp])!=="undefined"){
+                searchBy[temp]=params[temp]
+            }
+
+            let coll=db.collection("groups")
+            coll.find(searchBy).toArray()
+            .then((dt)=>{
+                cb(dt)
+            })
+            .catch((err)=>{
+                cb([], err)
+            })
+        },
+
+        addRoles : (franeworkData, params, cbp)=>{
+            let db=generalDbFns.db
+            let temp=""
+            let details={}
+
+            let cb=()=>{}
+            if (typeof(cbp)==="function"){
+                cb=cbp
+            }
+
+            temp="roleid"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                cb([], { "error" : "no roleid"})
+            }
+
+            temp="type"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]=""
+            }
+
+            temp="sub_roles"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]=[]
+            }
+
+            temp="active"
+            if (tof(params[temp])!=="undefined"){
+                details[temp]=params[temp]
+            }else{
+                details[temp]=true
+            }
+
+            
+            details["uuid"]=crypto.randomUUID()
+            details["dateCreated"]=new Date()
+            
+            let coll=db.collection("roles")
+            coll.find({ userid : details.userid}).toArray()
+                        .then((dt)=>{ 
+                            if (dt.length===0){ 
+                                coll.updateOne( { "roleid" : details.roleid } ,{ "$set" : details},{upsert : true })
+                                .then((dt)=>{
+                                    cb(dt)
+                                })
+                                .catch((err)=>{ 
+                                    cl("err : ", dt) 
+                                })
+                            }
+                        })
+                        .catch((err)=>{  cb([], err) 
+                        })
+        },
+
+        getRoles : (franeworkData, params, cbp)=>{
+            let db=generalDbFns.db 
+            let temp=""
+            let details={}
+            let view=undefined       
+            
+            let cb=()=>{}
+            if (typeof(cbp)==="function"){
+                cb=cbp
+            }
+
+            searchBy={}
+            searchBy={}
+            temp="searchBy"
+            if (tof(params[temp])!=="undefined"){
+                searchBy=params[temp]
+            }
+            temp="roleid"
+            if (tof(params[temp])!=="undefined"){
+                searchBy[temp]=params[temp]
+            }               
+
+            temp="uuid"
+            if (tof(params[temp])!=="undefined"){
+                searchBy[temp]=params[temp]
+            }
+
+            let coll=db.collection("roles")
+            coll.findOne(searchBy)
+            .then((dt)=>{
+                cb(dt)
+            })
+            .catch((err)=>{
+                cb([], err)
+            })
+        },
+ 
+        getRoles : (franeworkData, params, cbp)=>{
+            let db=generalDbFns.db
+            let temp=""
+            let details=undefined
+            let view=undefined
+            
+            let cb=()=>{}
+            if (typeof(cbp)==="function"){
+                cb=cbp
+            }
+
+            searchBy={}        
+            temp="searchBy"
+            if (tof(params[temp])!=="undefined"){
+                searchBy=params[temp]
+            }
+            temp="type"
+            if (tof(params[temp])!=="undefined"){
+                searchBy[temp]=params[temp]
+            }
+            temp="active"
+            if (tof(params[temp])!=="undefined"){
+                searchBy[temp]=params[temp]
+            }
+
+            let coll=db.collection("roles")
+            coll.find(searchBy).toArray()
+            .then((dt)=>{
+                cb(dt)
+            })
+            .catch((err)=>{
+                cb([], err)
+            })
         },
 
         

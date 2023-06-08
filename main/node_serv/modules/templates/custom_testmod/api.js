@@ -64,34 +64,28 @@ var main={
                     route : "/getStuff", // if route not included it will defualt to to name
                     type : "post", // get or post
                     cb : function(req, res, corestuff){ //  // corestuff ,gives you some extra modules , parameters and values to use  // eg : { app : app,express : express,mds :mds , mdsfn : mdsfn , vserv : $vserv, pub : pub ,debug_0 ,http : http , io : io}
-                        var bd=req.body // get data sent from front end
-                        //corestuff.mds.users.verifyLoginAPI({ req : req},function(vd){ // validate user token is allowed to run options
-                            //if (vd.allowed){ // 
-                                switch(bd.type) { // if for example type var string was sent in body data then can run a selection 
-                                    case "getData":
-                                      // code block
-                                      // somefunction( bd.someFEdata , (data)=>{ res.jsonp({ data : data , status ; "success", ,bStatus : true}) })
-                                      break;
-                                    case "getAllData":
-                                        // code block
-                                        break;
-                                    case "addData":
-                                      // code block
-                                      break;
-                                    case "updateData":
-                                        // code block
-                                        break;
-                                    case "delData":
-                                        // code block
-                                        break;
-                                    default:
-                                      // code block unspecified type
-                                }
-                           
-                            //}else{
-                                res.jsonp({ status : "failed" ,bStatus : false})
-                            //}
-                        //})
+                        var bd=req.body // get data sent from front end                        
+                        switch(bd.type) { // if for example type var string was sent in body data then can run a selection 
+                            case "getData":
+                                // code block
+                                // somefunction( bd.someFEdata , (data)=>{ res.jsonp({ data : data , status ; "success", ,bStatus : true}) })
+                                break;
+                            case "getAllData":
+                                // code block
+                                break;
+                            case "addData":
+                                // code block
+                                break;
+                            case "updateData":
+                                // code block
+                                break;
+                            case "delData":
+                                // code block
+                                break;
+                            default:
+                                // code block unspecified type
+                        }                            
+                        res.jsonp({ status : "failed" ,bStatus : false})                        
                     }
                 },
                 { // secure example using JWT web token validation
@@ -135,8 +129,7 @@ var main={
                         var bd=req.body // get data sent from front end                        
                         
                         corestuff.mds.vrtw.login.verifyLoginAPI({ req : req},function(vd){
-                            if (vd.allowed){ 
-                    
+                            if (vd.allowed){                     
                                 switch(bd.type) { // if for example type var string was sent in body data then can run a selection 
                                     case "getData":
                                         // code block
