@@ -54,7 +54,14 @@ export class Main extends Component {
         super(props)
 
      
-        this.state={ isLoggedIn : false, background : "white", testStuff : "dfdf"}
+        this.state={ 
+            isLoggedIn : false, background : "white", testStuff : "dfdf",
+            themes : {
+                name : "",
+                themes : [],
+            },
+
+        }
     }
 
     componentDidMount(){
@@ -111,7 +118,8 @@ export class Main extends Component {
                     <ContextStore.Provider 
                         value={{
                             isLoggedIn,
-                            isLoggedInSet
+                            isLoggedInSet,
+                            state : tt.state,
                         }}
                     >    
                         {/* <header className='App-header'> */}
@@ -142,6 +150,7 @@ export class Main extends Component {
                         value={{
                             isLoggedIn,
                             isLoggedInSet,
+                            state : tt.state,
                             testStuff
                         }}
                     >                       
@@ -161,7 +170,14 @@ export class Main extends Component {
                     }}
                 >   
                     <React.Suspense fallback={<div></div>}>
-                        <Background/>
+                        <ContextStore.Provider
+                            value={{
+                                        state : tt.state,
+                            }}
+                        >
+                            <Background themes={tt.state.themes} />
+                        </ContextStore.Provider>
+                        
                     </React.Suspense>
                                         
                     {homepageE}
