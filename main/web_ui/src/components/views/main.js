@@ -118,9 +118,8 @@ export class Main extends Component {
                     <ContextStore.Provider 
                         value={{
                             isLoggedIn,
-                            isLoggedInSet,
-                            state : tt.state,
-                            setState : tt.setState
+                            isLoggedInSet,                            
+                            tt : tt,
                         }}
                     >    
                         {/* <header className='App-header'> */}
@@ -151,8 +150,7 @@ export class Main extends Component {
                         value={{
                             isLoggedIn,
                             isLoggedInSet,
-                            state : tt.state,
-                            setState : tt.setState,
+                            tt : tt,
                             testStuff
                         }}
                     >                       
@@ -173,9 +171,8 @@ export class Main extends Component {
                 >   
                     <React.Suspense fallback={<div></div>}>
                         <ContextStore.Provider
-                            value={{
-                                        state : tt.state,
-                                        setState : tt.setState,
+                            value={{                                        
+                                        tt : tt,
                             }}
                         >
                             <Background themes={tt.state.themes} />
