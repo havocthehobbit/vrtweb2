@@ -120,6 +120,7 @@ export class Main extends Component {
                             isLoggedIn,
                             isLoggedInSet,
                             state : tt.state,
+                            setState : tt.setState
                         }}
                     >    
                         {/* <header className='App-header'> */}
@@ -151,6 +152,7 @@ export class Main extends Component {
                             isLoggedIn,
                             isLoggedInSet,
                             state : tt.state,
+                            setState : tt.setState,
                             testStuff
                         }}
                     >                       
@@ -173,6 +175,7 @@ export class Main extends Component {
                         <ContextStore.Provider
                             value={{
                                         state : tt.state,
+                                        setState : tt.setState,
                             }}
                         >
                             <Background themes={tt.state.themes} />
