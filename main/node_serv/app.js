@@ -160,8 +160,7 @@ setTimeout(()=>{
         var login_confirmed=false;
         var found_userid=false
         
-        gdb.users.getUser({userid : bd.userid}, function(data){ 
-            console.log("data",data)
+        gdb.users.getUser({userid : bd.userid}, function(data){             
             if ($cn.isUndefined(data)){
                 data=data2;
             }
