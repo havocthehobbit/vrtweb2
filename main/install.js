@@ -29,6 +29,12 @@ if (!fs.existsSync("./")){
     fs.mkdirSync("./" + tmp)
 }
 
+tmp="node_serv/modules/custom_vwDataSchema"
+if (!fs.existsSync("./")){
+    console.log("creating folder " + tmp )
+    fs.mkdirSync("./" + tmp)
+}
+
 
 
 //fs.writeFileSync( settingsPath ,JSON.stringify(dataOdef, null, 2) )
