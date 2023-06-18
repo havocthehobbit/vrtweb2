@@ -49,6 +49,9 @@ var Background=lazy(() =>{
 
 
 
+
+
+
 export class Main extends Component {
     constructor(props){
         super(props)
@@ -56,6 +59,7 @@ export class Main extends Component {
      
         this.state={ 
             isLoggedIn : false, background : "white", testStuff : "dfdf",
+            about : {},
             themes : {
                 name : "",
                 themes : [],
@@ -77,9 +81,7 @@ export class Main extends Component {
                 tt.isLoggedInSet(true)
                 }
             })
-       }
-
-       
+       }    
     }
 
     setBackground_old=(bck)=>{

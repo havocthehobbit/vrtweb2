@@ -16,7 +16,22 @@ export class Homepage extends Component {
         super(props)      
 
         document.title = 'vrtweb'
+        let file='cviews/vwAbout.jsx';
+        import(`../${ file}`)        
+        .then((nd)=>{
+            if (nd.about){                
+                nd.about((rd)=>{
+                    if (rd.title){                        
+                        document.title = rd.title
+                    }
+                })
 
+            }
+            
+        })
+        .catch((err) => {                        
+            return undefined
+        })
         this.state={}
     }
 

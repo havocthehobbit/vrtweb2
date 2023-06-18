@@ -65,10 +65,17 @@ export const Main=()=>{ // main menu with custom routing
                     params :$cgl.addrParamsToObject()
                 }            
 
-                pages.current.forEach((r,pg)=>{
-                    if (r.pathname===addr.pathname){     
-                        setAddrParamsArgs(addr.params)
-                        setCurrent(pg)                    
+                // on page load navigate to route
+                pages.current.forEach((r,pg)=>{ 
+                    if (r.pathname===addr.pathname){
+                        let routeTo=true
+                        if (typeof(props.routeTo)!=="undefined"){
+                            routeTo=props.routeTo
+                        }
+                        if (routeTo){
+                            setAddrParamsArgs(addr.params)
+                            setCurrent(pg)                    
+                        }
                     }
                 })
 
@@ -270,6 +277,7 @@ export const Main=()=>{ // main menu with custom routing
               function (e) {
                 //console.log(e.target.getAttribute("current"))
                 var newval = e.target.getAttribute("current") //- 1
+                window.history.pushState('',document.title , pages.current[newval].pathname);
                 setCurrent(newval)
               }
             }
