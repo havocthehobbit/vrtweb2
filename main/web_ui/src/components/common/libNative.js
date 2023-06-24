@@ -8,56 +8,48 @@
 let cool_native_js={
     name : "cool_native_node",    
     each : function(inst,cb){ // for each in for objects and arrays
-        if (this.isObject){
+        if (cool_native_js.isObject(inst)){
             Object.keys(inst).forEach((v , p)=>{
                 cb(inst[v] , v) 
             })
         }else{
             inst.forEach(function(v,i){ cb(v,i) })
         }
-
-
     },
-    isObject : function(inp){
+    isObject : function(input){
         var ret=false
         if (typeof(inp)==="object"){
-            if (Array.isArray(inp)){
+            if (Array.isArray(input)){
                 ret=false
             }else{
                 ret =true
             }
-
         }
-
-        return ret
-        
+        return ret        
     },
     isOb : undefined,
     isPlainObject : undefined,
     isUndefined : function(inp){
         var ret=false
-        if (typeof  inp=== "undefined"){
+        if (typeof (inp)==="undefined"){
             ret=true
         }
         return ret
     },
     isUn : function(inp){
-       return this.isUndefined(inp)
+       return cool_native_js.isUndefined(inp)
     },
     typeof : function(inp){
         var t=typeof(inp)
 
         if (t==="object"){
-            if (this.isObject()){
+            if (cool_native_js.isObject(inp)){
                 t="object"
-
             }else{
                 t="array"
             }
         }
-
         return t
-
     },
     tof : undefined ,
     capitalizeFirstLetter : function(string){
@@ -72,12 +64,12 @@ let cool_native_js={
         var args_l=args.length;
         var param={ name : "" }
 
-        this.l_this=this ;
+        cool_native_js.l_this=cool_native_js ;
 
-        this.isPlainObject=this.isObject
-        this.isOb=this.isObject
+        cool_native_js.isPlainObject=cool_native_js.isObject
+        cool_native_js.isOb=cool_native_js.isObject
         
-        this.tof=this.typeof      
+        cool_native_js.tof=cool_native_js.typeof      
     }
 }
 cool_native_js.init()
