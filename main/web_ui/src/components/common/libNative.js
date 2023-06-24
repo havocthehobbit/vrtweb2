@@ -18,7 +18,7 @@ let cool_native_js={
     },
     isObject : function(input){
         var ret=false
-        if (typeof(inp)==="object"){
+        if (typeof(input)==="object"){
             if (Array.isArray(input)){
                 ret=false
             }else{
