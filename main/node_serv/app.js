@@ -18,6 +18,8 @@ let lgs=new lgsO("../logs/log.txt")
 
 let cl=$cn.l
 let tof=$cn.tof
+let isOb=$cn.isOb
+let isUn=$cn.isUn
 
 lgs.add(`start ${settings.name} ${settings.host}`)
 
@@ -82,8 +84,9 @@ let app
 
 setTimeout(()=>{
     if (httpAppParams.useHttpServer===true){ // prevent starting https server if a prog parameter requires something , like prompt input
-        // initlise http server
-        ApiInst.init({ db : gdb.db, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs}, ()=>{
+        // initlise http server       
+
+        ApiInst.init({ db : gdb.db, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs }, ()=>{
             // initialisation of listener complete        
         })
         app=ApiInst.app
@@ -271,7 +274,7 @@ setTimeout(()=>{
         }
     }
 
-
+    
     app.post("/isAuth", verifyJWTroute ,function(req,res){
         let ret_data={
             data : { loggedin : false  , auth : false },
