@@ -28,14 +28,19 @@ let generalDbFns={
             temp="searchBy"
             if (tof(params[temp])!=="undefined"){
                 searchBy=params[temp]
-            }            
+            }    
+            
+            temp="userid"
+            if (tof(params[temp])!=="undefined"){
+                searchBy[temp]=params[temp]
+            }             
 
             let coll=db.collection("users")
             coll.findOne(searchBy)
-            .then((dt)=>{
+            .then((dt)=>{                
                 cb(dt)
             })
-            .catch((err)=>{
+            .catch((err)=>{              
                 cb([], err)
             })
         },
@@ -302,7 +307,7 @@ let generalDbFns={
             }
 
             searchBy={}
-            temp="userid"
+            temp="groupid"
             if (tof(params[temp])!=="undefined"){
                 searchBy[temp]=params[temp]
             }               
