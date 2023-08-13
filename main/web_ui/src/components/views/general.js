@@ -353,42 +353,18 @@ export class GeneralView extends Component {
          //               setup={ tt.menuSetup} obj={tt}
         let MenuMainE=(()=>{
             let E
-
-            /*
-            E=(()=>{
-                let Earr=[]
-                MenuItems.forEach((r,i)=>{
-                    let RE=r//MenuItems[i] 
-                                           
-                        Earr.push(
-                                    <React.Suspense key={i} fallback={<div>temp - {i}</div>}>
-                                        <h1>{menuItemsCount}</h1>
-                                        <RE/>
-                                    </React.Suspense>
-                        )
+        
+            E=(
+                <div
+                    style={{ position : "absolute", top : 0, left : 0,zIndex :99999 }}
+                >                        
+                    <React.Suspense fallback={<div/>}>
+                        <MainMenu {...menuProps} />
+                    </React.Suspense>                                                 
                     
-                })
-                return Earr                            
-                        
-            })()
+                </div>
+            )
             
-            return E
-            */
-
-           
-                E= (
-                    <div
-                        style={{ position : "absolute", top : 0, left : 0,zIndex :99999 }}
-                    >                        
-                        <React.Suspense fallback={<div/>}>
-                            <MainMenu {...menuProps} />
-                        </React.Suspense>                                                 
-                        
-                    </div>
-                )
-            
-            
-
             return E
 
         })()

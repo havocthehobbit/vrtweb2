@@ -64,6 +64,7 @@ export class Main extends Component {
                 name : "",
                 themes : [],
             },
+            windowDimensions : this.getWindowDimensions()
 
         }
     }
@@ -71,17 +72,35 @@ export class Main extends Component {
     componentDidMount(){
         let tt=this
         //this.setBackground_old("linear-gradient(purple, darkblue)")        
-       //linear-gradient(red, yellow)
+        //linear-gradient(red, yellow)
 
-       let userid=$gl.getCookie("userid")
-       
-       if (typeof(userid)==="undefined" || userid===""){}else{
-            isAuth( { userid : "admin"} , function(dt){                
-                if (dt.data.auth===true || dt.data.loggedin===true){
-                tt.isLoggedInSet(true)
-                }
-            })
-       }    
+        let userid=$gl.getCookie("userid")
+        
+        if (typeof(userid)==="undefined" || userid===""){}else{
+                isAuth( { userid : "admin"} , function(dt){                
+                    if (dt.data.auth===true || dt.data.loggedin===true){
+                    tt.isLoggedInSet(true)
+                    }
+                })
+        }
+        window.addEventListener('resize', this.handleResize)
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('resize', this.handleResize);
+    }
+
+    handleResize=()=>{
+        let tt=this
+        tt.setState({windowDimensions : tt.getWindowDimensions() });        
+    }
+    getWindowDimensions=()=>{
+        let width =  window.innerWidth 
+        let  height = window.innerHeight 
+        return {
+          width,
+          height,
+        };
     }
 
     setBackground_old=(bck)=>{
@@ -113,6 +132,11 @@ export class Main extends Component {
         const {isLoggedIn, testStuff}=tt.state // same as let isLoggedIn=tt.state.isLogged in, except you can add other var from state object ,in one line with shorter syntax
         const {isLoggedInSet}=tt // similar to above line 
 
+        let wd=tt.state.windowDimensions.width
+        let hd=tt.state.windowDimensions.height
+
+        
+
         let homepageE
         homepageE=(()=>{
             if (isLoggedIn!==true){
@@ -122,6 +146,7 @@ export class Main extends Component {
                             isLoggedIn,
                             isLoggedInSet,                            
                             tt : tt,
+                            windowSize : {width : wd ,height : hd }
                         }}
                     >    
                         {/* <header className='App-header'> */}
@@ -153,7 +178,8 @@ export class Main extends Component {
                             isLoggedIn,
                             isLoggedInSet,
                             tt : tt,
-                            testStuff
+                            testStuff,
+                            windowSize : {width : wd ,height : hd }
                         }}
                     >                       
                         <GeneralView/>                   
