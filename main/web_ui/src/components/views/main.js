@@ -77,7 +77,7 @@ export class Main extends Component {
         let userid=$gl.getCookie("userid")
         
         if (typeof(userid)==="undefined" || userid===""){}else{
-                isAuth( { userid : "admin"} , function(dt){                
+                isAuth( { userid : userid} , function(dt){                
                     if (dt.data.auth===true || dt.data.loggedin===true){
                     tt.isLoggedInSet(true)
                     }

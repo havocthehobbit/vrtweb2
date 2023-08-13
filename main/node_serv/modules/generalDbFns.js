@@ -1,5 +1,6 @@
 let path = require("path");
 let fs = require("fs");
+let crypto = require('crypto');
 let progargs=require("../l_node_modules/execRunParams.js").args
 let $cn=require("../l_node_modules/libNative").$cn
 let $cnn=require("../l_node_modules/libNativeNode").$cnn
@@ -580,7 +581,9 @@ let generalDbFns={
                             cl("\n\n================")                            
                                 let detailsS=array[index + 1] 
                                 if (typeof(detailsS)==="undefined"){
-                                    cl("error user completed successfully...")                        
+                                    cl('error user ...eg:')
+                                    cl('...eg: WinOS : "{ \\"userid\\" : \\"username\\" ,\\"group\\" : \\"users\\", \\"password\\" : \\"pass123\\"  }"')                        
+                                    cl('...eg: LinOS : \'{ "userid" : "username" ,"group" : "users", "password" : \\"pass123\\"  }\'')                        
                                     process.exit()
                                 }
                                 
@@ -589,7 +592,9 @@ let generalDbFns={
                                     console.log("detailsS :",detailsS)
                                     details=JSON.parse(detailsS)
                                 } catch (error) {
-                                    cl("error parsing user object completed successfully...")                        
+                                    cl("error parsing user object ...")                        
+                                    cl('...eg: WinOS : "{ \\"userid\\" : \\"username\\" ,\\"group\\" : \\"users\\", \\"password\\" : \\"pass123\\"  }"')                        
+                                    cl('...eg: LinOS : \'{ "userid" : "username" ,"group" : "users", "password" : \\"pass123\\"  }\'')                        
                                     process.exit()
                                 }
 
