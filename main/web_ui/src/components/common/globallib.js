@@ -283,4 +283,386 @@ $gl.url=$gl.protocall + "//" + $gl.host + ":" + $gl.port ;
 
 $gl.fetchPostCors=fetchPostCors;
 
+
+
+export const download=(filename, text)=>{
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+  
+    element.style.display = 'none';
+    document.body.appendChild(element);
+  
+    element.click();
+  
+    document.body.removeChild(element);
+}
+$gl.download=download
+
+export const addrParamsToObject=()=>{
+  var pairs = window.location.search.substring(1).split("&"),
+    obj = {},
+    pair,
+    i;
+
+  for ( i in pairs ) {
+    if ( pairs[i] === "" ) continue;
+
+    pair = pairs[i].split("=");
+    obj[ decodeURIComponent( pair[0] ) ] = decodeURIComponent( pair[1] );
+  }
+
+  return obj;
+}
+$gl.addrParamsToObject=addrParamsToObject
+
+
+
+let checkContainsOpenCloseChars=(inp)=>{
+  let ret={ closePos: -1 }
+  
+  let opChar=inp.opChar
+  let clChar=inp.clChar
+  let newtmp1=inp.in
+
+  let regexStr=escapeStringRegExp( opChar + "|" + clChar)            
+          //returns { closePos , openSeqCount , openTotal,  closeTotal, hasFinalClose }
+          //const rg0=new RegExp("\\${|}","g"); // g, is important for global find all
+          const rg0=new RegExp(regexStr,"g"); // g, is important for global find all
+          let bbb=[...newtmp1.matchAll(rg0)];  
+          
+          let prevOpen=true
+          let currOpen=false
+          let countOpenClose=0
+          let openSeqCount=0
+          let closeSeqCount=0
+          let openTotal=0
+          let closeTotal=0
+          let lastidxPos=-1
+
+          let exitloop=false             
+          if (bbb.length>0){
+              if (bbb[0]===clChar){
+                  // done, no need to look deeper
+              }else{
+                  // need to look deeper for nested
+                  //console.log("bbb ",newtmp1,bbb)
+                  // count open closes until we get to out close
+                                  
+                  bbb.forEach((v,i)=>{
+                      let idx=v.index
+                      let val=v[0]
+                      if (!exitloop){
+                          currOpen=false                          
+                          if (val===opChar){ // clChar                            
+                              currOpen=true
+                          }                           
+
+                          if (currOpen===true ){
+                              openSeqCount++
+                              openTotal++
+                              
+                          }
+                          if (currOpen===false){
+                              openSeqCount--
+                              closeTotal++
+                              
+                          }
+                                                                              
+                          prevOpen=currOpen
+                          if (openSeqCount===0){
+                              lastidxPos=idx
+
+                              exitloop=true                                
+                          }
+                      }
+                  })                     
+              }
+          }
+          if (openSeqCount===0){
+              ret.closePos=lastidxPos    
+              ret.hasFinalClose=true           
+          }
+          ret.openSeqCount=openSeqCount
+          ret.openTotal=openTotal
+          ret.closeTotal=closeTotal
+
+      return ret
+}
+$gl.checkContainsOpenCloseChars=checkContainsOpenCloseChars
+
+escapeStringRegExp.matchOperatorsRe = /[\\{}[\]^$+*?.]/g;
+function escapeStringRegExp(str) {
+  return str.replace(escapeStringRegExp.matchOperatorsRe, '\\$&');
+}
+$gl.escapeStringRegExp=escapeStringRegExp
+
+function arrnumSmallest(a) {
+  let ret=0
+  let smallest
+  let smallestIdx    
+  
+  a.forEach((v,i)=>{           
+      //let prVal                  
+      if (i===0){
+          smallest=v
+          smallestIdx=i
+      }else{            
+          //prVal=a[ i - 1 ]
+          a.forEach((v2,i2)=>{                
+              if (i2===i){
+              }else{                    
+                  let curr_smallest=v2
+                  let curr_smallestidx=i2
+                  if (v < v2){
+                      curr_smallest=v
+                      curr_smallestidx=i
+                  }                        
+                  if (curr_smallest<smallest){
+                      smallest=curr_smallest
+                      smallestIdx=curr_smallestidx
+                  }                    
+              }
+          })
+      
+      }
+  })
+  ret={ v : smallest, i : smallestIdx}
+  return ret
+}
+$gl.arrnumSmallest=arrnumSmallest
+
+function indexOfSmallest(a) {
+  return  arrnumSmallest(a).i
+}
+$gl.indexOfSmallest=indexOfSmallest
+
+const findTemplateStartEndsMulti=(params,...args)=>{ // ret {data} // & { closePos: 2,data,dataLen,stOp,stCl,startPosGlob,endPosGlob,inGlobLen,i }    
+  let opChar=params.stOp
+  let clChar=params.stCl
+  let str=params.in
+  
+  let arr=params.arr
+  let currSearchRec={}
+  let tmp,tmp0,temp1    
+  // need array loop of opens, to find the nearest
+  let openPosType
+  let openPos=-1
+  let newtmp1=-1
+  let startData0=[]
+  let startData1=[]
+  if (typeof(params.i)==="undefined"){
+      params.i=0
+  }
+  if (typeof(params.inGlob)==="undefined"){
+      params.inGlob=str
+  }
+  
+
+  // open chars 
+  let arrOut=params.arrOut    
+  arr.forEach((r,i)=>{
+      let tmp0=str.indexOf(r.stOp ) 
+      if (tmp0 === -1 ){ return }
+
+      tmp0=tmp0  + r.stOp.length    
+      startData0.push(tmp0)        
+
+      let tmp1=str.substr(tmp0)
+      startData1.push(tmp1)  
+  })    
+
+  if (startData0.length===0){
+      return arrOut
+  }
+  let si=indexOfSmallest(startData0)
+  currSearchRec=arr[si]
+  openPos=si
+  newtmp1=startData1[si]    
+  opChar=currSearchRec.stOp
+
+  // close chars 
+  let closePos
+  let midTemp
+  let midTempUntrimmed
+  let nextTemp    
+  let hasClose=false 
+  clChar=currSearchRec.stCl            
+  closePos=newtmp1.indexOf(clChar)      
+
+  if ( closePos !== -1 ){    
+      hasClose=true
+
+      //#todo need to check between the 2( midTemp ), to see if there are other open and closing attributs, for things like openings that dont have closing elements
+      let ccOC=checkContainsOpenCloseChars({ in : newtmp1, opChar : opChar, clChar : clChar  })  //return { closePos , openSeqCount , openTotal,  closeTotal, hasFinalClose }
+      //console.log("newtmp1 :", opChar + newtmp1)
+      
+      if (ccOC.hasFinalClose){
+          closePos=ccOC.closePos
+      }
+
+      midTempUntrimmed=newtmp1.substr(0, closePos )
+      midTemp=midTempUntrimmed//.trim() // #rob removed trim 21-06-23
+      
+      nextTemp=newtmp1.substr(closePos + 1 + clChar.length ) 
+      
+  }else{
+      nextTemp=newtmp1//.substr(closePos + 1 + clChar.length )    
+  }
+  ////////////////////////////////////////////////////////////////////                        
+
+  ///
+  if (true){
+      let endPosGlob=(params.inGlob.length - str.length ) + ( midTemp.length + closePos ) + ( opChar.length + clChar.length )
+      //console.log("str - params.inGlob.length" , params.inOrig.length ,params.inGlob.length , str.length - ( params.inGlob.length - midTemp.length  ) )
+      
+      let nr={ openPos : openPos ,closePos : closePos , 
+                  data :  midTemp, dataLen : midTemp.length,
+                  stOp : opChar, stCl : clChar ,
+                  startPosGlob : (params.inGlob.length - str.length ) + midTemp.length  + ( opChar.length + clChar.length ) , 
+              // startPosGlob : params.inGlob.length - ( (str.length - midTemp.length ) -  0), 
+                  //startPosGlob : newtmp1.length -  midTemp.length ,
+                  //startPosGlob :   ( params.inGlob.length - ( str.length ) ) + (   ( openPos +  midTemp.length ) ) ,
+                  endPosGlob : endPosGlob , 
+                  inGlobLen : params.inGlob.length, i : params.i, 
+      }
+      
+      if (params.in.length <=  0 || openPos=== -1 ){
+          return arrOut
+      }
+      if (hasClose){
+          arrOut.push(nr)
+      }
+      
+      params.arrOut=arrOut
+      params.in=nextTemp    
+
+      params.i++
+      arrOut=findTemplateStartEndsMulti(params)
+  }
+      
+  return arrOut
+}
+$gl.findTemplateStartEndsMulti=findTemplateStartEndsMulti
+
+
+
+const splitObjectPathDelimKeep=(str,...args)=>{ // loop through arrary of
+  //let splitstr=str.split(/(\.+|\[+|\]+)/);  // keep delimeters
+  //let splitstr=str.split(/\.|\[|\]/); // round braces make regex keep delims
+  
+  var rx,searchreg
+  //rx=new RegExp( "(\.+|\[+|\]+)" , "s") 
+  searchreg=escapeStringRegExp( ".|[|]| " ) // at special character cariage prefix "\"
+  
+  if (typeof(args[0])==="object"){
+      if (Array.isArray(args[0])){
+          let tmp=""
+          args[0].forEach((v,i)=>{
+              if (i<args[0].length - 1){
+                  tmp+=v + "|"
+              }else{
+                  tmp+=v
+              }
+          })
+
+          searchreg=escapeStringRegExp(tmp)            
+      }
+  }
+
+  var expressionResult = searchreg 
+  //rx=new RegExp( "(\\.+|\\[+|\\]+|\\s+)" , "s")   
+  rx=new RegExp( expressionResult , "s")   
+  //let splitstr=str.split(/\.|\[|\]/); // round braces make regex keep delims
+  let splitstr
+  splitstr=str.split(rx).filter(Boolean); // filter boolean removed null/empty string '' 
+  return splitstr
+
+}
+$gl.splitObjectPathDelimKeep=splitObjectPathDelimKeep
+
+
+const splitObjectPath=(str,...args)=>{ // loop through arrary of
+  //let splitstr=str.split(/(\.+|\[+|\]+)/);  // keep delimeters
+  var rx,searchreg
+  //rx=new RegExp( "(\.+|\[+|\]+)" , "s") 
+  searchreg=escapeStringRegExp("(" + ".|[|]| "+  ")") // at special character cariage prefix "\"
+  
+  if (typeof(args[0])==="object"){
+      if (Array.isArray(args[0])){
+          let tmp=""
+          args[0].forEach((v,i)=>{
+              if (i<args[0].length - 1){
+                  tmp+=v + "|"
+              }else{
+                  tmp+=v
+              }
+          })
+
+          searchreg=escapeStringRegExp("(" + tmp +")")            
+      }
+  }
+
+  var expressionResult = searchreg 
+  //rx=new RegExp( "(\\.+|\\[+|\\]+|\\s+)" , "s")   
+  rx=new RegExp( expressionResult , "s")   
+  //let splitstr=str.split(/\.|\[|\]/); // round braces make regex keep delims
+  let splitstr
+  splitstr=str.split(rx).filter(Boolean); // filter boolean removed null/empty string '' 
+  return splitstr
+}
+$gl.splitObjectPath=splitObjectPath
+
+function isBlank(str) {
+  return (!str || /^\s*$/.test(str));
+}
+$gl.isBlank=isBlank
+
+
+let xmlparse=function(xmlString){
+  var parser = new DOMParser();
+  return parser.parseFromString(xmlString,"text/xml")
+}
+$gl.xmlparse=xmlparse
+
+function xmlToJson(xml) {
+ 
+  // Create the return object
+  var obj = {};
+
+  if (xml.nodeType === 1) { // element
+      // do attributes
+      if (xml.attributes.length > 0) {
+      obj["@attributes"] = {};
+          for (var j = 0; j < xml.attributes.length; j++) {
+              var attribute = xml.attributes.item(j);
+              obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+          }
+      }
+  } else if (xml.nodeType === 3) { // text
+      obj = xml.nodeValue;
+  }
+  
+  if (xml.hasChildNodes()) { // do children
+      for(var i = 0; i < xml.childNodes.length; i++) {
+          var item = xml.childNodes.item(i);
+          var nodeName = item.nodeName;
+          if (typeof(obj[nodeName]) == "undefined") {
+              obj[nodeName] = xmlToJson(item);
+          } else {
+              if (typeof(obj[nodeName].push) === "undefined") {
+                  var old = obj[nodeName];
+                  obj[nodeName] = [];
+                  obj[nodeName].push(old);
+              }
+              obj[nodeName].push(xmlToJson(item));
+            }
+       }
+  } 
+
+  return obj;
+}
+$gl.xmlToJson=xmlToJson
+
+
 export default  $gl
