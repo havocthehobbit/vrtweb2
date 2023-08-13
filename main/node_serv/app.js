@@ -52,9 +52,9 @@ if (settings.dbtype==="mongodb" ){
                         users.find({ userid : "admin"}).toArray()
                         .then((dt)=>{ 
                             if (dt.length===0){ 
-                                users.updateOne( { "userid" : "admin"} ,{ "$set" : { "email" : "...@....com"}}, {upsert : true })
+                                users.updateOne( { "userid" : "admin" , "group" : "admin" , "password" : "admin123"} ,{ "$set" : { "email" : "...@....com"}}, {upsert : true })
                                 .then((dt)=>{
-                                    console.log("\n\admin user inserted")
+                                    console.log("\n\admin user inserted") 
                                 })
                                 .catch((err)=>{ cl("err : ", dt) })
                                 }
