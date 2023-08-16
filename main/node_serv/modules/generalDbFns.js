@@ -18,7 +18,12 @@ let generalDbFns={
             let db=generalDbFns.db 
             let temp=""
             let details={}
-            let view=undefined       
+            let view=undefined  
+            
+            if (franeworkData.generalDbFns){}else{ // no custom dbs
+                cbp=params
+                params=franeworkData
+            }
             
             let cb=()=>{}
             if (typeof(cbp)==="function"){
@@ -52,6 +57,11 @@ let generalDbFns={
             let details=undefined
             let view=undefined
             
+            if (franeworkData.generalDbFns){}else{ // no custom dbs
+                cbp=params
+                params=franeworkData
+            }
+
             let cb=()=>{}
             if (typeof(cbp)==="function"){
                 cb=cbp
@@ -95,6 +105,11 @@ let generalDbFns={
             let details=undefined       
             let view=undefined       
             let newRec={}
+
+            if (franeworkData.generalDbFns){}else{ // no custom dbs
+                cbp=params
+                params=franeworkData
+            }
 
             let cb=()=>{}
             if (typeof(cbp)==="function"){
@@ -148,6 +163,10 @@ let generalDbFns={
             let temp=""
             let details={}
             
+            if (franeworkData.generalDbFns){}else{ // no custom dbs
+                cbp=params
+                params=franeworkData
+            }
             
             let cb=()=>{}
             if (typeof(cbp)==="function"){
@@ -235,6 +254,11 @@ let generalDbFns={
             let temp=""
             let details={}
 
+            if (franeworkData.generalDbFns){}else{ // no custom dbs
+                cbp=params
+                params=franeworkData
+            }
+
             let cb=()=>{}
             if (typeof(cbp)==="function"){
                 cb=cbp
@@ -302,6 +326,11 @@ let generalDbFns={
             let details={}
             let view=undefined       
             
+            if (franeworkData.generalDbFns){}else{ // no custom dbs
+                cbp=params
+                params=franeworkData
+            }
+
             let cb=()=>{}
             if (typeof(cbp)==="function"){
                 cb=cbp
@@ -339,6 +368,11 @@ let generalDbFns={
             let details=undefined
             let view=undefined
             
+            if (franeworkData.generalDbFns){}else{ // no custom dbs
+                cbp=params
+                params=franeworkData
+            }
+
             let cb=()=>{}
             if (typeof(cbp)==="function"){
                 cb=cbp
@@ -372,6 +406,11 @@ let generalDbFns={
             let db=generalDbFns.db
             let temp=""
             let details={}
+
+            if (franeworkData.generalDbFns){}else{ // no custom dbs
+                cbp=params
+                params=franeworkData
+            }
 
             let cb=()=>{}
             if (typeof(cbp)==="function"){
@@ -433,6 +472,11 @@ let generalDbFns={
             let details={}
             let view=undefined       
             
+            if (franeworkData.generalDbFns){}else{ // no custom dbs
+                cbp=params
+                params=franeworkData
+            }
+
             let cb=()=>{}
             if (typeof(cbp)==="function"){
                 cb=cbp
@@ -469,6 +513,11 @@ let generalDbFns={
             let temp=""
             let details=undefined
             let view=undefined
+            
+            if (franeworkData.generalDbFns){}else{ // no custom dbs
+                cbp=params
+                params=franeworkData
+            }
             
             let cb=()=>{}
             if (typeof(cbp)==="function"){

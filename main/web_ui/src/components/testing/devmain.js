@@ -90,7 +90,7 @@ export const Devmain=(props)=>{
                                     >   
                                         <div
                                             style={{zIndex : 9999, fontSize : 10,padding : 0,margin : 0, top : 0,left : 0, 
-                                                position : "relative", background : "grey", borderRadius : 5, 
+                                                position : "relative", background : "grey", borderRadius : 5, height :35 ,
                                                 cursor : "pointer",
                                             }}
                                             onClick={()=>{                                                        
