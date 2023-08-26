@@ -1,0 +1,7 @@
+"rete-area-plugin": "^0.2.1",
+"rete-connection-plugin": "^0.9.0",
+"rete-connection-reroute-plugin": "^0.4.0",
+"rete-context-menu-plugin": "^0.6.0",
+"rete-keyboard-plugin": "^0.1.2",
+"rete-minimap-plugin": "^0.3.1",
+"rete-react-render-plugin": "^0.3.1",
