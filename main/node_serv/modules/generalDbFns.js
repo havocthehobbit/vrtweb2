@@ -550,7 +550,38 @@ let generalDbFns={
 
         
     },
+    loginAuth : {         
+        checkCanPass : (franeworkData, params, cbp)=>{
+            // params : { bd , data , ret_data}
+            let db=generalDbFns.db 
+            let temp=""
+            let details={}
+            let view=undefined  
+            
+            if (franeworkData.generalDbFns){}else{ // no custom dbs
+                cbp=params
+                params=franeworkData
+            }
+            
+            console.log( "checkCanPass",franeworkData, params, cbp)
 
+            let cb=()=>{}
+            if (typeof(cbp)==="function"){
+                cb=cbp
+            }            
+            
+            let ret={
+                login_confirmed : false,            
+            }            
+
+            // customisable logic 
+            if (params.data.password===params.bd.password){
+                ret.login_confirmed=true;                
+            }
+
+            cb(ret)
+        }
+    },
     progParams : {
         adminProgParamResetPass: (params, cbp)=>{
             let tt=generalDbFns

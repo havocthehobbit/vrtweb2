@@ -168,49 +168,54 @@ setTimeout(()=>{
                 data=data2;
             }
             
+
             if (typeof(bd.userid)!==undefined){            
-                if (typeof(bd.password)!==undefined){                              
+                if (typeof(bd.password)!==undefined){ 
+                    gdb.loginAuth.checkCanPass({ bd , data , ret_data }, (loginresp)=>{                             
                         if (data.userid===bd.userid){
                             found_userid=true
                             
-                            if (data.password===bd.password){
-                                login_confirmed=true;
-                                ret_data.data.loggedin=true;
-                                ret_data.status=true
                             
-                                ApiInst.jwt.sign({ userid : bd.userid } , settings.jwtSecret, ApiInst.jwtoptions  , function(err , newtoken){
-                                    var curr_date=new Date()
-                                    if (err){
-                                        console.log("error registoring user token " , err )
-                                    }else{
-                                        var token=newtoken;
-                                    }
-                                    ret_data.data.auth=true
-                                    ret_data.data.token=token
-                                    const oneDayToSeconds = 24 * 60 * 60;
+                                //if (data.password===bd.password){
+                                if (loginresp.login_confirmed){
+                                    login_confirmed=true;
+                                    ret_data.data.loggedin=true;
+                                    ret_data.status=true
+                                
+                                    ApiInst.jwt.sign({ userid : bd.userid } , settings.jwtSecret, ApiInst.jwtoptions  , function(err , newtoken){
+                                        var curr_date=new Date()
+                                        if (err){
+                                            console.log("error registoring user token " , err )
+                                        }else{
+                                            var token=newtoken;
+                                        }
+                                        ret_data.data.auth=true
+                                        ret_data.data.token=token
+                                        const oneDayToSeconds = 24 * 60 * 60;
 
-                                    const expires=new Date(Number(new Date()) + ApiInst.cookieExpires) //10 * 365 * 24 * 60 * 60 * 1000 === 315360000000, or 10 years in milliseconds                                
-                                    
-                                    reqres.res.cookie('token', token, { 
-                                                //maxAge : oneDayToSeconds ,  // was ignoring this for some reason and expiring withing 5 minuts 
-                                                expires : expires,
-                                                httpOnly: true , 
+                                        const expires=new Date(Number(new Date()) + ApiInst.cookieExpires) //10 * 365 * 24 * 60 * 60 * 1000 === 315360000000, or 10 years in milliseconds                                
+                                        
+                                        reqres.res.cookie('token', token, { 
+                                                    //maxAge : oneDayToSeconds ,  // was ignoring this for some reason and expiring withing 5 minuts 
+                                                    expires : expires,
+                                                    httpOnly: true , 
+                                        })
+                                        // sessionUserUpdate in DB
+
+                                        ret_data.sent_resposne=true
+
+                                        cb(ret_data)
+                                        
+                                        return; 
                                     })
-                                    // sessionUserUpdate in DB
-
-                                    ret_data.sent_resposne=true
-
-                                    cb(ret_data)
-                                    
-                                    return; 
-                                })
-                            }else{
-                                if (!ret_data.sent_resposne){
-                                    ret_data.sent_resposne=true
-                                    ret_data.error="bad userid or password"
-                                    cb(ret_data)
+                                }else{
+                                    if (!ret_data.sent_resposne){
+                                        ret_data.sent_resposne=true
+                                        ret_data.error="bad userid or password"
+                                        cb(ret_data)
+                                    }
                                 }
-                            }
+                            
                         }
                         if (!login_confirmed){
                             if (!ret_data.sent_resposne){
@@ -227,6 +232,7 @@ setTimeout(()=>{
                             }
                             return
                         }
+                    })
                 }else{
                     if (!ret_data.sent_resposne){
                         ret_data.sent_resposne=true
