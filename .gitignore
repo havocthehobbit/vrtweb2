@@ -37,7 +37,12 @@
 /main/web_ui/packagejson.bat
 
 /main/web_ui/startdevwc.bat
+/main/web_ui/cstartdevw.bat
+/main/web_ui/cstartdev.bat
+/main/web_ui/cstartdev.sh
 /main/web_ui/startdevc.sh
+
+
 
 /main/web_ui/src/components/custom
 /main/web_ui/src/components/cviews
@@ -70,8 +75,10 @@
 
 /main/node_serv/startdevwc.bat
 /main/node_serv/cstartdevw.bat
+/main/node_serv/cstartdev.bat
 /main/node_serv/startdevc.sh
 /main/node_serv/cstartdev.sh
+
 
 /main/node_serv/modules/custom_*
 /main/node_serv/modules/customdb_*
