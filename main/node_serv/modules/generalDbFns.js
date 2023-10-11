@@ -561,9 +561,7 @@ let generalDbFns={
             if (franeworkData.generalDbFns){}else{ // no custom dbs
                 cbp=params
                 params=franeworkData
-            }
-            
-            console.log( "checkCanPass",franeworkData, params, cbp)
+            }            
 
             let cb=()=>{}
             if (typeof(cbp)==="function"){
