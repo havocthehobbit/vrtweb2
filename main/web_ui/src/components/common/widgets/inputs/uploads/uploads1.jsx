@@ -9,17 +9,27 @@ let isUn=$cn.isUn
 let isOb=$cn.isOb
 let cl=$cn.l
 
-export const UploadButton=(props)=>{ 
+export const UploadButton=(props)=>{ // params.fetch : true/false ;  params.cb(files.current, file1Before)  ; params.cbText(text, files.current, file1Before)
+    let paramsDef={
+        fetch : true,
+    }
+    
     let [api,setApi]=useState("")
     let [host,setHost]=useState($gl.host)   
     let [port,setPort]=useState($gl.port)   
     let [data,setData]=useState({})
     let [filename,setFilename]=useState("")
-    
+    let [params,setParams]=useState(paramsDef)    
     let upRef=useRef()
-
-    let files=useRef()  
+    let files=useRef();
     
+
+    useEffect(()=>{
+        if (props.params!==undefined){
+            setParams(props.params)
+        }
+    },[props.params])
+
     useEffect(()=>{
         if (props.api!==undefined){
             setApi(props.api)
@@ -53,6 +63,7 @@ export const UploadButton=(props)=>{
     let uploadLocal=(e)=>{
         let filesl= e.target.files && e.target.files[0];
         files.current=filesl;
+        let file1Before
 
 	    e.target.value = null;
 
@@ -83,11 +94,33 @@ export const UploadButton=(props)=>{
                 
 
             }
+            file1Before=filesl
             filesl=formData            
         }        
 
-        files.current=filesl        
-        uploadFetchAPI()
+        files.current=filesl    
+        if (params.fetch){
+            if (params.cb){
+                uploadFetchAPI((rd)=>{ params.cb(rd,files.current,file1Before ) })
+            }else{
+                uploadFetchAPI()
+            }
+            
+        }else{
+            if (params.cb){
+                params.cb(files.current, file1Before)
+            }
+            if (params.cbText){
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var text = reader.result;                                                                
+                    params.cbText(text, files.current, file1Before)
+                    
+                };
+                reader.readAsText(file1Before);
+            }
+        }
+        
         return        
     }
 
@@ -156,8 +189,9 @@ export const UploadButton=(props)=>{
     }
 
     return (
-        <div>
+        
             <button
+                className={props.className}
                 style={style}
 
                 onClick={(e)=>{
@@ -174,6 +208,6 @@ export const UploadButton=(props)=>{
                     }}
                 />            
             </button>
-        </div>
+       
     )
 }
