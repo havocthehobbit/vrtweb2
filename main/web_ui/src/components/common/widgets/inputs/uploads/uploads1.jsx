@@ -9,7 +9,7 @@ let isUn=$cn.isUn
 let isOb=$cn.isOb
 let cl=$cn.l
 
-export const UploadButton=(props)=>{ // params.fetch : true/false ;  params.cb(files.current, file1Before)  ; params.cbText(text, files.current, file1Before)
+export const UploadButton=(props)=>{ // params.fetch : true/false ;  params.cb((files.current, file1Before)=>{})  ; params.cbText((text, files.current, file1Before)=>{}) //  params.cbBin()=>{})
     let paramsDef={
         fetch : true,
     }
@@ -111,13 +111,37 @@ export const UploadButton=(props)=>{ // params.fetch : true/false ;  params.cb(f
                 params.cb(files.current, file1Before)
             }
             if (params.cbText){
-                var reader = new FileReader();
+                let reader = new FileReader();
                 reader.onload = function() {
-                    var text = reader.result;                                                                
+                    let text = reader.result;                                                                
                     params.cbText(text, files.current, file1Before)
                     
                 };
                 reader.readAsText(file1Before);
+            }
+            if (params.cbBin){
+                let reader = new FileReader();
+                reader.onload = function() {
+                    let b1 = reader.result;   
+                    let b64encodedhash = b1.split(',')[1];
+                    let mimetype = b1.split(',')[0].split(':')[1].split(';')[0];
+                    let data = atob(b64encodedhash);
+                    let blob
+                    let ab = new ArrayBuffer(data.length);
+                    let ia = new Uint8Array(ab);
+                    for(var i = 0;i<data.length;i++){
+                        ia[i] = data.charCodeAt(i);
+                    }
+                    blob = new Blob([ia],{ "type": mimetype});
+                    let filenamenew="somefile.ext"
+                    if (filename!==""){
+                        filenamenew=filename
+                    }
+                    let file = new File([blob], filenamenew);
+
+                    params.cbBin(file, { file : file, blob : blob }, files.current, file1Before)                    
+                };
+                reader.readAsDataURL(file1Before);
             }
         }
         
