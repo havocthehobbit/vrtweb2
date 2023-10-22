@@ -9,7 +9,7 @@ let isUn=$cn.isUn
 let isOb=$cn.isOb
 let cl=$cn.l
 
-export const UploadButton=(props)=>{ // params.fetch : true/false ;  params.cb((files.current, file1Before)=>{})  ; params.cbText((text, files.current, file1Before)=>{}) //  params.cbBin()=>{})
+export const UploadButton=(props)=>{ // params.fetch : true/false ;  params.cb((files.current, file1Before)=>{})  ; params.cbText((text, files.current, file1Before)=>{}) //  params.cbBin(file, { file : file, blob : blob }, files.current, file1Before)=>{}) ; 
     let paramsDef={
         fetch : true,
     }
