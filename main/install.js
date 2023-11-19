@@ -50,8 +50,20 @@ if (!fs.existsSync("./" + tmp )){
 }
 
 console.log("5")
+console.log("5.1")
 
 tmp="node_serv/package.json"
+if (!fs.existsSync("./" + tmp )){    
+    try {
+        fs.copyFileSync('./setup/templates/' + tmp , './' + tmp)       
+        console.log(`install ${tmp} `)     
+    }catch (err) {
+        console.log(err);
+    }
+}
+
+console.log("5.2")
+tmp="node_serv/cstartdevw.bat"
 if (!fs.existsSync("./" + tmp )){    
     try {
         fs.copyFileSync('./setup/templates/' + tmp , './' + tmp)       
