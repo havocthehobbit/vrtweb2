@@ -36,7 +36,7 @@ export class Login extends Component {
     fetchLoginUser=(cb)=>{      
         let tt=this  
         let api="login"
-        let data={userid : tt.state.userid , password : tt.state.password };
+        let data={userid : tt.state.userid.trim() , password : tt.state.password.trim() };
         let host=$gl.host//"localhost"        
         let port=$gl.port//"3001"
 
