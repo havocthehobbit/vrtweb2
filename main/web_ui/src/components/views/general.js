@@ -101,32 +101,14 @@ export class GeneralView extends Component {
                         name : "general",
                         cards : [
                             {
-                                name : "myhome",
+                                name : "homepage",
                                 isMin : false,
                                 isMinPrf : "cardsMinimise_",
                                 isHid : false,
                                 isHidPrf : "cardsHidden_",
                                 subcards : [],
                                 sortOrder : 9,
-                            },
-                            {
-                                name : "neighbourshub",
-                                isMin : false,
-                                isMinPrf : "cardsMinimise_",
-                                isHid : false,
-                                isHidPrf : "cardsHidden_",
-                                subcards : [],
-                                sortOrder : 9,
-                            },
-                            {
-                                name : "homes",
-                                isMin : false,
-                                isMinPrf : "cardsMinimise_",
-                                isHid : false,
-                                isHidPrf : "cardsHidden_",
-                                subcards : [],
-                                sortOrder : 9,
-                            },
+                            },                            
                             {
                                 name : "featured",
                                 isMin : false,
@@ -379,7 +361,10 @@ export class GeneralView extends Component {
 
         return (
             <div
-                style={{position : "absolute",height : "100%",width : "100%" , top : 0,overflow : "hidden"}}
+                style={{position : "relative",height : "100%",width : "100%" , top : 0,
+                    overflow : "auto"
+                    //overflow : "hidden"
+                }}
             >
                 {dev}
 
@@ -389,27 +374,31 @@ export class GeneralView extends Component {
                  {/* logout profile */}
                 <div 
                     className='titleProgileLogOutNotiBox'
-                    style={{ position : "absolute",  zIndex : 9999 ,width :250  /*right : 40 */ }}
+                    style={{ 
+                            position : "absolute",  zIndex : 9999 ,
+                            width :250,  /*right : 40 */ 
+                            
+                        }}
                 >                    
                     <div style={{float : "left", position : "absolute",top : 0,right : 60,zIndex : 999}}>
                         <NotificationsIconLaunch/>
                     </div>
                     
-                    <div style={{float : "left"}}>
+                    <div style={{float : "left",position : "relative"}}>
                         <ProfileIconExpandable>
                             
-                            <div style={{}}>
+                            <div style={{position : "relative"}}>
                                 <div
-                                    style={{float : "left"}}
+                                    style={{float : "left",position : "relative"}}
                                 ><SettingsViewIconLaunch/></div> 
                                 <div
-                                    style={{float : "left"}}
+                                    style={{float : "left",position : "relative"}}
                                 > <label>settings</label></div>
-                                <div style={{clear : "left" }} />
+                                <div style={{clear : "left",position : "relative" }} />
                             </div>
                             <div style={{}}>
                                 <Logout
-                                    style={{background : "red",color : "white" , borderRadius: 3,}}
+                                    style={{background : "red",color : "white" , borderRadius: 3,position : "relative"}}
                                 />
                             </div>
                         </ProfileIconExpandable>
@@ -418,21 +407,12 @@ export class GeneralView extends Component {
                     <div style={{ clear : "left"}}/>
                 </div>
 
-                <React.Suspense fallback={<div/>}>
-                            <Main />
+                <React.Suspense fallback={<div style={{position : "relative"}} />}>
+                    <Main style={{position : "relative"}} />
                 </React.Suspense>                          
                     
-                { /* views */ }
-                <div style={{ position : "relative", top : 60, 
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                justifyContent: "center",
-                }}>
-                        {/* my home */}                        
-                        
-                </div>
-                <React.Suspense fallback={<div/>}>
+                
+                <React.Suspense fallback={<div style={{position : "relative"}} />}>
                     <RightBar/>
                     
                     {/*(()=>{

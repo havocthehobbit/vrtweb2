@@ -21,14 +21,13 @@ let background=(()=>{
     return (
         <div 
             style={{
-                position : "absolute",
+                position : "absolute",                
                 top : 0,
                 left : 0,
                 zIndex : -10,
                 background : "linear-gradient(purple, darkblue)",
                 width : "100%",
-                height : "100%",
-                position : "absolute",
+                height : "100%",                
                 textAlign: "center",
                 display: "flex",
                 flexDirection: "column",
@@ -192,8 +191,12 @@ export class Main extends Component {
 
         return (            
                 <div
-                    style={{  height : "100%", width : "100%" , 
-                            top : 0 , left : 0, margin : 0
+                    style={{  
+                            position : "absolute",
+                            height : "100%", width : "100%" , 
+                            top : 0 , left : 0, margin : 0,
+                            //overflow : "scroll"
+                            //overflow : "hidden"
 
                     }}
                 >   
