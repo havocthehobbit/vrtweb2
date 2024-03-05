@@ -231,12 +231,19 @@ export const usePopupBox=(props)=>{ // custom hook , just a function runs on eve
     const [forceUpdate,setForceUpdate]=useState(new Date());
     const popupChildrenRefE=useRef()
       
+    let popupProps={
+        show: popupShow,
+        showval : (val)=>{
+            setPopupShow(val)
+        }
+    }
+    if (props.popupProps){
+        popupProps={...popupProps,...props.popupProps}
+    }
     let popupE=(
         <PopupBox
-            show={popupShow}
-            showval={(val)=>{
-                setPopupShow(val)
-            }}
+            {...popupProps}
+            
         >{popupChildrenRefE.current}</PopupBox>
     )
     
