@@ -230,7 +230,12 @@ export const usePopupBox=(props)=>{ // custom hook , just a function runs on eve
     
     const [forceUpdate,setForceUpdate]=useState(new Date());
     const popupChildrenRefE=useRef()
-      
+     
+    let popupCurrentRefCB=useRef(()=>{})
+    let popupCurrentRef=useRef("")
+
+    
+
     let popupProps={
         show: popupShow,
         showval : (val)=>{
@@ -240,6 +245,9 @@ export const usePopupBox=(props)=>{ // custom hook , just a function runs on eve
     if (props.popupProps){
         popupProps={...popupProps,...props.popupProps}
     }
+
+    popupCurrentRefCB.current()
+
     let popupE=(
         <PopupBox
             {...popupProps}
@@ -250,5 +258,5 @@ export const usePopupBox=(props)=>{ // custom hook , just a function runs on eve
 
     //setPopupShow(()=>false)
     //return [popupShow,setPopupShow,popupChildrenRefE] 
-    return {popupShow,setPopupShow,popupChildrenRefE,popupE,popupCurrent,setPopupCurrent } // replaced return as object rather then array tublet , so consumer can optionally use any of these components instead of using all by default.
+    return {popupShow,setPopupShow,popupChildrenRefE,popupE,popupCurrent,setPopupCurrent,popupCurrentRef,popupCurrentRefCB } // replaced return as object rather then array tublet , so consumer can optionally use any of these components instead of using all by default.
 }
