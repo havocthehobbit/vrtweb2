@@ -242,8 +242,10 @@ export const usePopupBox=(props)=>{ // custom hook , just a function runs on eve
             setPopupShow(val)
         }
     }
-    if (props.popupProps){
-        popupProps={...popupProps,...props.popupProps}
+    if (props){
+        if (props.popupProps){
+            popupProps={...popupProps,...props.popupProps}
+        }
     }
 
     popupCurrentRefCB.current()
