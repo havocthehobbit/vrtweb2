@@ -73,6 +73,17 @@ if (!fs.existsSync("./" + tmp )){
     }
 }
 
+console.log("5.3")
+tmp="web_ui/cstartdevw.bat"
+if (!fs.existsSync("./" + tmp )){    
+    try {
+        fs.copyFileSync('./setup/templates/' + tmp , './' + tmp)       
+        console.log(`install ${tmp} `)     
+    }catch (err) {
+        console.log(err);
+    }
+}
+
 console.log("6")
 
 console.log("install reactjs packages (web_ui)")
