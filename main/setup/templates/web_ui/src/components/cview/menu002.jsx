@@ -23,7 +23,7 @@ export const Main=()=>{ // main menu with custom routing
     let defPageAppCtx={} // going to be used to have some sort of context to what app your using and current state
     let [pageAppCtx, setPageAppCtx] = useState(defPageAppCtx)   
 
-    let [theme, setTheme] = useState("magenta")   
+    let [theme, setTheme] = useState("dark")   
         
 
     let themes=[
@@ -266,8 +266,7 @@ export const Main=()=>{ // main menu with custom routing
                 width: 150, height: undefined, cursor: "pointer", fontSize :10,
                 border : "black thin solid",borderRadius: 3,
                 //background: "white",
-                //background : "linear-gradient( white 0%, lightgrey 35%, rgba(0,212,255,1) 100%)",
-                //background : "linear-gradient( white 0%, red 35%, magenta 100%)",
+                //background : "linear-gradient( white 0%, lightgrey 35%, rgba(0,212,255,1) 100%)",                
                 background : menuButtonBackround ,
                 
                 color : menuButtonColor

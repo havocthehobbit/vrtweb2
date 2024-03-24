@@ -1,0 +1,80 @@
+import "./maincss.css"
+//import logo from "./images/logo.png"
+
+export const Background=(props)=>{    
+
+    let style={
+        position : "absolute",
+        top : 0,
+        left : 0,
+        zIndex : -10,
+        //background : "linear-gradient(black,80%, magenta)",
+        background : "linear-gradient(black,30%, rgb(238, 1, 128))",
+        
+        width : "100%",
+        height : "100%",
+        position : "absolute",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        pointerEvents : "none",
+        
+
+    }
+
+    let themes=[
+        {
+            name : "dark",
+            background : "linear-gradient(black,30%, blue)",
+        },
+        {
+            name : "light",
+            background : "linear-gradient(lightgrey,30%, white)",
+        },
+        {
+            name : "lightblue",
+            background : "linear-gradient(black,30%, lightblue)",
+        }
+    ]
+
+    if (props.themes){
+        themes.forEach((r,i)=>{            
+            if (props.themes.name===r.name){                
+                style.background=r.background
+            }
+        })        
+    }
+
+    return (
+        <>
+        
+            <div 
+                style={style}
+            >                
+                <h1 
+                    className={""}
+                    style={{position : "fixed",top:15,color : "", background : "" , fontSize : 25, padding : 0, margin : 0}} 
+                ></h1>
+                
+            </div> 
+            <div
+                style={{  
+                    width : 160 ,height : 50, top : 25, position : "absolute",
+                    left : 2, overflow : "hidden" , borderRadius : 5
+                }}
+            >
+                {/* 
+                    <img 
+                        style={{ width : 160 }}
+                        src={logo} alt={logo} 
+                    /> 
+                */}
+            </div>
+        </> 
+    )
+}
+
+export default Background

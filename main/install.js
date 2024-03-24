@@ -85,7 +85,7 @@ if (!fs.existsSync("./" + tmp )){
 }
 
 console.log("7")
-tmp="web_ui/src/components/cview"
+tmp="web_ui/src/components/cviews"
 if (!fs.existsSync("./" + tmp )){    
     try {
         fs.mkdirSync( tmp )       
@@ -114,6 +114,7 @@ then run cstartdevw.bat for windows or cstartdevw.sh for linux for each session 
 now you should be able to login to admin using admin/admin123 from a browser on port 3008 ;
 to change port edit the cstartdevw.bat/sh script files and the data/setup.json ( which will be create after first startup attempt) ;
 
+# Customisation templates can be found in the templates/cview_widgets and be copied into web_ui-->cviews and node_serv-->custom modules respectively. 
 
 `)
 process.exit()
