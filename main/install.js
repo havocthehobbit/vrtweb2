@@ -84,8 +84,18 @@ if (!fs.existsSync("./" + tmp )){
     }
 }
 
-console.log("6")
+console.log("7")
+tmp="web_ui/src/components/cview"
+if (!fs.existsSync("./" + tmp )){    
+    try {
+        fs.mkdirSync( tmp )       
+        console.log(`creating custom dir : ${tmp} `)     
+    }catch (err) {
+        console.log(err);
+    }
+}
 
+console.log("10")
 console.log("install reactjs packages (web_ui)")
 //res=child_process.execSync("dir" )
 res=child_process.execSync("npm i", { cwd : "./web_ui"} )
@@ -95,5 +105,15 @@ console.log("install nodejs packages (node_serv)")
 res=child_process.execSync("npm i", { cwd : "./node_serv"} )
 console.log(res.toString())
 
-console.log("done!")
+console.log(`=========================================
+done!!!
+-----------
+
+to start dev mode open up 2 session in shell/cmd and navigate to web_ui and node_serv respectively.
+then run cstartdevw.bat for windows or cstartdevw.sh for linux for each session . 
+now you should be able to login to admin using admin/admin123 from a browser on port 3008 ;
+to change port edit the cstartdevw.bat/sh script files and the data/setup.json ( which will be create after first startup attempt) ;
+
+
+`)
 process.exit()
