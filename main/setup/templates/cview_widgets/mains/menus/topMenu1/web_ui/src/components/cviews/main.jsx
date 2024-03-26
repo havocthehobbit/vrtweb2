@@ -240,21 +240,30 @@ export const Main=(props)=>{ // main menu with custom routing
     let CycleThemes=()=>{
         let nt=theme;
         setTheme((st)=>{
-                let theme=st
+            let theme=st
             
+            let foundTheme=false;
             let currTHemeIter
             themes.forEach((r,i)=>{
                 if (r.name===theme){
-                    currTHemeIter=i
+                    foundTheme=true;
+                    currTHemeIter=i;
                 }
             })
+            if (foundTheme===false){
+                currTHemeIter=0;
+            }
             //console.log("currThemeBeforCycle", theme , currTHemeIter)
             let next=currTHemeIter + 1
             if (next > ( themes.length - 1 ) ){
                 next=0      
             }
             
-            let nt=themes[next].name                       
+            let nt=themes[next].name               
+            //console.log("new theme", nt, next)
+            //setTheme(nt)
+
+            //  set main theme
             let themesMain={...ctx.tt.state.themes}
             themesMain.name=nt
             ctx.tt.setState({ themes : themesMain })
@@ -262,8 +271,10 @@ export const Main=(props)=>{ // main menu with custom routing
             $gl.createCookie("theme" , nt)
             
             return nt
-        });        
-    }    
+        })
+
+        
+    }   
   
     let addPage=(params)=>{
         let tmplt={
@@ -288,12 +299,18 @@ export const Main=(props)=>{ // main menu with custom routing
   
     let currentTheme=(()=>{
         let crnt
+        //for (let p in themes){            
+        let foundTheme=false;
         themes.forEach((r,i)=>{            
             
             if (r.name===theme){
+                foundTheme=true;
                 crnt=r
-            }
+            }            
         })
+        if (foundTheme===false){
+            crnt=themes[0];
+        }
         return crnt
     })()
 
