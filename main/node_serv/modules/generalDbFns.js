@@ -13,6 +13,7 @@ let isOb=$cn.isOb
 let generalDbFns={
     name : "generalproj",
     db : undefined,
+    dbA : undefined,
     users : {
         getUser : (franeworkData, params, cbp)=>{
             let db=generalDbFns.db 
@@ -549,7 +550,7 @@ let generalDbFns={
         },
 
         
-    },
+    },    
     loginAuth : {         
         checkCanPass : (franeworkData, params, cbp)=>{
             // params : { bd , data , ret_data}
@@ -579,7 +580,7 @@ let generalDbFns={
 
             cb(ret)
         }
-    },
+    },    
     progParams : {
         adminProgParamResetPass: (params, cbp)=>{
             let tt=generalDbFns

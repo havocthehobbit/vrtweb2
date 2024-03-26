@@ -64,11 +64,11 @@ export const Main=(props)=>{ // main menu with custom routing
         },
         {
             name : "lightblue",
-            menuButtonBackround : "linear-gradient( white 0%, red 35%, lightblue 100%)",
-            menuButtonColor : "lightgrey" ,
+            menuButtonBackround : "linear-gradient( white 0%, grey 35%, lightblue 100%)",
+            menuButtonColor : "black" ,
 
-            selectedBackground : "yellow",
-            selectedColor : "lightgrey" ,
+            selectedBackground : "lightyellow",
+            selectedColor : "black" ,
 
             hoverBackground : "lightgrey",                        
             

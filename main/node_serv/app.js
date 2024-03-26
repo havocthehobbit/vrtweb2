@@ -23,21 +23,23 @@ let isUn=$cn.isUn
 
 lgs.add(`start ${settings.name} ${settings.host}`)
 
-let DnMain={ db : undefined}
+let DnMain={ db : undefined , dbA : undefined }
 // init DB and set global db client 
 if (settings.dbtype==="mongodb" ){
     let MongoInst=require('./l_node_modules/mongodb.js').MongoInst
     MongoInst.initAdmin({ "host" : settings.dbHost, "dbname" : settings.dbName , consolelogdebug : false},()=>{
         let dbName=settings.dbName
         if (MongoInst.statusAdmin===true ){ 
-            let dbA=MongoInst.dbAdmin
+            let dbA=MongoInst.dbAdmin;
+            gdb.dbA=dbA;
+            DnMain.dbA=dbA;
                     
             dbA.listDatabases()
             .then((dbrs)=>{
-                let dbExists=false
+                let dbExists=false;
                 dbrs.databases.forEach((r,i) => {
                     if (r.name===dbName){
-                        dbExists=true
+                        dbExists=true;
                     }
                 });
                 
@@ -86,7 +88,7 @@ setTimeout(()=>{
     if (httpAppParams.useHttpServer===true){ // prevent starting https server if a prog parameter requires something , like prompt input
         // initlise http server       
 
-        ApiInst.init({ db : gdb.db, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs }, ()=>{
+        ApiInst.init({ db : gdb.db, dbA : gdb.dbA, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs }, ()=>{
             // initialisation of listener complete        
         })
         app=ApiInst.app
