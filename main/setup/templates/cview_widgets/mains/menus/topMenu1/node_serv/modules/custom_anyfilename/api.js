@@ -178,9 +178,18 @@ let main={
                                             "id" : "admin",
                                             "name" : "admin",
                                             "views" : [
-                                                // "home",
-                                                //"adminSettings",                                               
-                                                "vDev",                                                
+                                                "home",
+
+                                                "blender",
+                                                "godot",
+                                                "mylyfe",
+                                                "rust",
+                                                "showmovies",
+                                                "vrtweb",
+                                                
+                                                "adminSettings",                                               
+                                                "vDev",         
+                                                                                       
                                             ]
                                         }
 
@@ -194,8 +203,58 @@ let main={
                                             "title": "home",
                                             "showMenu" : true,
                                             "pathname" : "/home",
-                                            "e" : "home",
+                                            "e" : "Home",
                                         },
+
+                                        { 
+                                            "id" : "blender",
+                                            "name" : "blender",
+                                            "title": "blender",
+                                            "showMenu" : true,
+                                            "pathname" : "/blender",
+                                            "e" : "Blender",
+                                        },
+                                        { 
+                                            "id" : "godot",
+                                            "name" : "godot",
+                                            "title": "godot",
+                                            "showMenu" : true,
+                                            "pathname" : "/godot",
+                                            "e" : "Godot",
+                                        },
+                                        { 
+                                            "id" : "mylyfe",
+                                            "name" : "mylyfe",
+                                            "title": "mylyfe",
+                                            "showMenu" : true,
+                                            "pathname" : "/mylyfe",
+                                            "e" : "MyLyfe",
+                                        },                                        
+                                        { 
+                                            "id" : "rust",
+                                            "name" : "rust",
+                                            "title": "rust",
+                                            "showMenu" : true,
+                                            "pathname" : "/rust",
+                                            "e" : "Rust",
+                                        },
+                                        { 
+                                            "id" : "showmovies",
+                                            "name" : "showmovies",
+                                            "title": "showmovies",
+                                            "showMenu" : true,
+                                            "pathname" : "/showmovies",
+                                            "e" : "ShowsMovies",
+                                        },
+                                        { 
+                                            "id" : "vrtweb",
+                                            "name" : "vrtweb",
+                                            "title": "vrtweb",
+                                            "showMenu" : true,
+                                            "pathname" : "/vrtweb",
+                                            "e" : "Vrtweb2",
+                                        },
+                                        
                                         { 
                                             "id" : "adminSettings",
                                             "name" : "adminSettings",
@@ -254,230 +313,7 @@ let main={
                         
                     } 
                 },                
-                {   // vDev
-                    name  : "vDev",
-                    route : "/vDev", // if route not included it will defualt to to name
-                    type : "post", // get or post
-                    cb : async function(req, res, corestuff){ // or fn or callback 
-                        var bd=req.body // get data sent from front end
-                        
-                        //console.log(corestuff)
-                       // console.log("test123")
-
-                        let userAuthCustom=(i1,cb1)=>{
-                            // l1 --> allowed , userid , status                            
-                            let group
-
-                            if (i1.allowed){
-                                corestuff.mds.vrtw.gdb.users.getUser({ userid : i1.userid },(dt)=>{
-                                    //console.log(dt)
-
-                                    if (dt.group===undefined){
-                                        group="guest"                            
-                                    }else{
-                                        group=dt.group
-                                    }
-
-                                    if (dt.group==="users"){
-                                        group=dt.group
-                                    } 
-                                    if (dt.group==="admin"){
-                                        group=dt.group
-                                    }
-
-                                    let other={}
-                                    other.group=group
-
-                                    if (dt.group==="admin"){
-                                        
-                                    }else{
-
-                                    }
-                                    //cb1({ allowed : false})
-                                    cb1({ other : other})
-                                })
-                            }                            
-                        }
-
-                        switch(bd.type) { // if for example type var string was sent in body data then can run a selection                             
-                            case "getUsers": 
-                                //console.log("corestuff.login.verifyJWTObj",  corestuff.mds.vrtw.login.verifyLoginAPI)
-                                corestuff.mds.vrtw.login.verifyLoginAPI({ req : req , userAuthCust : userAuthCustom},function(vd){
-                                    
-                                    if (vd.allowed){                     
-                                        //console.log("corestuff.login.verifyJWTObj.allowed" , vd.allowed )
-                                    }else{
-                                        //console.log("corestuff.login.verifyJWTObj.allowed", vd.allowed )
-                                    }
-
-                                    let data={}
-
-                                    //data.group=vd.other.group
-                                    //data.groups=vd.other.groups
-                                    corestuff.mds.vrtw.gdb.users.getUsers({},(dt)=>{
-                                        let dtn=[]
-                                        dt.forEach((r,i)=>{
-                                            let nr={...r}
-                                            delete nr.password;
-                                            delete nr._id;
-                                            dtn.push(nr)
-                                        })
-                                        
-                                        res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});                                
-
-                                    })
-                                })
-
-                                return;
-                            break;              
-                            case "getTables": 
-                                //console.log("corestuff.login.verifyJWTObj",  corestuff.mds.vrtw.login.verifyLoginAPI)
-                                corestuff.mds.vrtw.login.verifyLoginAPI({ req : req , userAuthCust : userAuthCustom},function(vd){
-                                    
-                                    if (vd.allowed){                     
-                                        //console.log("corestuff.login.verifyJWTObj.allowed" , vd.allowed )
-                                    }else{
-                                        //console.log("corestuff.login.verifyJWTObj.allowed", vd.allowed )
-                                    }
-
-                                    let data={}
-
-                                    //data.group=vd.other.group
-                                    //data.groups=vd.other.groups
-                                    corestuff.mds.vrtw.gdb.users.getUsers({},(dt)=>{
-                                        let dtn=[]
-                                        dt.forEach((r,i)=>{
-                                            let nr={...r}
-                                            delete nr.password;
-                                            delete nr._id;
-                                            dtn.push(nr)
-                                        })
-                                        
-                                        res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});                                
-
-                                    })
-                                    
-
-
-                                    
-                                })
-
-                                return
-                            break;
-                            case "getDBS": 
-                                //console.log("corestuff.login.verifyJWTObj",  corestuff.mds.vrtw.login.verifyLoginAPI)
-                                corestuff.mds.vrtw.login.verifyLoginAPI({ req : req , userAuthCust : userAuthCustom},function(vd){
-                                    
-                                    if (vd.allowed){                     
-                                        //console.log("corestuff.login.verifyJWTObj.allowed" , vd.allowed )
-                                    }else{
-                                        //console.log("corestuff.login.verifyJWTObj.allowed", vd.allowed )
-                                    }
-
-                                    let data={}
-
-                                    //data.group=vd.other.group
-                                    //data.groups=vd.other.groups
-                                    corestuff.mds.vrtw.gdb.users.getUsers({},(dt)=>{
-                                        let dtn=[]
-                                        dt.forEach((r,i)=>{
-                                            let nr={...r}
-                                            delete nr.password;
-                                            delete nr._id;
-                                            dtn.push(nr)
-                                        })
-                                        
-                                        res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});                                
-
-                                    })
-                                    
-
-
-                                    
-                                })
-
-                                return
-                            break;
-                            case "insertTableData": 
-                                //console.log("corestuff.login.verifyJWTObj",  corestuff.mds.vrtw.login.verifyLoginAPI)
-                                corestuff.mds.vrtw.login.verifyLoginAPI({ req : req , userAuthCust : userAuthCustom},function(vd){
-                                    
-                                    if (vd.allowed && vd.group==="admin"){                     
-                                        //console.log("corestuff.login.verifyJWTObj.allowed" , vd.allowed )
-                                   
-                                        console.log("insertTableData : inserting table data ")
-                                        let data={}
-
-                                        //data.group=vd.other.group
-                                        //data.groups=vd.other.groups
-                                        corestuff.mds.vrtw.gdb.users.getUsers({},(dt)=>{
-                                            let dtn=[]
-                                            dt.forEach((r,i)=>{
-                                                let nr={...r}
-                                                delete nr.password;
-                                                delete nr._id;
-                                                dtn.push(nr)
-                                            })
-                                            
-                                            res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});                                
-
-                                        })
-                                    
-                                    }else{
-                                        //console.log("corestuff.login.verifyJWTObj.allowed", vd.allowed )
-                                    }
-
-                                    
-                                })
-
-                                return
-                            break;
-                            case "insertTableDataBatch": 
-                                //console.log("corestuff.login.verifyJWTObj",  corestuff.mds.vrtw.login.verifyLoginAPI)
-                                corestuff.mds.vrtw.login.verifyLoginAPI({ req : req , userAuthCust : userAuthCustom},function(vd){
-                                    
-                                    if (vd.allowed){                     
-                                        //console.log("corestuff.login.verifyJWTObj.allowed" , vd.allowed )
-                                    }else{
-                                        //console.log("corestuff.login.verifyJWTObj.allowed", vd.allowed )
-                                    }
-
-                                    let data={}
-
-                                    //data.group=vd.other.group
-                                    //data.groups=vd.other.groups
-                                    corestuff.mds.vrtw.gdb.users.getUsers({},(dt)=>{
-                                        let dtn=[]
-                                        dt.forEach((r,i)=>{
-                                            let nr={...r}
-                                            delete nr.password;
-                                            delete nr._id;
-                                            dtn.push(nr)
-                                        })
-                                        
-                                        res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});                                
-
-                                    })
-                                    
-
-
-                                    
-                                })
-
-                                return
-                            break;
-                            
-                            default:
-                        }
-
-                        res.jsonp({ status : "apiNoParamsError" ,bStatus : true})
-
-                        return
-                        
-                    } 
-
-
-                },                
+                             
                 
             ],
             apiExtra : {
