@@ -95,141 +95,75 @@ let main={
                             }                            
                         }
 
-                        switch(bd.type) { // if for example type var string was sent in body data then can run a selection                             
-                            case "getUsers": 
-                                //console.log("corestuff.login.verifyJWTObj",  corestuff.mds.vrtw.login.verifyLoginAPI)
-                                corestuff.mds.vrtw.login.verifyLoginAPI({ req : req , userAuthCust : userAuthCustom},function(vd){
-                                    
-                                    if (vd.allowed){                     
-                                        //console.log("corestuff.login.verifyJWTObj.allowed" , vd.allowed )
-                                    }else{
-                                        //console.log("corestuff.login.verifyJWTObj.allowed", vd.allowed )
-                                    }
-
-                                    let data={}
-
-                                    //data.group=vd.other.group
-                                    //data.groups=vd.other.groups
-                                    corestuff.mds.vrtw.gdb.users.getUsers({},(dt)=>{
-                                        let dtn=[]
-                                        dt.forEach((r,i)=>{
-                                            let nr={...r}
-                                            delete nr.password;
-                                            delete nr._id;
-                                            dtn.push(nr)
-                                        })
+                        corestuff.mds.vrtw.login.verifyLoginAPI({ req : req , userAuthCust : userAuthCustom},function(vd){
                                         
-                                        res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});                                
+                            let allowedC={}
+                            allowedC.check=true;
+                            allowedC.allowed=false;
+                            allowedC.vd=vd;
+                            allowedC.allowedUsers=["admin"];
+                            allowedC.allowedUsersCheck=true;
+                            allowedC.allowedGroups=["admin"];
+                            allowedC.allowedGroupsCheck=true;
+                            allowedC.allowedSuccessMsg=""
 
-                                    })
-                                })
+                            let allowedCheckUserAndGroupFn=(allowedC)=>{
+                                let vd=allowedC.vd
+                                if (allowedC.check){ // validation
+                                    if (vd.allowed ){                                         
+                                        if (allowedC.allowed===false){
+                                            if (allowedC.allowedGroupsCheck){
+                                                if (vd.other){ // group allowed
+                                                    if (vd.other.group){
+                                                        allowedC.allowedGroups.forEach((r,i)=>{
+                                                            if (vd.other.group===r){
+                                                                allowedC.allowed=true;
+                                                                allowedC.allowedSuccessMsg=`group ${vd.other.group} is allowed\n`;
+                                                            }
+                                                        })
 
-                                return;
-                            break;              
-                            case "getTables": 
-                                //console.log("corestuff.login.verifyJWTObj",  corestuff.mds.vrtw.login.verifyLoginAPI)
-                                corestuff.mds.vrtw.login.verifyLoginAPI({ req : req , userAuthCust : userAuthCustom},function(vd){
-                                    
-                                    if (vd.allowed){                     
-                                        //console.log("corestuff.login.verifyJWTObj.allowed" , vd.allowed )
-                                    }else{
-                                        //console.log("corestuff.login.verifyJWTObj.allowed", vd.allowed )
-                                    }
-
-                                
-
-                                    
-                                    let db=corestuff.mds.vrtw.db ; // set db
-
-                                    let data={}
-                                    
-                                    
-
-                                    let dbListCollection=async ()=>{ // getAll collection to dynamically use
-                                        const dbrs = await db.listCollections({}, { nameOnly: true }).toArray();
-                                        
-                                        let dtn=[];                                    
-
-                                        //console.log("dbrs", dbrs)
-                                        dbrs.forEach((r,i) => {
-                                            let nr={} ;
-                                            nr.name=r.name;
-                                            dtn.push(nr)
-                                           
-                                        });                                        
-
-                                        res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});
-                                    }
-
-                                  
-
-                                    dbListCollection();
-                                    
-                                   
-                                    //db.listCollections().toArray((err,dbrs)=>{
-                                    //})                                        
-                                    
-                                    
-                                })
-
-                                return
-                            break;
-                            case "getDBS": 
-                                //console.log("corestuff.login.verifyJWTObj",  corestuff.mds.vrtw.login.verifyLoginAPI)
-                                corestuff.mds.vrtw.login.verifyLoginAPI({ req : req , userAuthCust : userAuthCustom},function(vd){
-                                    
-                                    if (vd.allowed){                     
-                                        //console.log("corestuff.login.verifyJWTObj.allowed" , vd.allowed )
-                                    }else{
-                                        //console.log("corestuff.login.verifyJWTObj.allowed", vd.allowed )
-                                    }
-
-                                    let dbA=corestuff.mds.vrtw.dbA ; // set dbAdmin
-
-                                    let data={}
-
-                                    //data.group=vd.other.group
-                                    //data.groups=vd.other.groups
-                                    dbA.listDatabases()
-                                        .then((dbrs)=>{
-                                            let dbExists=false;
-                                            let dtn=[]
-
-                                            dbrs.databases.forEach((r,i) => {
-                                                let nr={}    
-                                                nr.name=r.name;
-                                                dtn.push(nr)
-                                            });
-                                           
-                                            /*
-                                                dt.forEach((r,i)=>{
-                                                    let nr={...r}
-                                                    delete nr.password;
-                                                    delete nr._id;
-                                                    dtn.push(nr)
+                                                    }
+                                                }
+                                            }
+                                            if (allowedC.allowed===false){
+                                                allowedC.llowedSuccessMsg=`group ${vd.other.group} is not allowed\n`;
+                                            }
+                                        }
+                                        if (allowedC.allowed===false){ // userid allowed
+                                            if (allowedC.allowedUsersCheck){
+                                                allowedC.allowedUsers.forEach((r,i)=>{
+                                                    if (vd.userid===r){
+                                                        allowedC.allowed=true;
+                                                    }
                                                 })
-                                            */
+                                                if (allowedC.allowed===false){
+                                                    allowedC.allowedSuccessMsg+=`user ${vd.other.group} is not allowed\n`;
+                                                }
+                                            }
+                                        }
                                         
-                                        res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});
-                                        })
+                                    }
+                                    if (allowedC.allowed===false){
+                                        return false
+                                    }
+                                    return true
+                                }
+                            }
 
-                                    
-                                })
+                            
+                            
 
-                                return
-                            break;
-                            case "insertTableData": 
-                                //console.log("corestuff.login.verifyJWTObj",  corestuff.mds.vrtw.login.verifyLoginAPI)
-                                corestuff.mds.vrtw.login.verifyLoginAPI({ req : req , userAuthCust : userAuthCustom},function(vd){
-                                    
-                                    if (vd.allowed && vd.group==="admin"){                     
-                                        //console.log("corestuff.login.verifyJWTObj.allowed" , vd.allowed )
-                                   
-                                        console.log("insertTableData : inserting table data ")
+                            switch(bd.type) { // if for example type var string was sent in body data then can run a selection                             
+                                case "getUsers": 
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+
                                         let data={}
-
-                                        //data.group=vd.other.group
-                                        //data.groups=vd.other.groups
+                                        
                                         corestuff.mds.vrtw.gdb.users.getUsers({},(dt)=>{
                                             let dtn=[]
                                             dt.forEach((r,i)=>{
@@ -243,57 +177,480 @@ let main={
 
                                         })
                                     
-                                    }else{
-                                        //console.log("corestuff.login.verifyJWTObj.allowed", vd.allowed )
                                     }
 
-                                    
-                                })
+                                    return;
+                                break;              
+                                case "getTables": 
+                                    if (true){
+                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }                                        
+                                        
+                                        let db=corestuff.mds.vrtw.db ; // set db
 
-                                return
-                            break;
-                            case "insertTableDataBatch": 
-                                //console.log("corestuff.login.verifyJWTObj",  corestuff.mds.vrtw.login.verifyLoginAPI)
-                                corestuff.mds.vrtw.login.verifyLoginAPI({ req : req , userAuthCust : userAuthCustom},function(vd){
-                                    
-                                    if (vd.allowed){                     
-                                        //console.log("corestuff.login.verifyJWTObj.allowed" , vd.allowed )
-                                    }else{
-                                        //console.log("corestuff.login.verifyJWTObj.allowed", vd.allowed )
+                                        let data={}
+
+                                        let dbListCollection=async ()=>{ // getAll collection to dynamically use
+                                            const dbrs = await db.listCollections({}, { nameOnly: true }).toArray();
+                                            
+                                            let dtn=[];                                    
+                                            
+                                            dbrs.forEach((r,i) => {
+                                                let nr={} ;
+                                                nr.name=r.name;
+                                                dtn.push(nr)
+                                            
+                                            });                                        
+
+                                            res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});
+                                        }
+
+                                        dbListCollection();                                        
+                                            
                                     }
 
-                                    let data={}
+                                    return
+                                break;
+                                case "getTablesRecs":                                    
+                                    if (true){
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                            
+                                        let db=corestuff.mds.vrtw.db ; // set db
 
-                                    //data.group=vd.other.group
-                                    //data.groups=vd.other.groups
-                                    corestuff.mds.vrtw.gdb.users.getUsers({},(dt)=>{
-                                        let dtn=[]
-                                        dt.forEach((r,i)=>{
-                                            let nr={...r}
-                                            delete nr.password;
-                                            delete nr._id;
-                                            dtn.push(nr)
+                                        let data={}
+
+                                        let dbListCollection=async ()=>{ // getAll collection to dynamically use
+                                            const dbrs = await db.listCollections({}, { nameOnly: true }).toArray();
+                                            
+                                            let dtn=[];
+                                            
+                                            dbrs.forEach((r,i) => {
+                                                let nr={} ;
+                                                nr.name=r.name;
+                                                dtn.push(nr)
+                                            
+                                            });                                        
+
+                                            res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});
+                                        }
+
+                                        dbListCollection();                                        
+                                            
+                                    }
+
+                                    return
+                                break;
+                                case "createTable":                                     
+                                    if (true){                                                                                                
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+
+                                        let status=true;
+                                        let db=corestuff.mds.vrtw.db ; // set dbAdmin
+
+                                        let data={}
+
+                                        let name=bd.name;                                        
+                                        if (typeof(name)!=='string'){
+                                            status=false;
+                                        }
+                                        if (name==="" || name===" "){ // db will give error for blanks but quick precheck, need to convert this to regex muli space " +|s+";
+                                            status=false;
+                                        }
+
+                                        let createCollection=async (name)=>{ // getAll collection to dynamically use
+                                            const dbrs = await db.createCollection(name) // retturns collection so you can still do stuff after
+                                            
+                                            let dtn=[];                                                                               
+
+                                            res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});
+                                        }
+
+                                        createCollection(name);                                          
+                                        
+                                    }
+
+                                    return
+                                break;
+                                case "getRecs":                                    
+                                    if (true){
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                            
+                                        let db=corestuff.mds.vrtw.db ; // set db
+
+                                        let data={}
+
+                                        let name=bd.name;                                        
+                                        if (typeof(name)!=='string'){
+                                            status=false;
+                                        }
+                                        if (name==="" || name===" "){ // db will give error for blanks but quick precheck, need to convert this to regex muli space " +|s+";
+                                            status=false;
+                                        }
+
+                                        let findRecs=async ( name,params)=>{ // getAll collection to dynamically use
+                                            
+                                            
+                                            //const dbrs = await db.collection.find(params); // future version of driver
+                                            //const dbrs = await db[name].find(params.criteria, params.aggregation);   // future version of driver
+                                            // //console.log("db." + name + ".find( " + JSON.stringify(params.criteria) +" , " + JSON.stringify(params.aggregation) + " )" );
+                                            //const dbrs = db[name].find(params.criteria, params.aggregation);
+                                            
+                                            let collection=db.collection(name) ; // current driver version 
+                                            let cursor=collection.find(params.criteria, params.option_aggregation)
+
+                                            let dtn=[];
+                                            if (true){
+                                                dtn=await cursor.toArray()
+                                                console.log(dtn)
+                                            }else{
+                                                let tmpd=await cursor.toArray()
+                                                tmpd.forEach((r,i) => {
+                                                    let nr={} ;
+                                                    nr.name=r.name;
+                                                    dtn.push(nr)
+                                                
+                                                });   
+                                            }                                     
+
+                                            res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});
+                                        }
+
+                                        findRecs( name,{ criteria :{}, option_aggregation : {}, cursors : [] });                                        
+                                            
+                                    }
+
+                                    return
+                                break;
+                                case "getDBS":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+
+                                        let dbA=corestuff.mds.vrtw.dbA ; // set dbAdmin
+
+                                        let data={}
+
+                                        dbA.listDatabases()
+                                            .then((dbrs)=>{
+                                                let dbExists=false;
+                                                let dtn=[]
+
+                                                dbrs.databases.forEach((r,i) => {
+                                                    let nr={}    
+                                                    nr.name=r.name;
+                                                    dtn.push(nr)
+                                                });
+                                            
+                                                /*
+                                                    dt.forEach((r,i)=>{
+                                                        let nr={...r}
+                                                        delete nr.password;
+                                                        delete nr._id;
+                                                        dtn.push(nr)
+                                                    })
+                                                */
+                                            
+                                            res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});
+                                            })
+                                        
+                                    }
+
+                                    return
+                                break;
+                                case "insertRec":                                    
+                                    if (true){
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let status=true    
+                                        let statusError=""
+                                        let db=corestuff.mds.vrtw.db ; // set db
+
+
+                                        let data={}
+                                        if (typeof(bd.data)==="object"){
+                                            data=bd.data
+                                            if (data._id){
+                                                delete  data._id;
+                                            }
+                                        }else{
+                                            statusError="'data' input param error "
+                                            status=false;
+                                        }
+
+                                        let name=bd.name;                                        
+                                        if (typeof(name)!=='string'){
+                                            statusError="name error"
+                                            status=false;
+                                        }
+                                        if (name==="" || name===" "){ // db will give error for blanks but quick precheck, need to convert this to regex muli space " +|s+";
+                                            statusError="name error"
+                                            status=false;
+                                        }
+
+                                        if (status===false){
+                                            res.jsonp({ data : {} , status : "failed" ,bStatus : false, error : statusError});
+                                            return
+                                        }
+
+                                        let insertOne=async ( name,params)=>{ // getAll collection to dynamically use
+                                            
+                                            
+                                            //const dbrs = await db.collection.find(params); // future version of driver
+                                            //const dbrs = await db[name].find(params.criteria, params.aggregation);   // future version of driver
+                                            // //console.log("db." + name + ".find( " + JSON.stringify(params.criteria) +" , " + JSON.stringify(params.aggregation) + " )" );
+                                            //const dbrs = db[name].find(params.criteria, params.aggregation);
+                                            
+                                            let collection=db.collection(name) ; // current driver version 
+                                            let result=await collection.insertOne(params.data)
+
+                                            let dtn=[];
+                                            if (true){
+                                                //dtn=await cursor.toArray()
+                                                //console.log(dtn)
+                                            }else{
+                                                
+                                            }                                     
+
+                                            res.jsonp({ data : result , status : "success" ,bStatus : true});
+                                        }
+
+                                        insertOne( name,{ data  : data});                                        
+                                            
+                                    }
+
+                                    return
+                                break;
+                                case "updateRec":                                    
+                                    if (true){
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let status=true    
+                                        let statusError=""
+                                        let db=corestuff.mds.vrtw.db ; // set db
+                                    
+
+                                        let name=bd.name;                                        
+                                        if (typeof(name)!=='string'){
+                                            statusError="name error"
+                                            status=false;
+                                        }
+                                        if (name==="" || name===" "){ // db will give error for blanks but quick precheck, need to convert this to regex muli space " +|s+";
+                                            statusError="name error"
+                                            status=false;
+                                        }
+                                        
+                                        let data={}
+                                        if (typeof(bd.data)==="object"){
+                                            data=bd.data
+                                            if (data._id){
+                                                delete  data._id;
+                                            }
+                                        }else{
+                                            statusError="'data' input param error "
+                                            status=false;
+                                        }
+
+                                        let id=bd._id;                                        
+                                        if (typeof(id)!=='string'){
+                                            statusError="_id parameter error"
+                                            status=false;
+                                        }
+
+                                        //todo , implement fetch user id from _id and check if admin 
+                                        
+
+                                        if (status===false){
+                                            res.jsonp({ data : {} , status : "failed" ,bStatus : false, error : statusError});
+                                            return
+                                        }
+
+                                        let updateOne=async ( name,params)=>{ // getAll collection to dynamically use
+                                            
+                                            
+                                            //const dbrs = await db.collection.find(params); // future version of driver
+                                            //const dbrs = await db[name].find(params.criteria, params.aggregation);   // future version of driver
+                                            // //console.log("db." + name + ".find( " + JSON.stringify(params.criteria) +" , " + JSON.stringify(params.aggregation) + " )" );
+                                            //const dbrs = db[name].find(params.criteria, params.aggregation);
+                                            
+                                            let collection=db.collection(name) ; // current driver version 
+                                            let result=await collection.updateOne(params.filter ,params.set,params.options)
+                                            //let result=await collection.updateOne( { "_id": "660388493593e62b948fec0f"},params.set,params.options)
+                                                console.log({filter : params.filter ,set: params.set,options : params.options })
+                                                console.log("result : ", name , result );
+                                            let dtn=[];
+                                            if (true){
+                                                //dtn=await cursor.toArray()
+                                                //console.log(dtn)
+                                            }else{
+                                                
+                                            }                                     
+
+                                            res.jsonp({ data : result , status : "success" ,bStatus : true});
+                                        }
+
+                                        updateOne( name,{ filter : { "_id"  : id } , set : { "$set" : data }, options : {} });                                        
+                                            
+                                    }
+
+                                    return
+                                break;
+                                case "deleteRec":                                    
+                                    if (true){
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let status=true    
+                                        let statusError=""
+                                        let db=corestuff.mds.vrtw.db ; // set db
+
+
+                                        let data={}
+
+                                        let name=bd.name;                                        
+                                        if (typeof(name)!=='string'){
+                                            statusError="name error"
+                                            status=false;
+                                        }
+                                        if (name==="" || name===" "){ // db will give error for blanks but quick precheck, need to convert this to regex muli space " +|s+";
+                                            statusError="name error"
+                                            status=false;
+                                        }
+
+                                        let id=bd._id;                                        
+                                        if (typeof(id)!=='string'){
+                                            statusError="_id parameter error"
+                                            status=false;
+                                        }
+
+                                        //todo , implement fetch user id from _id and check if admin 
+                                        
+
+                                        if (status===false){
+                                            res.jsonp({ data : {} , status : "failed" ,bStatus : false, error : statusError});
+                                            return
+                                        }
+
+                                        let deleteOne=async ( name,params)=>{ // getAll collection to dynamically use
+                                            
+                                            
+                                            //const dbrs = await db.collection.find(params); // future version of driver
+                                            //const dbrs = await db[name].find(params.criteria, params.aggregation);   // future version of driver
+                                            // //console.log("db." + name + ".find( " + JSON.stringify(params.criteria) +" , " + JSON.stringify(params.aggregation) + " )" );
+                                            //const dbrs = db[name].find(params.criteria, params.aggregation);
+                                            console.log("del .data" , params.data)
+                                            let collection=db.collection(name) ; // current driver version 
+                                            let result=await collection.deleteOne(params.data)
+                                            console.log("del .data" , params.data)
+                                            let dtn=[];
+                                            if (true){
+                                                //dtn=await cursor.toArray()
+                                                //console.log(dtn)
+                                            }else{
+                                                
+                                            }                                     
+
+                                            res.jsonp({ data : result , status : "success" ,bStatus : true});
+                                        }
+
+                                        deleteOne( name,{ _id  : id});                                        
+                                            
+                                    }
+
+                                    return
+                                break;                            
+                                case "insertTableData":                                     
+                                    if (true){
+                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        
+                                        console.log("insertTableData : inserting table data ")
+                                        let data={}
+                                        
+                                        corestuff.mds.vrtw.gdb.users.getUsers({},(dt)=>{
+                                            let dtn=[]
+                                            dt.forEach((r,i)=>{
+                                                let nr={...r}
+                                                delete nr.password;
+                                                delete nr._id;
+                                                dtn.push(nr)
+                                            })
+                                            
+                                            res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});                                
+
                                         })
                                         
-                                        res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});                                
+                                    }
 
-                                    })
-                                    
+                                    return
+                                break;
+                                case "insertTableDataBatch":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        corestuff.mds.vrtw.gdb.users.getUsers({},(dt)=>{
+                                            let dtn=[]
+                                            dt.forEach((r,i)=>{
+                                                let nr={...r}
+                                                delete nr.password;
+                                                delete nr._id;
+                                                dtn.push(nr)
+                                            })
+                                            
+                                            res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});                                
+
+                                        })
+                                        
 
 
-                                    
-                                })
+                                        
+                                    }
 
-                                return
-                            break;
-                            
-                            default:
-                        }
+                                    return
+                                break;
+                                
+                                default:
+                            }
 
-                        res.jsonp({ status : "apiNoParamsError" ,bStatus : true})
-
-                        return
+                            res.jsonp({ status : "apiNoParamsError" ,bStatus : true})
                         
+                            return
+                        })
                     } 
 
 
