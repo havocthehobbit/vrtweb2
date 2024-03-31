@@ -1,20 +1,17 @@
-import React,{ useEffect , useState,useRef, useContext } from 'react'
+main/web_ui/src/components/cviews/mainRegC.jsximport React,{ useEffect , useState,useRef, useContext } from 'react'
 import { ContextRoutes} from './context/contextRoutes';
 import { ContextStore } from '../common/contextStore.js';
 import $gl from '../common/globallib';
-import { vDev } from './vDev/vDev/vDev.jsx';
-import { Home } from './home/home.jsx';
-import { AdminSettings } from './admin/adminSettings.jsx';
+
+import { allMainElesC } from './mainRegC.jsx';
 
 import { v4 as uuidv4 } from 'uuid';
 import { PopupBox,usePopupBox } from '../common/widgets/containers/popup.jsx';
 
 let mainApi="api";
 let mainApiGetmenusFunction="getmainmenus";
-let allMainEles={ 
-    Home, vDev, AdminSettings,
-}
 
+let allMainEles=allMainElesC;
    
 export const Main=(props)=>{ // main menu with custom routing 
     let ctx=useContext(ContextStore)
