@@ -97,6 +97,8 @@ let main={
                                                 //console.log("corestuff.login.verifyJWTObj.allowed" , vd.allowed )
                                             }else{
                                                 //console.log("corestuff.login.verifyJWTObj.allowed", vd.allowed )
+                                                res.jsonp({ data : {} , status : "failed" ,bStatus : false})
+                                                return 
                                             }
 
                                             let data={}
