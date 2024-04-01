@@ -10,9 +10,11 @@ import { AdminSettings } from './admin/adminSettings.jsx';
 let allMainEles={}
 
 allMainEles={ 
+    // ##~menuComonentsStart
     Home, 
     vDev, 
     AdminSettings,    
+    // ##~menuComonentsEnd
 }
 
 
