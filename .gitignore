@@ -91,6 +91,7 @@
 
 /main/data/db1
 /main/data/dbs
+/main/data/dbs_*
 /main/data/usershome
 /main/data/public
 
