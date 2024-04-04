@@ -180,7 +180,8 @@ let main={
                                     }
 
                                     return;
-                                break;              
+                                break;    
+
                                 case "getTables": 
                                     if (true){
                                         
@@ -490,31 +491,16 @@ let main={
                                         }
 
                                         let updateOne=async ( name,params)=>{ // getAll collection to dynamically use
-                                            
-                                            
-                                            //const dbrs = await db.collection.find(params); // future version of driver
-                                            //const dbrs = await db[name].find(params.criteria, params.aggregation);   // future version of driver
-                                            // //console.log("db." + name + ".find( " + JSON.stringify(params.criteria) +" , " + JSON.stringify(params.aggregation) + " )" );
-                                            //const dbrs = db[name].find(params.criteria, params.aggregation);
-                                            
-                                            let collection=db.collection(name) ; // current driver version 
-                                            let result=await collection.updateOne(params.filter ,params.set,params.options)
-                                            //let result=await collection.updateOne( { "_id": "660388493593e62b948fec0f"},params.set,params.options)
-                                                console.log({filter : params.filter ,set: params.set,options : params.options })
-                                                console.log("result : ", name , result );
-                                            let dtn=[];
-                                            if (true){
-                                                //dtn=await cursor.toArray()
-                                                //console.log(dtn)
-                                            }else{
+                                            let collection=db.collection(name) ; // current driver version                                             
+                                            let result=await collection.updateOne(params.filter ,params.set,params.options)                                            
                                                 
-                                            }                                     
+                                            let dtn=[];                                            
 
                                             res.jsonp({ data : result , status : "success" ,bStatus : true});
-                                        }
-
-                                        updateOne( name,{ filter : { "_id"  : id } , set : { "$set" : data }, options : {} });                                        
-                                            
+                                        }                                        
+                                        
+                                        updateOne( name,{ filter : { "$expr": { "$eq": ["$_id", { "$toObjectId": id  }] } } , set : { "$set" : data }, options : {} }); // filter based on ID and update                                        
+                                       
                                     }
 
                                     return
@@ -643,7 +629,186 @@ let main={
 
                                     return
                                 break;
-                                
+
+                                case "saveSchema":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let pathr=path.join(__dirname,  npath );
+
+                                        let name=bd.name;
+
+                                        let project=""
+
+
+                                        if (!fs.existsSync(pathr)){
+                                            fs.mkdirSync(pathr)
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project
+                                                if (!fs.existsSync(pathr + "/" + project)){
+                                                    fs.mkdirSync(pathr + "/" + project)
+                                                }
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathr + project  )){
+                                            fs.mkdirSync(pathr +  project)
+                                            
+                                        }
+                                        pathr=pathr +  project +"/" + name + ".json";
+                                       
+                                        let dataStr=""
+
+                                        try {
+                                            dataStr=JSON.stringify(bd.schema, null, 2)
+                                        } catch (error) {
+                                            console.log("parse error", error );
+                                        }
+
+                                        fs.writeFile(pathr,dataStr,(err)=>{
+                                            if (err){
+                                                console.log("save err : ",err)
+                                            }
+                                            res.jsonp({ data : {} , status : "success" ,bStatus : true});                                
+                                        })
+                                        
+                                    }
+
+                                    return
+                                break;
+                                case "loadSchema":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let pathr=path.join(__dirname,  npath );
+
+                                        let name=bd.name;
+
+                                        let project=""
+
+
+                                        let error_status=false
+                                        let error_txt=""
+
+                                        if (!fs.existsSync(pathr)){
+                                            error_status=true
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project                                                
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathr + project  )){                                            
+                                            error_status=true
+                                        }
+                                        pathr=path.resolve(pathr +  project +"/" + name + ".json");
+                                        
+                                        
+
+                                        if (error_status===false){
+                                            fs.readFile( pathr, function(err, data){
+                                                if (err){                                                
+                                                    res.jsonp({ data : data , status : "error" ,bStatus : false,error : err});                                
+                                                    return;
+                                                }
+
+                                                
+                                                try {                                                    
+                                                    data=JSON.parse(data)
+                                                } catch (error) {
+                                                    console.log("readfile : " ,error)
+                                                }
+
+                                                res.jsonp({ data : data , status : "success" ,bStatus : true});                                
+
+                                            });
+                                        }else{
+                                            res.jsonp({ data : data , status : "success" ,bStatus : true});                                
+                                        }                                        
+                                    }
+
+                                    return
+                                break;                                
+                                case "listSchema":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let pathr=path.join(__dirname,  npath );
+
+                                        let name=bd.name;
+
+                                        let project=""
+                                        let error_status=false
+                                        let error_txt=""
+
+                                        if (!fs.existsSync(pathr)){
+                                            error_status=true
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project
+                                                if (!fs.existsSync(pathr + "/" + project)){
+                                                    error_status=true
+                                                }
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathr + project  )){                                            
+                                            error_status=true
+                                        }
+                                        pathr=pathr +  project ;
+                                                                                    
+                                        let files=[]
+
+                                        if (error_status===false){
+                                            readdir(pathr,
+                                                (...args)=>{                                                    
+                                                    let rr=args[0];
+                                                    if (rr.isDir===false){
+                                                        let nr={ name : rr.name , path : rr.path }
+                                                        files.push(nr)
+                                                    }
+                                                },
+                                                (...args)=>{
+                                                    
+                                                }
+                                            );
+                                        }
+
+                                        res.jsonp({ data : { all : files } , status : "success" ,bStatus : true});
+                                        
+                                    }
+
+                                    return
+                                break;
+                            
                                 default:
                             }
 
@@ -654,7 +819,117 @@ let main={
                     } 
 
 
-                },                
+                },   
+                {   // projectsVdev
+                    name  : "projectsVdev",
+                    route : "/projectsVdev", // if route not included it will defualt to to name
+                    type : "post", // get or post
+                    cb : function(req, res, corestuff){ // or fn or callback
+                        var bd=req.body; // get data sent from front end
+                        let gdb=corestuff.mds.vrtw.gdb;
+                        
+                        let mainsubFN=()=>{            
+                            let apiName="projectsVdev"
+                            switch(bd._type){ // if for example type var string was sent in body data then can run a selection                             
+                                case "list":  
+                                    let nr1={};
+                                    gdb[apiName].list(nr1, (dt)=>{
+                                        let nd
+                
+                                        if (dt.length > 0){
+                                            nd=dt
+                                        }else{
+                                            nd=[]
+                                        }
+                                        
+                                        res.jsonp({ data : nd ,
+                                                    status : "list" + "projectsVdev" ,bStatus : true
+                                        })
+                                        return
+                                    });
+                                    
+                                    return;
+                                    break;                            
+                                case "new":  
+                                    if (true){
+                                        let nr2={                                                                                                                                  
+                                            "name" : bd.name,
+                                            "owner" : bd.Owner,
+                                            "groups" : bd.groups,
+                                        };
+                                        
+                                        gdb[apiName].new(nr2, (dt)=>{                                    
+                                            let ret={ status : "new" + "projectsVdev", bStatus : true}
+                                            ret[apiName + "ID"]=dt[apiName + "ID"]
+                                            
+                                            res.jsonp(ret)
+                                            return
+                                        });
+                                                                                                    
+                                        return;
+                                    }
+                                    break;
+                                case "save":                                             
+                                    let nr3={ 
+                                        "name" : bd.name,
+                                        "owner" : bd.Owner,
+                                        "groups" : bd.groups,
+                                    };
+                                    
+                                    nr3[apiName + "ID"]=bd[apiName + "ID"]                    
+                                    
+                                    gdb[apiName].save(nr3, (dt)=>{                        
+                                        let ret={ status : "save" + apiName, bStatus : true}
+                                        ret[apiName + "ID"]=dt[apiName + "ID"]                                    
+                                        res.jsonp(ret)                                        
+                                        return
+                                    });                  
+                                                                    
+                                    return;
+                                    break;
+                                case "get":                                
+                                    if (bd[apiName + "ID"] ){
+                                        let nr4={} 
+                                        nr4[apiName + "ID"]=bd[apiName + "ID"] 
+                
+                                        gdb[apiName].get(nr4, (dt)=>{
+                                            //cl(dt)
+                                            // #todo - return id for note to be used in future 
+                                        
+                                            let nd={}
+                
+                                            if (dt.length > 0){
+                                                nd=dt[0]
+                                            }
+                                            
+                                            res.jsonp({ data : nd ,
+                                                        status : "get" + apiName ,bStatus : true
+                                            })
+                                            return
+                                        });
+                                    }else{
+                                        res.jsonp({ 
+                                            data : [],
+                                            status : "get" + apiName + ": no " + apiName + "ID" ,bStatus : false
+                                        })
+                                    }
+                                                                        
+                                    return;
+                                    break;   
+                            
+                            }
+                
+                            res.jsonp({ status : "notype" + apiName,bStatus : false})
+                
+                        }        
+                
+                        mainsubFN()
+                
+                        return                        
+                    }  
+                },
+                
+                             
                 
             ],
             apiExtra : {
@@ -663,6 +938,32 @@ let main={
                 }
             }
             
+}
+
+
+let readdir=(files_path, cb ,cbfinal)=>{
+        
+    var files=fs.readdirSync(files_path);
+    
+    var recs={ tc :0 , fc : 0 ,  dc : 0 , files : files}
+    $cn.each( files  , function(f,i){
+        //console.log( "fa " , f )
+        recs.tc++
+        var fp=files_path + "/" + f
+        var stat=fs.lstatSync(  fp) 
+        if (stat.isDirectory()) {
+            recs.dc++
+            cb( { name : f, f : f , fp : fp ,path :fp, isDir : true , stat : stat})
+                            
+        }else{
+            recs.fc++
+            cb( { name : f, f : f , fp : fp ,path :fp  , isDir : false , stat : stat })
+        }
+    })
+    if (cbfinal){
+        cbfinal(recs)
+    }
+    
 }
  
 module.exports[modName]=main;
