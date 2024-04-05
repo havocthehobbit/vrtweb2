@@ -9,6 +9,8 @@ import { CustomHook } from "./reactCmpt/customHook";
 import { CustomAPI } from "./API/customAPI";
 import { CustomDbAPI } from "./API/customDB";
 
+import { SchemasListLoad } from "../schemas/schema";
+
 // useHook : ret- hook;string ,cmpt;string 
 
 export const Cmpt=(props)=>{
@@ -19,6 +21,9 @@ export const Cmpt=(props)=>{
     let [customHookShowHide, setCustomHookShowHide]=useState(false)
     let [customAPIShowHide, setCustomAPIShowHide]=useState(false)
     let [customDBShowHide, setCustomDBShowHide]=useState(false)
+    
+
+    
 
     let style={
         position  : "relative",
@@ -80,6 +85,14 @@ export const Cmpt=(props)=>{
                     }}
                 >show/hide CustomDbAPI</button>  
 
+                <div
+                    style={{
+
+                    }}
+                >
+                    <label>schema</label>
+                    <SchemasListLoad />
+                </div>
 
                 <div
                     style={{...{

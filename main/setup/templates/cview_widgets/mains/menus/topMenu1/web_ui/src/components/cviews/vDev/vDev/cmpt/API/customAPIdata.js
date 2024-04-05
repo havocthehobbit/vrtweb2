@@ -109,87 +109,87 @@ ret.customAPI=`{   // ${nameAPI}
         let mainsubFN=()=>{            
             let apiName="${nameAPI}"
             switch(bd._type){ // if for example type var string was sent in body data then can run a selection                             
-                case "list":  
-                    let nr1={};
-                    gdb[apiName].list(nr1, (dt)=>{
-                        let nd
-
-                        if (dt.length > 0){
-                            nd=dt
-                        }else{
-                            nd=[]
-                        }
-                        
-                        res.jsonp({ data : nd ,
-                                    status : "list" + "${nameAPI}" ,bStatus : true
-                        })
-                        return
-                    });
-                    
-                    return;
-                    break;                            
-                case "new":                                                                                       
-                    let nr2={                                                                                                                                  
-                        
-                    };
-                    
-                    gdb[apiName].new(nr2, (dt)=>{                                    
-                        let ret={ status : "new" + "${nameAPI}", bStatus : true}
-                        ret[apiName + "ID"]=dt[apiName + "ID"]
-                        
-                        res.jsonp(ret)
-                        return
-                    });
-                                                                                
-                    return;
-                    break;
-                case "save":                                             
-                    let nr3={ 
-                        "owner" : bd.Owner,
-                        "groups" : bd.groups,
-                    };
-                    
-                    nr3[apiName + "ID"]=bd[apiName + "ID"]                    
-
-                    gdb[apiName].save(nr3, (dt)=>{                        
-                        let ret={ status : "save" + apiName, bStatus : true}
-                        ret[apiName + "ID"]=dt[apiName + "ID"]                                    
-                        res.jsonp(ret)                                        
-                        return
-                    });                  
-                                                    
-                    return;
-                    break;
-                case "get":                                
-                    if (bd[apiName + "ID"] ){
-                        let nr4={} 
-                        nr4[apiName + "ID"]=bd[apiName + "ID"] 
-
-                        gdb[apiName].get(nr4, (dt)=>{
-                            //cl(dt)
-                            // #todo - return id for note to be used in future 
-                        
-                            let nd={}
+                case "list":
+                    if (true){
+                        let nr={};
+                        gdb[apiName].list(nr, (dt)=>{
+                            let nd
 
                             if (dt.length > 0){
-                                nd=dt[0]
+                                nd=dt
+                            }else{
+                                nd=[]
                             }
                             
                             res.jsonp({ data : nd ,
-                                        status : "get" + apiName ,bStatus : true
+                                        status : "list" + "${nameAPI}" ,bStatus : true
                             })
                             return
                         });
-                    }else{
-                        res.jsonp({ 
-                            data : [],
-                            status : "get" + apiName + ": no " + apiName + "ID" ,bStatus : false
-                        })
+                        
+                        return;
                     }
+                    break;                            
+                case "new":
+                    if (true){
+                        let nr={};                                                                                       
+                                            
+                        gdb[apiName].new(nr, (dt)=>{                                    
+                            let ret={ status : "new" + "${nameAPI}", bStatus : true}
+                            ret[apiName + "ID"]=dt[apiName + "ID"]
+                            
+                            res.jsonp(ret)
+                            return
+                        });
+                                                                                    
+                        return;
+                    }
+                    break;
+                case "save":
+                    if (true){
+                        let nr={};                                              
+                                            
+                        nr[apiName + "ID"]=bd[apiName + "ID"]                    
+
+                        gdb[apiName].save(nr, (dt)=>{                        
+                            let ret={ status : "save" + apiName, bStatus : true}
+                            ret[apiName + "ID"]=dt[apiName + "ID"]                                    
+                            res.jsonp(ret)                                        
+                            return
+                        });                  
                                                         
-                    return;
-                    break;   
-            
+                        return;
+                    }
+                    break;
+                case "get":
+                    if (true){
+                        if (bd[apiName + "ID"] ){
+                            let nr={} 
+                            nr[apiName + "ID"]=bd[apiName + "ID"] 
+
+                            gdb[apiName].get(nr, (dt)=>{                            
+                                let nd={}
+
+                                if (dt.length > 0){
+                                    nd=dt[0]
+                                }
+                                
+                                res.jsonp({ data : nd ,
+                                    status : "get" + apiName ,bStatus : true
+                                })
+                                return
+                                
+                            });
+                        }else{
+                            res.jsonp({ 
+                                data : [],
+                                status : "get" + apiName + ": no " + apiName + "ID" ,bStatus : false
+                            })
+                        }
+                                                            
+                        return;
+                    }
+                    break;            
             }
 
             res.jsonp({ status : "notype" + apiName,bStatus : false})
