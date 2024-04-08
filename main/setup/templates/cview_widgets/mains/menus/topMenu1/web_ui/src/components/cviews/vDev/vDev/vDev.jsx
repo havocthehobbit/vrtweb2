@@ -14,6 +14,8 @@ import { Features } from "./features/features"
 import { Bugs } from "./bugs/bugs"
 import { Notes } from "./notes/notes"
 import { Cmpt } from "./cmpt/cmpt"
+import { Schemas } from "./schemas/schema"
+import { Projects } from "./projects/projects"
 
 export const vDev=(props)=>{
     
@@ -96,6 +98,25 @@ export const vDev=(props)=>{
                 }}
             />
             
+            
+            <Schemas
+                style={{ 
+                    position : "relaive",
+                    display : "inline-block",
+                    margin : 5 ,
+                    height : 600
+                }}
+            />
+
+
+            <Projects
+                style={{ 
+                    position : "relaive",
+                    display : "inline-block",
+                    margin : 5 
+                }}
+            />
+
             
             
 

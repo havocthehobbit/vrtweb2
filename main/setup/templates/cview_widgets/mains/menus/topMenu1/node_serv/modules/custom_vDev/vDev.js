@@ -791,10 +791,10 @@ let main={
                                             readdir(pathr,
                                                 (...args)=>{                                                    
                                                     let rr=args[0];
-                                                    if (rr.isDir===false){
-                                                        let nr={ name : rr.name , path : rr.path }
+                                                    //if (rr.isDir===false){
+                                                        let nr={ name : rr.name , path : rr.path, isDir : rr.isDir}
                                                         files.push(nr)
-                                                    }
+                                                    //}
                                                 },
                                                 (...args)=>{
                                                     

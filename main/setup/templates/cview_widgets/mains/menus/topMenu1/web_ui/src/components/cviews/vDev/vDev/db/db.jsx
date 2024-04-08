@@ -649,6 +649,7 @@ export const Db=(props)=>{
         databases.forEach((r,i)=>{
             arrE.push(
                 <div
+                    key={i}
                     style={{
                         
                     }}
@@ -697,9 +698,16 @@ export const Db=(props)=>{
         tables.forEach((r,i)=>{
             arrE.push(
                 <div
+                    key={i}
                     tablename={r.name}
                     style={{
-                        
+                        cursor : "pointer",
+                        padding  :2 ,
+                        margin  : 1,
+                        borderRadius : 4,
+                        border : "solid thin black",
+                        background  : "lightblue",
+
                     }}
                     onClick={(e)=>{
                         let val=e.target.getAttribute("tablename")
@@ -813,7 +821,7 @@ export const Db=(props)=>{
                 for (let p in r){
                     arrTmpHeaderE.push(
                         <th
-                        
+                            key={"th_" + p + "_" + c}
                         >
                             {p}
                         </th>
@@ -823,7 +831,7 @@ export const Db=(props)=>{
                     arrTmpE.push(
                         <td
                             recmongoid={r._id}
-                            key={c}
+                            key={ "td_" + p + "_" + c  }
                             style={{
                                 position : "relative",
                                 border :"solid thin lightgrey",
