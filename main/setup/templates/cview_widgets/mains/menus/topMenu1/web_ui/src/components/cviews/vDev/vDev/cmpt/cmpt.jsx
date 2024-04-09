@@ -21,15 +21,17 @@ export const Cmpt=(props)=>{
     let [customHookShowHide, setCustomHookShowHide]=useState(false)
     let [customAPIShowHide, setCustomAPIShowHide]=useState(false)
     let [customDBShowHide, setCustomDBShowHide]=useState(false)
-    
 
+    let [currentSchemaData, setCurrentSchemaData]=useState({})
+    
+    
     
 
     let style={
         position  : "relative",
         background : "white",
         width : 1200,
-        height : 300, 
+        height : 600, 
         borderRadius : 8 ,
         overflow : "hidden",
 
@@ -60,16 +62,7 @@ export const Cmpt=(props)=>{
         >
             Component
             <br/>
-
-            <div
-                style={{
-                    position  : "relative",
-                    width : 1000,
-                    height : 600,                    
-                    overflow : "auto"
-                }}  
-            >
-                <button 
+            <button 
                     onClick={()=>{
                         setCustomHookShowHide(!customHookShowHide);
                     }}
@@ -84,25 +77,64 @@ export const Cmpt=(props)=>{
                         setCustomDBShowHide(!customDBShowHide);
                     }}
                 >show/hide CustomDbAPI</button>  
-
-                <div
+                 <div
                     style={{
-
+                        position : "relative",
+                        
                     }}
                 >
                     <label>schema</label>
                     <SchemasListLoad 
+                        style={{
+                            //margin : 0,
+                            height : undefined,
+                            width : undefined,
+                            display : "inline-block",
+                        }}
                         params={{ showInputs : false}}
                         onClick={(dt)=>{
                             //alert(JSON.stringify(dt));
                             // data. { "name" :"" ,"version" : "0","schema" : {} ,"type" : " " , "type" : [], "subSchema" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
                             // schemaSubDef={ "name" :"" ,"schema" : {}  ,"type" : " " , "type" : [], "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
-
+                            if (dt.data){
+                                if (typeof(dt.data)==="object"){
+                                    setCurrentSchemaData(dt.data)
+                                }
+                            }
 
                         }}
                     />
+                    <div
+                        style={{
+                            //margin : 0,
+                            height : undefined,
+                            width : undefined,
+                            display : "inline-block",
+                            width : 400,
+                        }}
+                    >
+                        <textarea
+                            value={JSON.stringify(currentSchemaData,null,2)}
+                            onChange={()=>{
+
+                            }}
+                        />
+                    </div>
                 </div>
 
+
+            <div
+                style={{
+                    position  : "relative",
+                    width : 1000,
+                    //height : 300,                    
+                    height : style.height - 225,                    
+                    overflow : "auto"
+                }}  
+            >
+                
+
+               
                 <div
                     style={{...{
                         position  : "relative",
@@ -111,7 +143,7 @@ export const Cmpt=(props)=>{
                         background : "green",
                         marginTop : 10,
                         padding : 1, 
-                        boder : "solid thin grey"
+                        border : "solid thin grey"
                     },...{}}}  
                 >
                     
@@ -132,7 +164,7 @@ export const Cmpt=(props)=>{
                         background : "blue",
                         marginTop : 10,
                         padding : 1, 
-                        boder : "solid thin grey"
+                        border : "solid thin grey"
                     },...{}}}   
                 >
 
@@ -153,8 +185,8 @@ export const Cmpt=(props)=>{
                         background : "yellow",
                         marginTop : 10,
                         padding : 1, 
-                        boder : "solid thin grey"
-                    },...customDBShowHideCSS}}  
+                        border : "solid thin grey"
+                    },...{}}}  
                 >
                     <div>CustomDbAPI</div>
                     <div
