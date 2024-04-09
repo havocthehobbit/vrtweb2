@@ -65,7 +65,7 @@ export const Cmpt=(props)=>{
                 style={{
                     position  : "relative",
                     width : 1000,
-                    height : 300,                    
+                    height : 600,                    
                     overflow : "auto"
                 }}  
             >
@@ -91,7 +91,16 @@ export const Cmpt=(props)=>{
                     }}
                 >
                     <label>schema</label>
-                    <SchemasListLoad />
+                    <SchemasListLoad 
+                        params={{ showInputs : false}}
+                        onClick={(dt)=>{
+                            //alert(JSON.stringify(dt));
+                            // data. { "name" :"" ,"version" : "0","schema" : {} ,"type" : " " , "type" : [], "subSchema" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
+                            // schemaSubDef={ "name" :"" ,"schema" : {}  ,"type" : " " , "type" : [], "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
+
+
+                        }}
+                    />
                 </div>
 
                 <div
@@ -101,10 +110,17 @@ export const Cmpt=(props)=>{
                         overflow : "auto",
                         background : "green",
                         marginTop : 10,
-                    },...customHookShowHideCSS}}  
+                        padding : 1, 
+                        boder : "solid thin grey"
+                    },...{}}}  
                 >
-                    <CustomHook />
                     
+                        <div>CustomHook</div>
+                        <div
+                            style={customHookShowHideCSS} 
+                        >
+                            <CustomHook />
+                        </div>
                 </div>
 
                 
@@ -115,10 +131,17 @@ export const Cmpt=(props)=>{
                         overflow : "auto",
                         background : "blue",
                         marginTop : 10,
-                    },...customAPIShowHideCSS}}   
+                        padding : 1, 
+                        boder : "solid thin grey"
+                    },...{}}}   
                 >
-                    <CustomAPI />
-                    
+
+                    <div>CustomAPI</div>
+                    <div
+                         style={customAPIShowHideCSS} 
+                    >
+                        <CustomAPI />                    
+                    </div>
                 </div>
 
                 
@@ -129,10 +152,16 @@ export const Cmpt=(props)=>{
                         overflow : "auto",
                         background : "yellow",
                         marginTop : 10,
+                        padding : 1, 
+                        boder : "solid thin grey"
                     },...customDBShowHideCSS}}  
                 >
-                    <CustomDbAPI />
-                    
+                    <div>CustomDbAPI</div>
+                    <div
+                         style={customDBShowHideCSS} 
+                    >
+                        <CustomDbAPI />
+                    </div>
                 </div>
             </div>
 

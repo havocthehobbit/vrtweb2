@@ -15,6 +15,23 @@ let tof=$cn.tof;
 let isOb=$cn.isOb
 //let cl=$cn.l
 
+let schemaValRec={
+    "name" : "",
+    "type" : "",
+    "desc" : "",
+    "subSchemaName" : "",
+    "schemaPath" : [],
+    "schemaPathStr" : "",
+    "rules" : [],
+    "keys" : [],
+    "exampleVal" : "",
+    "recalc" : true,
+    "uuid" : "",
+}
+
+let schemaDef={ "name" :"" ,"version" : "0","schema" : {} ,"type" : " " , "type" : [], "subSchema" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
+let schemaSubDef={ "name" :"" ,"schema" : {}  ,"type" : " " , "type" : [], "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
+    
 
 export const SchemasListLoad=(props)=>{ 
     let initC=useRef(true)
@@ -23,17 +40,34 @@ export const SchemasListLoad=(props)=>{
     let [project,setProject]=useState("");
     let [exampleTxt,setExampleTxt]=useState("{}");
     let [exampleJsn,setExampleJsn]=useState({});
+    let [exampleTxtSubSchema,setExampleTxtSubSchema]=useState("{}");
+    let [exampleJsnSubSchema,setExampleJsnSubSchema]=useState({});
 
-    let schemaDef={ name :"" ,version : "0",schema : {} , subSchema : {} , desc : "" , notes : "" , keys : {} ,idx : {}  }
+    let [schemaSubSchema,setSchemaSubSchema]=useState({...schemaSubDef});
+    let [schemaTxtSubSchema,setSchemaTxtSubSchema]=useState(JSON.stringify(schemaSubDef,null,2));
+
     let [schema,setSchema]=useState({...schemaDef});
     let [schemaTxt,setSchemaTxt]=useState(JSON.stringify(schemaDef,null,2));
 
-    let [descTxt,setDescTxt]=useState("");
-    let [notesTxt,setNotesTxt]=useState(""); 
 
-    
+    let [descTxt,setDescTxt]=useState("");
+    let [notesTxt,setNotesTxt]=useState("");
+
     // list
-    let [listSchemaData,setListSchemaData]=useState([]);
+    let [listSchemaData,setListSchemaData]=useState([]); 
+    
+    //
+    let [errorMain,setErrorMain]=useState("");
+    let [errorMainSubSchema,setErrorMainSubSchema]=useState("");
+
+
+
+    let [currentProp,setCurrentProp]=useState("");
+    let [currentSchemaSub,setCurrentSchemaSub]=useState("__vw__main");
+    let [currentSchemaSubTxt,setCurrentSchemaSubTxt]=useState("__vw__main");
+
+    //let [currentSchemaSubPrev,setCurrentSchemaSubPrev]=useState("");
+    let currentSchemaSubPrevRef=useRef("");
 
     useEffect(()=>{
         if (initC.current){
@@ -43,24 +77,33 @@ export const SchemasListLoad=(props)=>{
         }        
     },[]);
 
-    // ---------------------------
+    useEffect(()=>{
+            
+        if (currentSchemaSub==="__vw__main" || currentSchemaSub===""){
 
-    let schemaValRec={
-        "name" : "",
-        "type" : "",
-        "desc" : "",
-        "subSchemaName" : "",
-        "schemaPath" : [],
-        "schemaPathStr" : "",
-        "rules" : [],
-        "keys" : [],
-        "exampleVal" : "",
-        "recalc" : true,
-        "uuid" : "",
-    }
+        }else{
+            
+        }
+        
 
+    },[currentSchemaSub]);
 
     // ---------------------------
+
+        let onClick=()=>{}
+        if (props.onClick){
+            onClick=props.onClick;
+        }
+
+        let showinput=true;
+        let showinputCssDisplay="block"
+        if (showinput){
+            showinputCssDisplay="none"            
+        }
+
+    // ---------------------------
+
+   
 
     let listSchema=(...args)=>{
             
@@ -85,6 +128,7 @@ export const SchemasListLoad=(props)=>{
             
     }
 
+    
     let loadSchema=(...args)=>{
         loadSchemaBE(args[0],(dt)=>{
 
@@ -135,24 +179,87 @@ export const SchemasListLoad=(props)=>{
     let listSchemaE=(()=>{
         let arrE=[]
 
-        listSchemaData.forEach((r,i)=>{
-            let name=r.name.replace(".json", "")
-            arrE.push(
+        let styledef={
+            background : "lightblue",
+            cursor : "pointer",
+            margin : 1,
+            padding : 2,
+            borderRadius : 4,
+            border : "solid thin black"
+        }
+
+        let ni1=0;
+        // up/back dir
+        arrE.push(
+            <div
+                key={ni1}
+                
+                style={{...styledef,...{ padding :  0,color : "grey",overflow : "hidden"}}}
+                onClick={(e)=>{
+                    setProject("");                        
+                    setTimeout(listSchema({project : project}),1500 );
+                }}
+            >
                 <div
-                    key={i}
-                    rname={name}
                     style={{
-                        cursor : "pointer",
-                    }}
-                    onClick={(e)=>{
-                        let val=e.target.getAttribute("rname");
-                        loadSchema({ name : val ,project : project },(dt)=>{
-                            
-                            loadedSchemaDataSetState(dt)
-                        })
+                        position :"relative",
+                        height : 15,
                     }}
                 >
-                    {name}
+                    <div
+                        style={{
+                            position :"absolute",                                
+                            top : -5,
+                            left : 100
+                            
+                        }}
+                    >{"..  <--"}</div>
+                    
+                </div>
+                
+
+            </div>
+        )
+        ni1++;
+
+        listSchemaData.forEach((r,i)=>{
+            let name=r.name.replace(".json", "")
+            let desc=`${name}`;
+
+            let style={...styledef}
+
+            let isDir="false";
+            if (r.isDir){
+                isDir="true";
+                desc=`${name}.proj`;
+                style.background="DarkCyan";
+            }          
+            
+            
+            
+            let ni2=i + ni1;
+            arrE.push(
+                <div
+                    key={ni2}
+                    rname={name}
+                    isdir={isDir}
+                    style={style}
+                    onClick={(e)=>{
+                        let rname=e.target.getAttribute("rname");
+                        let isDir=e.target.getAttribute("isdir");
+
+                        if (isDir==="false"){
+                            loadSchema({ name : rname ,project : project },(dt)=>{                                    
+                                loadedSchemaDataSetState(dt)
+                                onClick(dt)
+                            })
+                        }else{
+                            setProject(rname)
+                            setTimeout(listSchema({project : project}),1500 )
+                        }
+                    }}
+                >
+                    {desc}
 
                 </div>
             )
@@ -163,16 +270,21 @@ export const SchemasListLoad=(props)=>{
             <div
                 style={{
                     position : "relative",
-                    
+                    border :"black solid thin",
+                    borderRadius : 6,
+                    margin : 2,
+                    padding : 2,
                     width : 300,
                     height : 100,
                     overflow : "hidden",
                 }}
             >
+                Schemas
                 <div
                     style={{
                         position : "relative",
                         border :"black solid thin",
+                        borderRadius : 4,
                         width : 285,
                         height : 85,
                         overflow : "auto",
@@ -188,11 +300,11 @@ export const SchemasListLoad=(props)=>{
 
     let style={
         position  : "relative",
-        //background : "white",
-        //width : 1200,
-        //height : 300, 
-        //borderRadius : 8 ,
-        //overflow : "hidden",
+        background : "white",
+        width : 1200,
+        height : 300, 
+        borderRadius : 8 ,
+        overflow : "hidden",
 
     }
 
@@ -202,12 +314,15 @@ export const SchemasListLoad=(props)=>{
     }
 
     return (
-        <div>
+        <div
+            style={style}
+        >
             <br/>
 
             <input 
                 placeholder='schemaName'
                 value={schemaName}
+                style={{display : showinputCssDisplay}}
                 onChange={(e)=>{
                     let val=e.target.value;
 
@@ -216,6 +331,7 @@ export const SchemasListLoad=(props)=>{
             />
 
             <input 
+                style={{display : showinputCssDisplay}}
                 placeholder='projectName'
                 value={project}
                 onChange={(e)=>{
@@ -246,9 +362,7 @@ export const Schemas=(props)=>{
     let [exampleTxtSubSchema,setExampleTxtSubSchema]=useState("{}");
     let [exampleJsnSubSchema,setExampleJsnSubSchema]=useState({});
 
-    let schemaDef={ "name" :"" ,"version" : "0","schema" : {} , "subSchema" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
-    let schemaSubDef={ "name" :"" ,"schema" : {}  , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
-    let [schemaSubSchema,setSchemaSubSchema]=useState({...schemaSubDef});
+     let [schemaSubSchema,setSchemaSubSchema]=useState({...schemaSubDef});
     let [schemaTxtSubSchema,setSchemaTxtSubSchema]=useState(JSON.stringify(schemaSubDef,null,2));
 
     let [schema,setSchema]=useState({...schemaDef});
@@ -301,23 +415,6 @@ export const Schemas=(props)=>{
 
         },[exampleJsn,exampleJsnSubSchema]);
     
-    // -----------------------------------------
-
-        let schemaValRec={
-            "name" : "",
-            "type" : "",
-            "desc" : "",
-            "subSchemaName" : "",
-            "schemaPath" : [],
-            "schemaPathStr" : "",
-            "rules" : [],
-            "keys" : [],
-            "exampleVal" : "",
-            "hasDefault"  : "",
-            "default" : "",
-            "recalc" : false,
-        }
-
     // -----------------------------------------
 
 
@@ -597,6 +694,7 @@ export const Schemas=(props)=>{
 
                 </div>
             )
+            ni1++;
 
             listSchemaData.forEach((r,i)=>{
                 let name=r.name.replace(".json", "")
@@ -624,7 +722,7 @@ export const Schemas=(props)=>{
 
                             if (isDir==="false"){
                                 loadSchema({ name : rname ,project : project },(dt)=>{                                    
-                                    loadedSchemaDataSetState(dt)
+                                    loadedSchemaDataSetState(dt)                                    
                                 })
                             }else{
                                 setProject(rname)

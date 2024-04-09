@@ -88,17 +88,18 @@ export const vDev=(props)=>{
                 }}
             />  
 
-
+            <br/>
 
             <Cmpt
                 style={{ 
                     position : "relaive",
                     display : "inline-block",
-                    margin : 5 
+                    margin : 5 ,
+                    height : 600
                 }}
             />
             
-            
+            <br/>
             <Schemas
                 style={{ 
                     position : "relaive",
