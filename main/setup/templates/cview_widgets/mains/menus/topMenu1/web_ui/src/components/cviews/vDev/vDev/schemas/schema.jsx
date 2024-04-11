@@ -29,8 +29,8 @@ let schemaValRec={
     "uuid" : "",
 }
 
-let schemaDef={ "name" :"" ,"version" : "0","schema" : {} ,"type" : " " , "type" : [], "subSchema" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
-let schemaSubDef={ "name" :"" ,"schema" : {}  ,"type" : " " , "type" : [], "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
+let schemaDef={ "name" :"" ,"version" : "0","schema" : {} ,"types" : " " , "type" : [], "subSchema" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
+let schemaSubDef={ "name" :"" ,"schema" : {}  ,"type" : " " , "types" : [], "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
     
 
 export const SchemasListLoad=(props)=>{ 
@@ -65,8 +65,7 @@ export const SchemasListLoad=(props)=>{
     let [currentProp,setCurrentProp]=useState("");
     let [currentSchemaSub,setCurrentSchemaSub]=useState("__vw__main");
     let [currentSchemaSubTxt,setCurrentSchemaSubTxt]=useState("__vw__main");
-
-    //let [currentSchemaSubPrev,setCurrentSchemaSubPrev]=useState("");
+    
     let currentSchemaSubPrevRef=useRef("");
 
     useEffect(()=>{
@@ -408,7 +407,7 @@ export const Schemas=(props)=>{
             
 
         },[currentSchemaSub]);
-
+        
         useEffect(()=>{
             
             updateSchemaRec()
@@ -1184,7 +1183,8 @@ export const Schemas=(props)=>{
                                 let nd=parseExampleTxt(exampleJsn)                        
                                 nd.name=schemaName.replace(/ / ,"");
                                 saveSchemaBE( { name : nd.name , schema :  schema , project : project.replace(/ / ,"")  } , ()=>{
-                                    // listProjects
+                                    listSchema()
+                                     
                                 })
                             }}
                         >

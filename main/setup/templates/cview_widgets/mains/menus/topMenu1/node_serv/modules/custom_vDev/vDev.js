@@ -318,7 +318,7 @@ let main={
                                             let dtn=[];
                                             if (true){
                                                 dtn=await cursor.toArray()
-                                                console.log(dtn)
+                                                //console.log(dtn)
                                             }else{
                                                 let tmpd=await cursor.toArray()
                                                 tmpd.forEach((r,i) => {
@@ -550,10 +550,10 @@ let main={
                                             //const dbrs = await db[name].find(params.criteria, params.aggregation);   // future version of driver
                                             // //console.log("db." + name + ".find( " + JSON.stringify(params.criteria) +" , " + JSON.stringify(params.aggregation) + " )" );
                                             //const dbrs = db[name].find(params.criteria, params.aggregation);
-                                            console.log("del .data" , params.data)
+                                            //console.log("del .data" , params.data)
                                             let collection=db.collection(name) ; // current driver version 
                                             let result=await collection.deleteOne(params.data)
-                                            console.log("del .data" , params.data)
+                                            //console.log("del .data" , params.data)
                                             let dtn=[];
                                             if (true){
                                                 //dtn=await cursor.toArray()
@@ -640,7 +640,9 @@ let main={
                                         let data={}
 
                                         let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "schema";
                                         let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
 
                                         let name=bd.name;
 
@@ -651,21 +653,24 @@ let main={
                                             fs.mkdirSync(pathr)
                                         }
 
+                                        if (!fs.existsSync(pathrSub)){
+                                            fs.mkdirSync(pathrSub)
+                                        }
+
                                         if (bd.project){
                                             if (bd.project!==""){                                            
                                                 project="/" + bd.project
-                                                if (!fs.existsSync(pathr + "/" + project)){
-                                                    fs.mkdirSync(pathr + "/" + project)
+                                                if (!fs.existsSync(pathrSub + "/" + project)){
+                                                    fs.mkdirSync(pathrSub + "/" + project)
                                                 }
                                             }
                                         }
-
                                         
-                                        if (!fs.existsSync(pathr + project  )){
-                                            fs.mkdirSync(pathr +  project)
+                                        if (!fs.existsSync(pathrSub + project  )){
+                                            fs.mkdirSync(pathrSub +  project)
                                             
                                         }
-                                        pathr=pathr +  project +"/" + name + ".json";
+                                        pathrSub=pathrSub +  project +"/" + name + ".json";
                                        
                                         let dataStr=""
 
@@ -675,7 +680,7 @@ let main={
                                             console.log("parse error", error );
                                         }
 
-                                        fs.writeFile(pathr,dataStr,(err)=>{
+                                        fs.writeFile(pathrSub,dataStr,(err)=>{
                                             if (err){
                                                 console.log("save err : ",err)
                                             }
@@ -696,7 +701,9 @@ let main={
                                         let data={}
 
                                         let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "schema";
                                         let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
 
                                         let name=bd.name;
 
@@ -710,6 +717,10 @@ let main={
                                             error_status=true
                                         }
 
+                                        if (!fs.existsSync(pathrSub)){
+                                            fs.mkdirSync(pathrSub)
+                                        }
+
                                         if (bd.project){
                                             if (bd.project!==""){                                            
                                                 project="/" + bd.project                                                
@@ -717,15 +728,15 @@ let main={
                                         }
 
                                         
-                                        if (!fs.existsSync(pathr + project  )){                                            
+                                        if (!fs.existsSync(pathrSub + project  )){                                            
                                             error_status=true
                                         }
-                                        pathr=path.resolve(pathr +  project +"/" + name + ".json");
+                                        pathrSub=path.resolve(pathrSub +  project +"/" + name + ".json");
                                         
                                         
 
                                         if (error_status===false){
-                                            fs.readFile( pathr, function(err, data){
+                                            fs.readFile( pathrSub, function(err, data){
                                                 if (err){                                                
                                                     res.jsonp({ data : data , status : "error" ,bStatus : false,error : err});                                
                                                     return;
@@ -758,7 +769,9 @@ let main={
                                         let data={}
 
                                         let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "schema";
                                         let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
 
                                         let name=bd.name;
 
@@ -768,6 +781,10 @@ let main={
 
                                         if (!fs.existsSync(pathr)){
                                             error_status=true
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            fs.mkdirSync(pathrSub)
                                         }
 
                                         if (bd.project){
@@ -780,15 +797,15 @@ let main={
                                         }
 
                                         
-                                        if (!fs.existsSync(pathr + project  )){                                            
+                                        if (!fs.existsSync(pathrSub + project  )){                                            
                                             error_status=true
                                         }
-                                        pathr=pathr +  project ;
+                                        pathrSub=pathrSub +  project ;
                                                                                     
                                         let files=[]
 
                                         if (error_status===false){
-                                            readdir(pathr,
+                                            readdir(pathrSub,
                                                 (...args)=>{                                                    
                                                     let rr=args[0];
                                                     //if (rr.isDir===false){
@@ -808,6 +825,402 @@ let main={
 
                                     return
                                 break;
+
+                                case "saveCmptDataGen":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "cmptDataGen";
+                                        let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
+
+                                        let name=bd.name;
+
+                                        let project=""
+
+
+                                        if (!fs.existsSync(pathr)){
+                                            fs.mkdirSync(pathr)
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            fs.mkdirSync(pathrSub)
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project
+                                                if (!fs.existsSync(pathrSub + "/" + project)){
+                                                    fs.mkdirSync(pathrSub + "/" + project)
+                                                }
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathrSub + project  )){
+                                            fs.mkdirSync(pathrSub +  project)
+                                            
+                                        }
+                                        pathrSub=pathrSub +  project +"/" + name + ".json";
+                                       
+                                        let dataStr=""
+
+                                        try {
+                                            dataStr=JSON.stringify(bd.data, null, 2)
+                                        } catch (error) {
+                                            console.log("parse error", error );
+                                        }
+
+                                        fs.writeFile(pathrSub,dataStr,(err)=>{
+                                            if (err){
+                                                console.log("save err : ",err)
+                                            }
+                                            res.jsonp({ data : {} , status : "success" ,bStatus : true});                                
+                                        })
+                                        
+                                    }
+
+                                    return
+                                break;
+                                case "loadCmptDataGen":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "cmptDataGen";
+                                        let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
+
+                                        let name=bd.name;
+
+                                        let project=""
+
+
+                                        let error_status=false
+                                        let error_txt=""
+
+                                        if (!fs.existsSync(pathr)){
+                                            error_status=true
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            fs.mkdirSync(pathrSub)
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project                                                
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathrSub + project  )){                                            
+                                            error_status=true
+                                        }
+                                        pathrSub=path.resolve(pathrSub +  project +"/" + name + ".json");
+                                        
+                                        
+
+                                        if (error_status===false){
+                                            fs.readFile( pathrSub, function(err, data){
+                                                if (err){                                                
+                                                    res.jsonp({ data : data , status : "error" ,bStatus : false,error : err});                                
+                                                    return;
+                                                }
+
+                                                
+                                                try {                                                    
+                                                    data=JSON.parse(data)
+                                                } catch (error) {
+                                                    console.log("readfile : " ,error)
+                                                }
+
+                                                res.jsonp({ data : data , status : "success" ,bStatus : true});                                
+
+                                            });
+                                        }else{
+                                            res.jsonp({ data : data , status : "success" ,bStatus : true});                                
+                                        }                                        
+                                    }
+
+                                    return
+                                break;                                
+                                case "listCmptDataGen":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "cmptDataGen";
+                                        let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
+
+                                        let name=bd.name;
+
+                                        let project=""
+                                        let error_status=false
+                                        let error_txt=""
+
+                                        if (!fs.existsSync(pathr)){
+                                            error_status=true
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            fs.mkdirSync(pathrSub)
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project
+                                                if (!fs.existsSync(pathrSub + "/" + project)){
+                                                    error_status=true
+                                                }
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathrSub + project  )){                                            
+                                            error_status=true
+                                        }
+                                        pathrSub=pathrSub +  project ;
+                                                                                    
+                                        let files=[]
+
+                                        if (error_status===false){
+                                            readdir(pathrSub,
+                                                (...args)=>{                                                    
+                                                    let rr=args[0];
+                                                    //if (rr.isDir===false){
+                                                        let nr={ name : rr.name , path : rr.path, isDir : rr.isDir}
+                                                        files.push(nr)
+                                                    //}
+                                                },
+                                                (...args)=>{
+                                                    
+                                                }
+                                            );
+                                        }
+
+                                        res.jsonp({ data : { all : files } , status : "success" ,bStatus : true});
+                                        
+                                    }
+
+                                    return
+                                break;
+
+                                case "saveViews":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "views";
+                                        let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
+
+                                        let name=bd.name;
+
+                                        let project=""
+
+
+                                        if (!fs.existsSync(pathr)){
+                                            fs.mkdirSync(pathr)
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            fs.mkdirSync(pathrSub)
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project
+                                                if (!fs.existsSync(pathrSub + "/" + project)){
+                                                    fs.mkdirSync(pathrSub + "/" + project)
+                                                }
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathrSub + project  )){
+                                            fs.mkdirSync(pathrSub +  project)
+                                            
+                                        }
+                                        pathrSub=pathrSub +  project +"/" + name + ".json";
+                                       
+                                        let dataStr=""
+
+                                        try {
+                                            dataStr=JSON.stringify(bd.data, null, 2)
+                                        } catch (error) {
+                                            console.log("parse error", error );
+                                        }
+
+                                        fs.writeFile(pathrSub,dataStr,(err)=>{
+                                            if (err){
+                                                console.log("save err : ",err)
+                                            }
+                                            res.jsonp({ data : {} , status : "success" ,bStatus : true});                                
+                                        })
+                                        
+                                    }
+
+                                    return
+                                break;
+                                case "loadViews":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "views";
+                                        let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
+
+                                        let name=bd.name;
+
+                                        let project=""
+
+
+                                        let error_status=false
+                                        let error_txt=""
+
+                                        if (!fs.existsSync(pathr)){
+                                            error_status=true
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            fs.mkdirSync(pathrSub)
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project                                                
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathrSub + project  )){                                            
+                                            error_status=true
+                                        }
+                                        pathrSub=path.resolve(pathrSub +  project +"/" + name + ".json");
+                                        
+                                        
+
+                                        if (error_status===false){
+                                            fs.readFile( pathrSub, function(err, data){
+                                                if (err){                                                
+                                                    res.jsonp({ data : data , status : "error" ,bStatus : false,error : err});                                
+                                                    return;
+                                                }
+
+                                                
+                                                try {                                                    
+                                                    data=JSON.parse(data)
+                                                } catch (error) {
+                                                    console.log("readfile : " ,error)
+                                                }
+
+                                                res.jsonp({ data : data , status : "success" ,bStatus : true});                                
+
+                                            });
+                                        }else{
+                                            res.jsonp({ data : data , status : "success" ,bStatus : true});                                
+                                        }                                        
+                                    }
+
+                                    return
+                                break;                                
+                                case "listViews":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "views";
+                                        let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
+
+                                        let name=bd.name;
+
+                                        let project=""
+                                        let error_status=false
+                                        let error_txt=""
+
+                                        if (!fs.existsSync(pathr)){
+                                            error_status=true
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            fs.mkdirSync(pathrSub)
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project
+                                                if (!fs.existsSync(pathrSub + "/" + project)){
+                                                    error_status=true
+                                                }
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathrSub + project  )){                                            
+                                            error_status=true
+                                        }
+                                        pathrSub=pathrSub +  project ;
+                                                                                    
+                                        let files=[]
+
+                                        if (error_status===false){
+                                            readdir(pathrSub,
+                                                (...args)=>{                                                    
+                                                    let rr=args[0];
+                                                    //if (rr.isDir===false){
+                                                        let nr={ name : rr.name , path : rr.path, isDir : rr.isDir}
+                                                        files.push(nr)
+                                                    //}
+                                                },
+                                                (...args)=>{
+                                                    
+                                                }
+                                            );
+                                        }
+
+                                        res.jsonp({ data : { all : files } , status : "success" ,bStatus : true});
+                                        
+                                    }
+
+                                    return
+                                break;
+                            
+                            
                             
                                 default:
                             }

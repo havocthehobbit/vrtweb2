@@ -20,7 +20,7 @@ export const CustomHook=(props)=>{
 
     let style={
         position  : "relative",
-        background : "white",
+        //background : "white",
         width : 1200,
         height : 300, 
         borderRadius : 8 ,

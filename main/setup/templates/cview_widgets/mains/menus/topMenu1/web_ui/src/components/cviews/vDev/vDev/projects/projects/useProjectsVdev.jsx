@@ -1,91 +1,24 @@
-let exData={};
-// usage customHookdata.useHook()
-//  return  hook;string ,cmpt;string }
+import { useState,useEffect,useRef,useContext ,Context , useMemo, useCallback} from "react";
+import $gl from "../../../../../common/globallib";
+import { $cn } from "../../../../../common/libNative";
 
-
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-};
-exData.useHook=(...args)=>{
-let ret={}
-let params={
-    name : "Component",
-    useGetRecsInit  : false, 
-    useGetRecsListInit : false,
-    useProps: [],
-};
-
-if (args[0]){
-    params={...params,...args[0] };
-}
-if (args[1]){
-    
-
-}
-
-let name=params.name;
-let names=params.name + "s";
-
-
-let tmpusePropsArrRet=(()=>{
-    let ret1="";
-    let len=parseInt(parseInt(params.useProps.length) - 1 );
-    params.useProps.forEach((r,i)=>{        
-        ret1+=r;
-        if (i > 0 || i < len){
-            ret1+=", ";
-        }
-        
-    })
-    return ret1;
-})();
-let varUseNames=[ 
-    name + "", name + "Def",
-    names + "", names + "List",
-    "set" + capitalizeFirstLetter(name) + "",
-    "set" + capitalizeFirstLetter(names) + "",
-    "set" + capitalizeFirstLetter(names) + "List",
-    name + "GetRec",
-    name + "GetRecs",
-    name + "ListRecs",
-    name + "Add",
-    name + "Update",
-    name + "Remove",
-
-];
-
-let varUseNamesArrRet=(()=>{
-    let ret1="";
-    let len=parseInt(parseInt(varUseNames.length) - 1 );
-    varUseNames.forEach((r,i)=>{        
-        ret1+=r;
-        if (i > 0 || i < len){
-            ret1+=", ";
-        }
-        
-    })
-    return ret1;
-})();
-ret.hook=`let {${varUseNamesArrRet}}=use${name}(${tmpusePropsArrRet})`;
-
-ret.cmpt=`import { useState,useEffect,useRef,useContext ,Context , useMemo, useCallback} from "react";
-import $gl from "../../../../common/globallib";
-import { $cn } from "../../../../common/libNative";
-
+//let feach=$cn.each
 let tof=$cn.tof;
-let isOb=$cn.isOb;
+//let isUn=$cn.isUn
+let isOb=$cn.isOb
+//let cl=$cn.l
 
-export const use${capitalizeFirstLetter(name)}=(props)=>{ // { recname, apiNameSpace , ..rec..IDmain , ..rec..ChangeCB }
-    let recName1="${name}";
+export const useProjectsVdev=(props)=>{ // { recname, apiNameSpace , ..rec..IDmain , ..rec..ChangeCB }    
+    let recName1="projectsVdev";
     if (props){
         if (props.recname){
             recName1=props.recname;
         }
     }
     let recsName1=recName1 + "s";
-    let apiNameSpace1="${name}" ;
+    let apiNameSpace1="projectsVdev" ;
     
-    let apiNameGetRecs="${name}" , useGetRecsInit=false ;
+    let apiNameGetRecs="projectsVdev" , useGetRecsInit=false ;
     let apiNameGetRecsList="list" , useGetRecsListInit=true ;    
     let apiNameGetRecAdd="new" ;    
     let apiNameGetRecSave="save" ;    
@@ -194,7 +127,7 @@ export const use${capitalizeFirstLetter(name)}=(props)=>{ // { recname, apiNameS
             prevData=prevRec.current.data
         }
         recChangeCB(rec,data,prevRec.current,prevData)
-            
+         
         prevRec.current=JSON.parse(JSON.stringify(rec));
     },[rec])
 
@@ -215,7 +148,7 @@ export const use${capitalizeFirstLetter(name)}=(props)=>{ // { recname, apiNameS
 
     
     
-    
+   
     //apiNameGetRecGet
     let fetchRecBE=(...args)=>{
         let useFakeFetch=false;// for temp Testing and local Dev Frist env
@@ -1063,13 +996,4 @@ export const use${capitalizeFirstLetter(name)}=(props)=>{ // { recname, apiNameS
     return retData
 
 }
-        
-        
-    
 
-`;
-
-    return ret
-}
-
-export const customHookdata=exData
