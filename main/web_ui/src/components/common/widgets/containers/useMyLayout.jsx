@@ -7,13 +7,14 @@ import { useWindowSize } from "../../../common/widgets/containers/useWindowSize"
     * 1.) import custom hook
     ```jsx
         import { useMyLayout } from "../../../../common/widgets/containers/useMyLaout";
+        import { useWindowSize } from "../../../../common/widgets/containers/useWindowSize";
     ```
 
     * 2.1) in component , create reference to change view state function , which you can use anywhere in your own component program to change the view
     ```jsx
         let setCurrStateRef=useRef(()=>{});
         
-        
+        let {wWidth,wHeight}=useWindowSize()
 
     ```
 
@@ -171,40 +172,40 @@ import { useWindowSize } from "../../../common/widgets/containers/useWindowSize"
     * 2.3) in component  , setup views , that we can switch between , that will have different our previous assets of reusable components arranged how we want , note in the posCont, we can arrange the layour of our assets , and use eLogic , to make realtime changes based on any logic 
     ```jsx
         name="viewMain";
-            posContsStates[name]={
-                name : name,
-                posCont : [ "title" , "linebreak1" , "menu" , "cards" , "checkers" ],            
-                eLogic : function(){
-                    let tt=this;
-                    let args=arguments;
-                    if (args.length > 0){
-                        tt=args[0]
-                    }
-                    let ret=tt.posCont
-                    if (wWidth < 700){
-                        ret=[ "menu" , "linebreak1" ,"Main"  ] // removed title based on screensize
-                    }
-                    return ret
+        posContsStates[name]={
+            name : name,
+            posCont : [ "title" , "linebreak1" , "menu" , "cards"  ],            
+            eLogic : function(){
+                let tt=this;
+                let args=arguments;
+                if (args.length > 0){
+                    tt=args[0]
                 }
+                let ret=tt.posCont
+                if (wWidth < 700){
+                    ret=[ "menu" , "linebreak1" ,"Main"  ] // removed title based on screensize
+                }
+                return ret
             }
+        }
 
-            name="editSettings";
-            posContsStates[name]={
-                name : name,
-                posCont : [ "title","menu"  ],            
-                eLogic : function(){
-                    let tt=this;
-                    let args=arguments;
-                    if (args.length > 0){
-                        tt=args[0]
-                    }
-                    let ret=tt.posCont
-                    if (wWidth < 700){
-                        //ret=[ "menu" , "linebreak1" , "Settings"  ]
-                    }
-                    return ret
+        name="editSettings";
+        posContsStates[name]={
+            name : name,
+            posCont : [ "title","menu"  ],            
+            eLogic : function(){
+                let tt=this;
+                let args=arguments;
+                if (args.length > 0){
+                    tt=args[0]
                 }
+                let ret=tt.posCont
+                if (wWidth < 700){
+                    //ret=[ "menu" , "linebreak1" , "Settings"  ]
+                }
+                return ret
             }
+        }
     ```
 
     ```jsx
@@ -220,6 +221,13 @@ import { useWindowSize } from "../../../common/widgets/containers/useWindowSize"
     ```
 
     ```jsx
+
+        <div
+            style={style}
+        >
+            {myLayout }
+        </div>
+
     ```
 
 */
@@ -394,7 +402,7 @@ export const useMyLayout=(props)=>{
             name="viewSummary";
             posContsStates[name]={
                 name : name,
-                posCont : [ "title" , "linebreak1" , "menu" , "summary" , "checkers" ],
+                posCont : [ "title" , "linebreak1" , "menu" , "summary"  ],
                 //eLogic : (...args)=>{
                 eLogic : function(){
                     let tt=this;
@@ -447,7 +455,7 @@ export const useMyLayout=(props)=>{
             name="viewSummary";
             posContsStates[name]={
                 name : name,
-                posCont : [ "title" , "linebreak1" , "menu" , "summary" , "checkers" ],
+                posCont : [ "title" , "linebreak1" , "menu" , "summary"],
                 //eLogic : (...args)=>{
                 eLogic : function(){
                     let tt=this;
