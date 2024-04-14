@@ -174,7 +174,7 @@ import { useWindowSize } from "../../../common/widgets/containers/useWindowSize"
         name="viewMain";
         posContsStates[name]={
             name : name,
-            posCont : [ "title" , "linebreak1" , "menu" , "cards"  ],            
+            posCont : [ "title" , "linebreak1" , "menu" ],            
             eLogic : function(){
                 let tt=this;
                 let args=arguments;
@@ -297,24 +297,8 @@ export const useMyLayout=(props)=>{
                             key={name}
                             style={menuStyle}
                         >
-                            <h4>menu</h4>  
-                            
-                            <div
-                                menuname={"viewCards"}
-                                style={{
-                                    position : "relative",
-                                    display : "inline-block",
-                                    cursor : "pointer",
-                                }}
-                                onClick={(e)=>{
-                                    let menuname=e.target.getAttribute("menuname");
-                                    setCurrState(menuname)
-                                }}
-                            >
-                                <label
-                                    menuname={"viewCards"}
-                                >Cards</label>
-                            </div>           
+                            <h4>menu</h4>                            
+                                   
                             <div
                                 menuname={"viewSummary"}
                                 style={{
