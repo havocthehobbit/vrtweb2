@@ -36,8 +36,8 @@ export const Cmpt=(props)=>{
     
     let [project,setProject]=useState("");
 
-    let cmptDataGenDef={ "name" :"" ,"version" : "0","data" : {} ,"type" : " " , "types" : [], "subSchema" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
-    let cmptDataGenSubDef={ "name" :"" ,"data" : {}  ,"types" : " " , "type" : [], "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
+    let cmptDataGenDef={ "name" :"" ,"version" : "0","data" : {} ,"type" : "" , "types" : [], "subSchema" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
+    let cmptDataGenSubDef={ "name" :"" ,"data" : {}  ,"type" : "" , "types" : [], "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
     
     let [descTxt,setDescTxt]=useState("");
     let [notesTxt,setNotesTxt]=useState("");

@@ -29,8 +29,8 @@ let schemaValRec={
     "uuid" : "",
 }
 
-let schemaDef={ "name" :"" ,"version" : "0","schema" : {} ,"types" : " " , "type" : [], "subSchema" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
-let schemaSubDef={ "name" :"" ,"schema" : {}  ,"type" : " " , "types" : [], "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
+let schemaDef={ "name" :"" ,"version" : "0","schema" : {} ,"types" : "" , "type" : [], "subSchema" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
+let schemaSubDef={ "name" :"" ,"schema" : {}  ,"type" : "" , "types" : [], "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
     
 
 export const SchemasListLoad=(props)=>{ 

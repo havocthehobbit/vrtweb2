@@ -47,13 +47,7 @@ export const vDev=(props)=>{
                 }}
             />
 
-            <Views
-                style={{ 
-                    position : "relaive",
-                    display : "inline-block",
-                    margin : 5 
-                }}
-            />
+            
 
             
             <CiCd
@@ -90,6 +84,15 @@ export const vDev=(props)=>{
 
             <br/>
 
+            <Views
+                style={{ 
+                    position : "relaive",
+                    display : "inline-block",
+                    margin : 5 
+                }}
+            />
+            <br/>
+
             <Cmpt
                 style={{ 
                     position : "relaive",
@@ -100,6 +103,8 @@ export const vDev=(props)=>{
             />
             
             <br/>
+            
+
             <Schemas
                 style={{ 
                     position : "relaive",
