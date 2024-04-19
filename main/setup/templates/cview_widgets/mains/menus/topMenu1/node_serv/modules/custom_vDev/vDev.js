@@ -718,7 +718,7 @@ let main={
                                         }
 
                                         if (!fs.existsSync(pathrSub)){
-                                            fs.mkdirSync(pathrSub)
+                                            error_status=true
                                         }
 
                                         if (bd.project){
@@ -784,7 +784,7 @@ let main={
                                         }
 
                                         if (!fs.existsSync(pathrSub)){
-                                            fs.mkdirSync(pathrSub)
+                                            error_status=true
                                         }
 
                                         if (bd.project){
@@ -915,7 +915,7 @@ let main={
                                         }
 
                                         if (!fs.existsSync(pathrSub)){
-                                            fs.mkdirSync(pathrSub)
+                                            error_status=true
                                         }
 
                                         if (bd.project){
@@ -981,7 +981,7 @@ let main={
                                         }
 
                                         if (!fs.existsSync(pathrSub)){
-                                            fs.mkdirSync(pathrSub)
+                                            error_status=true
                                         }
 
                                         if (bd.project){
@@ -1112,7 +1112,7 @@ let main={
                                         }
 
                                         if (!fs.existsSync(pathrSub)){
-                                            fs.mkdirSync(pathrSub)
+                                            error_status=true
                                         }
 
                                         if (bd.project){
@@ -1178,7 +1178,7 @@ let main={
                                         }
 
                                         if (!fs.existsSync(pathrSub)){
-                                            fs.mkdirSync(pathrSub)
+                                            error_status=true
                                         }
 
                                         if (bd.project){
@@ -1220,8 +1220,321 @@ let main={
                                     return
                                 break;
                             
-                            
-                            
+                                case "saveSettingsTmplt":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "settingTmplt";
+                                        let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
+
+                                        let name=bd.name;
+
+                                        let project=""
+
+
+                                        if (!fs.existsSync(pathr)){
+                                            fs.mkdirSync(pathr)
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            fs.mkdirSync(pathrSub)
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project
+                                                if (!fs.existsSync(pathrSub + "/" + project)){
+                                                    fs.mkdirSync(pathrSub + "/" + project)
+                                                }
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathrSub + project  )){
+                                            fs.mkdirSync(pathrSub +  project)
+                                            
+                                        }
+                                        pathrSub=pathrSub +  project +"/" + name + ".json";
+                                    
+                                        let dataStr=""
+
+                                        try {
+                                            dataStr=JSON.stringify(bd.data, null, 2)
+                                        } catch (error) {
+                                            console.log("parse error", error );
+                                        }
+
+                                        fs.writeFile(pathrSub,dataStr,(err)=>{
+                                            if (err){
+                                                console.log("save err : ",err)
+                                            }
+                                            res.jsonp({ data : {} , status : "success" ,bStatus : true});                                
+                                        })
+                                        
+                                    }
+
+                                    return
+                                break;
+                                case "loadSettingsTmplt":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "settingTmplt";
+                                        let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
+
+                                        let name=bd.name;
+
+                                        let project=""
+
+
+                                        let error_status=false
+                                        let error_txt=""
+
+                                        if (!fs.existsSync(pathr)){
+                                            error_status=true
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            error_status=true
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project                                                
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathrSub + project  )){                                            
+                                            error_status=true
+                                        }
+                                        pathrSub=path.resolve(pathrSub +  project +"/" + name + ".json");
+                                        
+                                        
+
+                                        if (error_status===false){
+                                            fs.readFile( pathrSub, function(err, data){
+                                                if (err){                                                
+                                                    res.jsonp({ data : data , status : "error" ,bStatus : false,error : err});                                
+                                                    return;
+                                                }
+
+                                                
+                                                try {                                                    
+                                                    data=JSON.parse(data)
+                                                } catch (error) {
+                                                    console.log("readfile : " ,error)
+                                                }
+
+                                                res.jsonp({ data : data , status : "success" ,bStatus : true});                                
+
+                                            });
+                                        }else{
+                                            res.jsonp({ data : data , status : "success" ,bStatus : true});                                
+                                        }                                        
+                                    }
+
+                                    return
+                                break;                                
+                                case "listSettingsTmplt":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data/dbs_vDev";
+                                        let npathSub= "settingTmplt";
+                                        let pathr=path.join(__dirname,  npath );
+                                        let pathrSub=path.join(pathr,  npathSub );
+
+                                        let name=bd.name;
+
+                                        let project=""
+                                        let error_status=false
+                                        let error_txt=""
+
+                                        if (!fs.existsSync(pathr)){
+                                            error_status=true
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            error_status=true
+                                        }
+
+                                        if (bd.project){
+                                            if (bd.project!==""){                                            
+                                                project="/" + bd.project
+                                                if (!fs.existsSync(pathrSub + "/" + project)){
+                                                    error_status=true
+                                                }
+                                            }
+                                        }
+
+                                        
+                                        if (!fs.existsSync(pathrSub + project  )){                                            
+                                            error_status=true
+                                        }
+                                        pathrSub=pathrSub +  project ;
+                                                                                    
+                                        let files=[]
+
+                                        if (error_status===false){
+                                            readdir(pathrSub,
+                                                (...args)=>{                                                    
+                                                    let rr=args[0];
+                                                    //if (rr.isDir===false){
+                                                        let nr={ name : rr.name , path : rr.path, isDir : rr.isDir}
+                                                        files.push(nr)
+                                                    //}
+                                                },
+                                                (...args)=>{
+                                                    
+                                                }
+                                            );
+                                        }
+
+                                        res.jsonp({ data : { all : files } , status : "success" ,bStatus : true});
+                                        
+                                    }
+
+                                    return
+                                break;
+                                
+                                case "saveSettingsMain":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data";
+                                        let npathSub= "";
+                                        let pathr=path.join(__dirname,  npath );
+                                        let pathrSub                                        
+                                        if (npathSub!==""){
+                                            pathrSub=path.join(pathr,  npathSub );
+                                        }else{
+                                            pathrSub=pathr
+                                        }
+
+                                        let name="settings";
+
+                                        let error_status=false
+                                        let error_txt=""
+
+                                        if (!fs.existsSync(pathr)){
+                                            fs.mkdirSync(pathr)
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            fs.mkdirSync(pathrSub)
+                                        }
+                                                                                
+                                        pathrSub=path.resolve(pathrSub + "/" + name + ".json");
+                                    
+                                        let dataStr=""
+
+                                        try {
+                                            dataStr=JSON.stringify(bd.data, null, 2)
+                                        } catch (error) {
+                                            console.log("parse error", error );
+                                        }
+
+                                        if (error_status===false){
+                                            fs.writeFile(pathrSub,dataStr,(err)=>{
+                                                if (err){
+                                                    console.log("save err : ",err)
+                                                }
+                                                    res.jsonp({ data : {} , status : "success" ,bStatus : true});                                
+                                                })
+                                        }else{
+                                            res.jsonp({ data : data , status : "failed" ,bStatus : false, error : error_txt});                                
+                                        }    
+                                        
+                                        
+                                    }
+
+                                    return
+                                break;
+                                case "loadSettingsMain":                                     
+                                    if (true){                                        
+                                        if (allowedCheckUserAndGroupFn(allowedC)===false){
+                                            console.log(new Date(), allowedC.allowedSuccessMsg);
+                                            res.jsonp({ data : { all : []} , status : "failed"  ,bStatus : false, error : allowedC.allowedSuccessMsg + "...user does have permmision to run this request, request access from service admins"});
+                                            return
+                                        }
+                                        let data={}
+
+                                        let npath= "../../../data";
+                                        let npathSub= "";
+                                        let pathr=path.join(__dirname,  npath );
+                                        let pathrSub                                        
+                                        if (npathSub!==""){
+                                            pathrSub=path.join(pathr,  npathSub );
+                                        }else{
+                                            pathrSub=pathr
+                                        }
+
+                                        let name="settings";
+
+                                        let error_status=false
+                                        let error_txt=""
+
+                                        if (!fs.existsSync(pathr)){
+                                            error_status=true
+                                        }
+
+                                        if (!fs.existsSync(pathrSub)){
+                                            error_status=true
+                                        }                                        
+                                        
+                                        pathrSub=path.resolve(pathrSub + "/" + name + ".json");                                        
+
+                                        if (error_status===false){
+                                            fs.readFile( pathrSub, function(err, data){
+                                                if (err){                                                
+                                                    res.jsonp({ data : data , status : "error" ,bStatus : false,error : err});                                
+                                                    return;
+                                                }
+
+                                                
+                                                try {                                                    
+                                                    data=JSON.parse(data)
+                                                } catch (error) {
+                                                    console.log("readfile : " ,error)
+                                                }
+
+                                                res.jsonp({ data : data , status : "success" ,bStatus : true});                                
+
+                                            });
+                                        }else{
+                                            res.jsonp({ data : data , status : "success" ,bStatus : true , error : error_txt});                                
+                                        }                                        
+                                    }
+
+                                    return
+                                break;                                
+                                
+                                
                                 default:
                             }
 
