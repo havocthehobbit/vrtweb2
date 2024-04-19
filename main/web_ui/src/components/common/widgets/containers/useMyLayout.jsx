@@ -480,10 +480,12 @@ export const useMyLayout=(props)=>{
                 //posConts[]
 
                 posConts.forEach((r,i)=>{
-                    let E;
-                    E=posContsO[r].e;
+                    if (posContsO[r]){
+                        let E;                    
+                        E=posContsO[r].e;
 
-                    arrE.push(E);
+                        arrE.push(E);
+                    }
                 })
 
                 return (<>{arrE}</>)
