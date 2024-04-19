@@ -13,6 +13,7 @@ import { useWindowSize } from "../../../../common/widgets/containers/useWindowSi
 
 export const Views=(props)=>{
     let initC=useRef(true)
+    let [updateStete,setUpdateStete]=useState(new Date());
     // ---------------------------------  
     
 
@@ -69,7 +70,12 @@ export const Views=(props)=>{
     let [layoutcurrStateSel,setLayoutcurrStateSel]=useState("");
     let [layoutcurrAssetsSel,setLayoutcurrAssetsSel]=useState("");
 
-    
+    let [layoutposContsStatesDyn,setLayoutposContsStatesDyn]=useState({});
+    let [layoutposContsODyn,setLayoutposContsODyn]=useState({});
+
+    let [layoutStatePropertiesPosContCurr,setLayoutStatePropertiesPosContCurr]=useState("");
+    let [layoutStatePropertiesPosAddName,setLayoutStatePropertiesPosContAddName]=useState("");
+
     // --------------------------------
 
 
@@ -77,12 +83,16 @@ export const Views=(props)=>{
         if (initC.current){
             initC.current=false;
 
-            listCmptMe() 
+            listCmptMe();
+            layoutposContsOAddInitial();
+            layoutposContsStatesAddInitial();
         }        
     },[]);
 
 
     // --------------------------------
+
+    let updateStateForce=()=>{ setUpdateStete(new Date()) }
 
     let processData=(...args)=>{
 
@@ -335,172 +345,220 @@ export const Views=(props)=>{
         };
 
         // ----  posContsO
-        layoutname="menu";
-        layoutposContsO[layoutname]={
-            name : layoutname,            
-            e : (
-                    <div
-                        key={layoutname}
-                        style={layoutmenuStyle}
-                    >
-                        <h4>menu</h4>                             
-                        
-                        <div
-                            menuname={"viewMain"}
-                            style={{
-                                position : "relative",
-                                display : "inline-block",
-                                cursor : "pointer",
-                                width : 100,
-                            }}
-                            onClick={(e)=>{
-                                let menuname=e.target.getAttribute("menuname");
-                                layoutsetCurrStateRef.current(menuname)
-                            }}
-                        >
-                            <label
-                                menuname={"viewMain"}
-                            >Main</label>                            
-                        </div>   
-                        <div
-                            menuname={"viewSummary"}
-                            style={{
-                                position : "relative",
-                                display : "inline-block",
-                                cursor : "pointer",
-                                width : 100,
-                            }}
-                            onClick={(e)=>{
-                                let menuname=e.target.getAttribute("menuname");
-                                layoutsetCurrStateRef.current(menuname)
-                            }}
-                        >
-                            <label
-                                menuname={"viewSummary"}
-                            >Summary</label>                            
-                        </div>          
-                        <div
-                            menuname={"editSettings"}
-                            style={{
-                                position : "relative",
-                                display : "inline-block",
-                                cursor : "pointer",
-                                width : 100,
-                            }}
-                            onClick={(e)=>{
-                                let menuname=e.target.getAttribute("menuname");
-                                layoutsetCurrStateRef.current(menuname)
-                            }}
-                        >
-                            <label
-                                menuname={"editSettings"}
-                            >Settings</label>                            
-                        </div>           
+        
 
-                    </div>
-            ),
-        };
+        let layoutposContsOAddInitial=()=>{
+            let layoutposContsStates={};
+            let layoutposContsO={};
+            let layoutname="";
 
-        layoutname="Main";
-        layoutposContsO[layoutname]={
-            name : layoutname,            
-            e : (                  
-                    <div
-                        key={layoutname}
-                        style={{
-                            background : "white",
-                            position : "relative",
-                            display : "inline-block",
-                            width : 400,
-                            height : 300,
-                            borderRadius : 8,
-                            margin : 5,
-                            padding : 5,
-                            overflow : "hidden"
-                        }}
-                    >
-                        <h4>Main</h4>                
-                    </div>
-            )
+            setLayoutposContsODyn((st)=>{
+                let nst={...st} ;
 
-        };
+                let layoutposContsO={};
+                let layoutname="";
 
+                layoutname="viewMain";
+                layoutposContsO[layoutname]={
+                    name : layoutname,
+                    posCont : [ "title" , "linebreak1" , "menu" ,"Main" ],            
+                    eLogic : function(){
+                        let tt=this;
+                        let args=arguments;
+                        if (args.length > 0){
+                            tt=args[0]
+                        }
+                        let ret=tt.posCont
+                        if (wWidth < 700){
+                            ret=[ "menu" , "Main"  ]
+                        }
+                        return ret
+                    }
+                }
+                nst[layoutname]=layoutposContsO[layoutname]
 
-        layoutname="Settings";
-        layoutposContsO[layoutname]={
-            name : layoutname,            
-            e : (                  
-                    <div
-                        key={layoutname}
-                        style={{
-                            background : "white",
-                            position : "relative",
-                            display : "inline-block",
-                            width : 400,
-                            height : 300,
-                            borderRadius : 8,
-                            margin : 5,
-                            padding : 5,
-                            overflow : "hidden"
-                        }}
-                    >
-                        <h4>Settings</h4>                
-                    </div>
-            )
-        };
+                layoutname="menu";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (
+                            <div
+                                key={layoutname}
+                                style={layoutmenuStyle}
+                            >
+                                <h4>menu</h4>                             
+                                
+                                <div
+                                    menuname={"viewMain"}
+                                    style={{
+                                        position : "relative",
+                                        display : "inline-block",
+                                        cursor : "pointer",
+                                        width : 100,
+                                    }}
+                                    onClick={(e)=>{
+                                        let menuname=e.target.getAttribute("menuname");
+                                        layoutsetCurrStateRef.current(menuname)
+                                    }}
+                                >
+                                    <label
+                                        menuname={"viewMain"}
+                                    >Main</label>                            
+                                </div>   
+                                <div
+                                    menuname={"viewSummary"}
+                                    style={{
+                                        position : "relative",
+                                        display : "inline-block",
+                                        cursor : "pointer",
+                                        width : 100,
+                                    }}
+                                    onClick={(e)=>{
+                                        let menuname=e.target.getAttribute("menuname");
+                                        layoutsetCurrStateRef.current(menuname)
+                                    }}
+                                >
+                                    <label
+                                        menuname={"viewSummary"}
+                                    >Summary</label>                            
+                                </div>          
+                                <div
+                                    menuname={"editSettings"}
+                                    style={{
+                                        position : "relative",
+                                        display : "inline-block",
+                                        cursor : "pointer",
+                                        width : 100,
+                                    }}
+                                    onClick={(e)=>{
+                                        let menuname=e.target.getAttribute("menuname");
+                                        layoutsetCurrStateRef.current(menuname)
+                                    }}
+                                >
+                                    <label
+                                        menuname={"editSettings"}
+                                    >Settings</label>                            
+                                </div>           
 
-        layoutname="title";
-        layoutposContsO[layoutname]={
-            name : layoutname,            
-            e : (                  
-                    <div
-                        key={layoutname}
-                        style={{
-                            background : "white",
-                            position : "relative",
-                            display : "inline-block",
-                            width : 300,
-                            height : 90,
-                            borderRadius : 8,
-                            margin : 5,
-                            padding : 5,
-                            overflow : "hidden"
-                        }}
-                    >
-                        <h4>my title</h4>                
-                    </div>
-            )
+                            </div>
+                    ),
+                };
+                nst[layoutname]=layoutposContsO[layoutname]
 
-        };
+                layoutname="Main";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (                  
+                            <div
+                                key={layoutname}
+                                style={{
+                                    background : "white",
+                                    position : "relative",
+                                    display : "inline-block",
+                                    width : 400,
+                                    height : 300,
+                                    borderRadius : 8,
+                                    margin : 5,
+                                    padding : 5,
+                                    overflow : "hidden"
+                                }}
+                            >
+                                <h4>Main</h4>                
+                            </div>
+                    )
 
-        layoutname="linebreak1";
-        layoutposContsO[layoutname]={
-            name : layoutname,            
-            e : (<br key={layoutname} />),
-        };  
+                };
+                nst[layoutname]=layoutposContsO[layoutname]
 
-        layoutname="summary";
-        layoutposContsO[layoutname]={
-            name : layoutname,            
-            e : (             
-                    <div
-                        key={layoutname}
-                        style={{
-                            background : "white",
-                            position : "relative",
-                            display : "inline-block",
-                            width : 400,
-                            height : 300,
-                            borderRadius : 8,
-                            margin : 5,
-                            padding : 5,
-                            overflow : "hidden",
-                        }}
-                    >
-                        <h4>Summary</h4>                
-                    </div>
-            )
-        };
+                layoutname="Settings";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (                  
+                            <div
+                                key={layoutname}
+                                style={{
+                                    background : "white",
+                                    position : "relative",
+                                    display : "inline-block",
+                                    width : 400,
+                                    height : 300,
+                                    borderRadius : 8,
+                                    margin : 5,
+                                    padding : 5,
+                                    overflow : "hidden"
+                                }}
+                            >
+                                <h4>Settings</h4>                
+                            </div>
+                    )
+                };
+                nst[layoutname]=layoutposContsO[layoutname]
+
+                layoutname="title";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (                  
+                            <div
+                                key={layoutname}
+                                style={{
+                                    background : "white",
+                                    position : "relative",
+                                    display : "inline-block",
+                                    width : 300,
+                                    height : 90,
+                                    borderRadius : 8,
+                                    margin : 5,
+                                    padding : 5,
+                                    overflow : "hidden"
+                                }}
+                            >
+                                <h4>my title</h4>                
+                            </div>
+                    )
+
+                };
+                nst[layoutname]=layoutposContsO[layoutname]
+
+                layoutname="linebreak1";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (<br key={layoutname} />),
+                };  
+                nst[layoutname]=layoutposContsO[layoutname]
+
+                layoutname="summary";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (             
+                            <div
+                                key={layoutname}
+                                style={{
+                                    background : "white",
+                                    position : "relative",
+                                    display : "inline-block",
+                                    width : 400,
+                                    height : 300,
+                                    borderRadius : 8,
+                                    margin : 5,
+                                    padding : 5,
+                                    overflow : "hidden",
+                                }}
+                            >
+                                <h4>Summary</h4>                
+                            </div>
+                    )
+                };
+                nst[layoutname]=layoutposContsO[layoutname]
+
+                return nst
+            })
+
+            updateStateForce()
+        }
+
+        let layoutposContsODynGenerateDynamic=(()=>{
+            layoutposContsO={...layoutposContsO,...layoutposContsODyn}
+
+        })()
 
         let buildLayoutAssets=(()=>{
             let i=0;
@@ -548,59 +606,85 @@ export const Views=(props)=>{
 
         // ---- posContsStates
         
-        layoutname="viewMain";
-        layoutposContsStates[layoutname]={
-            name : layoutname,
-            posCont : [ "title" , "linebreak1" , "menu" ,"Main" ],            
-            eLogic : function(){
-                let tt=this;
-                let args=arguments;
-                if (args.length > 0){
-                    tt=args[0]
+        
+        
+        let layoutposContsStatesAddInitial=()=>{
+            let layoutposContsStates={};
+            let layoutposContsO={};
+            let layoutname="";
+
+            setLayoutposContsStatesDyn((st)=>{
+                let nst={...st} ;
+
+                layoutname="viewMain";
+                layoutposContsStates[layoutname]={
+                    name : layoutname,
+                    posCont : [ "title" , "linebreak1" , "menu" ,"Main" ],            
+                    eLogic : function(){
+                        let tt=this;
+                        let args=arguments;
+                        if (args.length > 0){
+                            tt=args[0]
+                        }
+                        let ret=tt.posCont
+                        if (wWidth < 700){
+                            ret=[ "menu" , "Main"  ]
+                        }
+                        return ret
+                    }
                 }
-                let ret=tt.posCont
-                if (wWidth < 700){
-                    ret=[ "menu" , "Main"  ]
+                nst[layoutname]=layoutposContsStates[layoutname]
+
+                layoutname="viewSummary";
+                layoutposContsStates[layoutname]={
+                    name : layoutname,
+                    posCont : [ "title" , "linebreak1" , "menu" , "summary"  ],            
+                    eLogic : function(){
+                        let tt=this;
+                        let args=arguments;
+                        if (args.length > 0){
+                            tt=args[0]
+                        }
+                        let ret=tt.posCont
+                        if (wWidth < 700){
+                            ret=[ "menu" , "Main"  ]
+                        }
+                        return ret
+                    }
                 }
-                return ret
-            }
+                nst[layoutname]=layoutposContsStates[layoutname]
+
+                layoutname="editSettings";
+                layoutposContsStates[layoutname]={
+                    name : layoutname,
+                    posCont :   [ "title" , "linebreak1" , "menu" , "Settings" ],                         
+                    eLogic : function(){
+                        let tt=this;
+                        let args=arguments;
+                        if (args.length > 0){
+                            tt=args[0]
+                        }
+                        let ret=tt.posCont
+                        if (wWidth < 700){
+                            //ret=[ "menu" , "summary"  ]
+                        }
+                        return ret
+                    }
+                }
+                nst[layoutname]=layoutposContsStates[layoutname]
+            
+                
+
+                return nst
+            })
+
+            updateStateForce()
         }
 
-        layoutname="viewSummary";
-        layoutposContsStates[layoutname]={
-            name : layoutname,
-            posCont : [ "title" , "linebreak1" , "menu" , "summary"  ],            
-            eLogic : function(){
-                let tt=this;
-                let args=arguments;
-                if (args.length > 0){
-                    tt=args[0]
-                }
-                let ret=tt.posCont
-                if (wWidth < 700){
-                    ret=[ "menu" , "Main"  ]
-                }
-                return ret
-            }
-        }
+        let layoutposContsStatesGenerateDynamic=(()=>{
+            layoutposContsStates={...layoutposContsStates,...layoutposContsStatesDyn}
 
-        layoutname="editSettings";
-        layoutposContsStates[layoutname]={
-            name : layoutname,
-            posCont :   [ "title" , "linebreak1" , "menu" , "Settings" ],                         
-            eLogic : function(){
-                let tt=this;
-                let args=arguments;
-                if (args.length > 0){
-                    tt=args[0]
-                }
-                let ret=tt.posCont
-                if (wWidth < 700){
-                    //ret=[ "menu" , "summary"  ]
-                }
-                return ret
-            }
-        }
+        })()
 
         // ---- 
         
@@ -684,6 +768,16 @@ export const Views=(props)=>{
         */
         return (
             <div
+                style={{
+                    position : "relative",
+                    display : "inline-block",
+                    width : 400,
+                    height : 100,
+                    margin : 5 ,
+                    padding : 5 ,
+                    border : "solid thin lightgrey",
+                    borderRadius : 5 , 
+                }}
             >   
                 Tools
                 <br/>
@@ -768,14 +862,34 @@ export const Views=(props)=>{
         */
         return (
             <div
+                style={{
+                    position : "relative",
+                    display : "inline-block",
+                    width : 400,
+                    height : 150,
+                    margin : 5 ,
+                    padding : 5 ,
+                    border : "solid thin lightgrey",
+                    borderRadius : 5 , 
+                    overflow : "hidden",
+                }}
             >   
-                Layout Assets 
-                <br/>
-                ==========
-                <br/>
-                <button>add</button>
-                <br/>
-                {arrE}
+                <div
+                    style={{
+                        position : "relative",
+                        width : 385,
+                        height : 135 ,
+                        overflow : "auto",
+                    }}
+                >
+                    Layout Assets 
+                    <br/>
+                    ==========
+                    <br/>
+                    <button>add</button>
+                    <br/>
+                    {arrE}
+                </div>
             </div>
         )
     })()
@@ -867,6 +981,12 @@ export const Views=(props)=>{
         */
         return (
             <div
+                style={{
+                    margin : 5 ,
+                    padding : 5 ,
+                    border : "solid thin lightgrey",
+                    borderRadius : 5 , 
+                }}
             >   
                 Layout States 
                 <br/>
@@ -891,17 +1011,15 @@ export const Views=(props)=>{
         let arrE=[];
 
         let curr={}
+        let currStr="{}"
         if (layoutposContsStates[layoutcurrStateSel]){
             curr=layoutposContsStates[layoutcurrStateSel];
 
-            if (curr.posCont){
-                curr.posContStr=JSON.stringify(curr.posCont)
+            if (curr.posCont){                
+                currStr=JSON.stringify(curr)
             }
 
         }
-
-        
-
 
         return (
             <div
@@ -910,33 +1028,75 @@ export const Views=(props)=>{
                     display : "inline-block",
                     border : "solid thin black",
                     fontSize  : 11,
-                    width : 200,
-                    height : 100,
+                    width : 300,
+                    height : 200,
                     overflow : "hidden",
                     padding : 5,
+                    margin : 5,
+
+
                 }}
             >   
-                Layout State Properties 
-                <br/>
-                ==========
-                <br/>
-                name : {curr.name}
-                <br/>
-                
-                posCont: 
-                <br/>
-                <button
+                <div
                     style={{
-                        fontSize : 9,                        
+                        position : "relative",
+                        display : "inline-block",                        
+                        fontSize  : 11,
+                        width : 285,
+                        height : 150,
+                        overflow : "auto"
                     }}
-                    onClick={()=>{
-                        
-                    }}
-                >add</button>
-                <br/>{curr.posContStr}
-                
-                <br/>
-                {arrE}
+                >
+                    Layout State Properties 
+                    <br/>
+                    ==========
+                    <br/>
+                    name : {curr.name}
+                    <br/>
+                    
+                    posCont: 
+                    <br/>
+
+                    <button
+                        style={{
+                            fontSize : 9,                        
+                        }}
+                        onClick={()=>{
+                            // insert into from Layout Assets                             
+                            
+                            let assetName=layoutStatePropertiesPosAddName;
+                            
+                            if (layoutposContsO[assetName]){        
+                                
+                                if (layoutposContsStates[layoutcurrStateSel]){                               
+
+                                    setLayoutposContsStatesDyn((st)=>{
+                                        let nst={...st}
+
+                                        nst[layoutcurrStateSel].posCont.push(assetName)
+
+                                        
+
+                                        
+                                        return nst;
+                                    })
+                                }
+                            }
+                        }}
+                    >add</button>
+                    <input
+                        value={layoutStatePropertiesPosAddName}
+                        onChange={(e)=>{
+                            let val=e.target.value
+                            setLayoutStatePropertiesPosContAddName(val)
+                        }}
+                    
+                    />
+                    <br/>{currStr}
+                    
+                    <br/>
+                    {arrE}
+                </div>
             </div>
         )
     })()
@@ -955,6 +1115,9 @@ export const Views=(props)=>{
                     height : 100,
                     overflow : "hidden",
                     padding : 5,
+                    margin : 5,
+
+
                 }}
             >   
                 main layout properties
@@ -970,7 +1133,7 @@ export const Views=(props)=>{
                         overflow : "auto"
                     }}
                 >
-                    <lable>layout </lable>
+                    <lable>Startup layout </lable>
                     <input 
                         style={{
                             fontSize : 11,
@@ -1346,8 +1509,9 @@ export const Views=(props)=>{
                     {toolsCmptMeE}
                     {layoutAssetsE}
                     {viewLayoutStatesE}
-                    {layoutStatePropertiesE}
+                    
                     <br/>
+                    {layoutStatePropertiesE}
                     {mainLayoutPropertiesE}
                 </div>
 
