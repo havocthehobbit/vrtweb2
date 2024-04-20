@@ -895,11 +895,14 @@ feach( files  , function(f,i){
 
 // runs js code in custom_ and run initial main.auto_run if it exists
 let mds={}
-feach(auto_mod_folders , function(file,i){ // if starts with  l_node_modules_auto_ then auto load file in                       
-        //console.log(files, i )
-        var temp_DIR = path.join(filespath, file);
-        //mdsc=$gl.autoLoadModules(temp_DIR,{ vserv : $vserv});
-        mds=autoLoadModules(temp_DIR,{ });    
+feach(auto_mod_folders , function(file,i){ // if starts with  l_node_modules_auto_ then auto load file in                               
+        var temp_DIR = path.join(filespath, file);        
+        
+        let mdsTmp=autoLoadModules(temp_DIR,{});
+        
+        for ( let modname in mdsTmp){
+            mds[modname]=mdsTmp[modname]
+        }    
 })
 feach( mds, (r,p)=>{    
     
