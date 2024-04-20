@@ -1,4 +1,4 @@
-main/web_ui/src/components/cviews/mainRegC.jsximport React,{ useEffect , useState,useRef, useContext } from 'react'
+import React,{ useEffect , useState,useRef, useContext } from 'react'
 import { ContextRoutes} from './context/contextRoutes';
 import { ContextStore } from '../common/contextStore.js';
 import $gl from '../common/globallib';

@@ -29,7 +29,7 @@
 /main/web_ui/yarn-debug.log*
 /main/web_ui/yarn-error.log*
 
-
+/.vscode
 /main/web_ui/package.json
 /main/web_ui/package-lock.json
 
