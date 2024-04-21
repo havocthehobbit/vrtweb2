@@ -126,9 +126,6 @@ export const Views=(props)=>{
     
     let loadCmptMe=(...args)=>{
         loadCmptMeBE(args[0],(dt)=>{
-
-            
-            
             let ndt={}
             if (dt.data){
                 if (dt.data){
@@ -158,6 +155,23 @@ export const Views=(props)=>{
         setNotesTxt("");
     }
 
+    let saveCmptMe=(...args)=>{
+        let ndt={}
+        
+        ndt.data=cmptMe;
+        
+        if (args[0]){
+            ndt={...ndt,...args[0]}
+        }
+
+        
+
+        saveCmptMeBE(ndt,(dt)=>{
+            if (typeof(args[1])==="function"){
+                args[1](dt)
+            }
+        })
+    }
 
     let loadedCmptMeDataSetState=(...args)=>{
         let data={...cmptMe}
@@ -1012,11 +1026,34 @@ export const Views=(props)=>{
 
         let curr={}
         let currStr="{}"
+        let currPosContE=[]
         if (layoutposContsStates[layoutcurrStateSel]){
             curr=layoutposContsStates[layoutcurrStateSel];
 
             if (curr.posCont){                
                 currStr=JSON.stringify(curr)
+
+                curr.posCont.forEach((r,i)=>{
+                    currPosContE.push(
+                        <div
+                            style={{
+                                position : "relative",
+                                display : "inline-block",                                
+                                border : "black solid transparent",
+                                borderRadius : 5,
+                                overflow : "hidden",
+                                margin : 1,
+                                padding : 4,
+                                color : "white",
+                                background : "orange",
+                            }}
+                        >
+                            {r}
+                        </div>
+                    )
+                });
+                
+
             }
 
         }
@@ -1069,13 +1106,12 @@ export const Views=(props)=>{
                             if (layoutposContsO[assetName]){        
                                 
                                 if (layoutposContsStates[layoutcurrStateSel]){                               
-
+                                    let nst0={...layoutposContsStates}                                                                                
+                                    nst0[layoutcurrStateSel].posCont.push(assetName)
                                     setLayoutposContsStatesDyn((st)=>{
-                                        let nst={...st}
+                                        let nst={...st}   
 
-                                        nst[layoutcurrStateSel].posCont.push(assetName)
-
-                                        
+                                        nst[layoutcurrStateSel].posCont=nst0[layoutcurrStateSel].posCont;
 
                                         
                                         return nst;
@@ -1092,7 +1128,8 @@ export const Views=(props)=>{
                         }}
                     
                     />
-                    <br/>{currStr}
+                    <br/>
+                    {currPosContE}
                     
                     <br/>
                     {arrE}
