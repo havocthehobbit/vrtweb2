@@ -481,8 +481,12 @@ export const useMyLayout=(props)=>{
 
                 posConts.forEach((r,i)=>{
                     if (posContsO[r]){
-                        let E;                    
-                        E=posContsO[r].e;
+                        let E;   
+                        if (typeof(posContsO[r].e)==="function"){
+                            E=posContsO[r].e({ name : r });
+                        }else{
+                            E=posContsO[r].e;
+                        }                 
 
                         arrE.push(E);
                     }
