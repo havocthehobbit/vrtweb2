@@ -4,7 +4,7 @@ import { useState,useEffect,useRef,useContext ,Context , useMemo, useCallback} f
 //import { $cgl } from "../../../globals/cg"
 //import { Window0001 } from "../../../widgets/containers/window0001"
 //import { $cn } from "../../../../common/libNative"
-//import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { saveViewsBE as saveCmptMeBE ,listViewsBE as listCmptMeBE,loadViewsBE as loadCmptMeBE} from './libs/backend';
 
 import { useMyLayout } from "../../../../common/widgets/containers/useMyLayout";
@@ -75,6 +75,11 @@ export const Views=(props)=>{
 
     let [layoutStatePropertiesPosContCurr,setLayoutStatePropertiesPosContCurr]=useState("");
     let [layoutStatePropertiesPosAddName,setLayoutStatePropertiesPosContAddName]=useState("");
+
+    let instances=useRef({
+        all : {},
+        counts : {},
+    })
 
     // --------------------------------
 
@@ -337,6 +342,8 @@ export const Views=(props)=>{
             },
         }
 
+        
+
     // --------------------------------
         //cmptMe."views"
         // ---- 
@@ -372,31 +379,28 @@ export const Views=(props)=>{
                 let layoutposContsO={};
                 let layoutname="";
 
-                layoutname="viewMain";
-                layoutposContsO[layoutname]={
-                    name : layoutname,
-                    posCont : [ "title" , "linebreak1" , "menu" ,"Main" ],            
-                    eLogic : function(){
-                        let tt=this;
-                        let args=arguments;
-                        if (args.length > 0){
-                            tt=args[0]
-                        }
-                        let ret=tt.posCont
-                        if (wWidth < 700){
-                            ret=[ "menu" , "Main"  ]
-                        }
-                        return ret
-                    }
-                }
-                nst[layoutname]=layoutposContsO[layoutname]
-
+                
                 layoutname="menu";
                 layoutposContsO[layoutname]={
                     name : layoutname,            
-                    e : (
+                    e : (...args)=>{
+                            
+                        let key=""    
+                        if (args[0]){
+                            if (args[0].key){
+                                key=args[0].key
+                            }
+                            if (args[0].name){
+                                key=args[0].name
+                            }
+                        }
+
+                        if (key===""){
+                            key=uuidv4()
+                        }
+                        return (  
                             <div
-                                key={layoutname}
+                                key={key}
                                 style={layoutmenuStyle}
                             >
                                 <h4>menu</h4>                             
@@ -454,31 +458,49 @@ export const Views=(props)=>{
                                 </div>           
 
                             </div>
-                    ),
+                        )
+                    },
                 };
                 nst[layoutname]=layoutposContsO[layoutname]
 
                 layoutname="Main";
                 layoutposContsO[layoutname]={
                     name : layoutname,            
-                    e : (                  
-                            <div
-                                key={layoutname}
-                                style={{
-                                    background : "white",
-                                    position : "relative",
-                                    display : "inline-block",
-                                    width : 400,
-                                    height : 300,
-                                    borderRadius : 8,
-                                    margin : 5,
-                                    padding : 5,
-                                    overflow : "hidden"
-                                }}
-                            >
-                                <h4>Main</h4>                
-                            </div>
-                    )
+                    e : (...args)=>{
+                            
+                            let key=""    
+                            if (args[0]){
+                                if (args[0].key){
+                                    key=args[0].key
+                                }
+                                if (args[0].name){
+                                    key=args[0].name
+                                }
+                            }
+
+                            if (key===""){
+                                key=uuidv4()
+                            }
+
+                            return (               
+                                <div
+                                    key={key}
+                                    style={{
+                                        background : "white",
+                                        position : "relative",
+                                        display : "inline-block",
+                                        width : 400,
+                                        height : 300,
+                                        borderRadius : 8,
+                                        margin : 5,
+                                        padding : 5,
+                                        overflow : "hidden"
+                                    }}
+                                >
+                                    <h4>Main</h4>                
+                                </div>
+                        )
+                    }
 
                 };
                 nst[layoutname]=layoutposContsO[layoutname]
@@ -486,48 +508,80 @@ export const Views=(props)=>{
                 layoutname="Settings";
                 layoutposContsO[layoutname]={
                     name : layoutname,            
-                    e : (                  
-                            <div
-                                key={layoutname}
-                                style={{
-                                    background : "white",
-                                    position : "relative",
-                                    display : "inline-block",
-                                    width : 400,
-                                    height : 300,
-                                    borderRadius : 8,
-                                    margin : 5,
-                                    padding : 5,
-                                    overflow : "hidden"
-                                }}
-                            >
-                                <h4>Settings</h4>                
-                            </div>
-                    )
+                    e : (...args)=>{                            
+                            let key=""    
+                            if (args[0]){
+                                if (args[0].key){
+                                    key=args[0].key
+                                }
+                                if (args[0].name){
+                                    key=args[0].name
+                                }
+                            }
+
+                            if (key===""){
+                                key=uuidv4()
+                            }
+                            
+                            return (                  
+                                <div
+                                    key={key}
+                                    style={{
+                                        background : "white",
+                                        position : "relative",
+                                        display : "inline-block",
+                                        width : 400,
+                                        height : 300,
+                                        borderRadius : 8,
+                                        margin : 5,
+                                        padding : 5,
+                                        overflow : "hidden"
+                                    }}
+                                >
+                                    <h4>Settings</h4>                
+                                </div>
+                        )
+                    }
                 };
                 nst[layoutname]=layoutposContsO[layoutname]
 
                 layoutname="title";
                 layoutposContsO[layoutname]={
                     name : layoutname,            
-                    e : (                  
-                            <div
-                                key={layoutname}
-                                style={{
-                                    background : "white",
-                                    position : "relative",
-                                    display : "inline-block",
-                                    width : 300,
-                                    height : 90,
-                                    borderRadius : 8,
-                                    margin : 5,
-                                    padding : 5,
-                                    overflow : "hidden"
-                                }}
-                            >
-                                <h4>my title</h4>                
-                            </div>
-                    )
+                    e : (...args)=>{                            
+                            let key=""    
+                            if (args[0]){
+                                if (args[0].key){
+                                    key=args[0].key
+                                }
+                                if (args[0].name){
+                                    key=args[0].name
+                                }
+                            }
+
+                            if (key===""){
+                                key=uuidv4()
+                            }
+
+                            return (                  
+                                <div
+                                    key={key}
+                                    style={{
+                                        background : "white",
+                                        position : "relative",
+                                        display : "inline-block",
+                                        width : 300,
+                                        height : 90,
+                                        borderRadius : 8,
+                                        margin : 5,
+                                        padding : 5,
+                                        overflow : "hidden"
+                                    }}
+                                >
+                                    <h4>my title</h4>                
+                                </div>
+                        )
+                    }
 
                 };
                 nst[layoutname]=layoutposContsO[layoutname]
@@ -535,31 +589,65 @@ export const Views=(props)=>{
                 layoutname="linebreak1";
                 layoutposContsO[layoutname]={
                     name : layoutname,            
-                    e : (<br key={layoutname} />),
+                    e : (...args)=>{
+                            
+                        let key=""    
+                        if (args[0]){
+                            if (args[0].key){
+                                key=args[0].key
+                            }
+                            if (args[0].name){
+                                key=args[0].name
+                            }
+                        }
+
+                        if (key===""){
+                            key=uuidv4()
+                        }
+
+                        return (<br key={key} />)
+                    },
                 };  
                 nst[layoutname]=layoutposContsO[layoutname]
 
                 layoutname="summary";
                 layoutposContsO[layoutname]={
                     name : layoutname,            
-                    e : (             
-                            <div
-                                key={layoutname}
-                                style={{
-                                    background : "white",
-                                    position : "relative",
-                                    display : "inline-block",
-                                    width : 400,
-                                    height : 300,
-                                    borderRadius : 8,
-                                    margin : 5,
-                                    padding : 5,
-                                    overflow : "hidden",
-                                }}
-                            >
-                                <h4>Summary</h4>                
-                            </div>
-                    )
+                    e : (...args)=>{
+                            
+                            let key=""    
+                            if (args[0]){
+                                if (args[0].key){
+                                    key=args[0].key
+                                }
+                                if (args[0].name){
+                                    key=args[0].name
+                                }
+                            }
+
+                            if (key===""){
+                                key=uuidv4()
+                            }
+
+                            return (             
+                                <div
+                                    key={key}
+                                    style={{
+                                        background : "white",
+                                        position : "relative",
+                                        display : "inline-block",
+                                        width : 400,
+                                        height : 300,
+                                        borderRadius : 8,
+                                        margin : 5,
+                                        padding : 5,
+                                        overflow : "hidden",
+                                    }}
+                                >
+                                    <h4>Summary</h4>                
+                                </div>
+                        )
+                    }
                 };
                 nst[layoutname]=layoutposContsO[layoutname]
 
@@ -590,24 +678,40 @@ export const Views=(props)=>{
                 layoutname=r.name_cmpt;
                 layoutposContsO[layoutname]={
                     name : layoutname,            
-                    e : (             
-                            <div
-                                key={layoutname}
-                                style={{
-                                    background : "white",
-                                    position : "relative",
-                                    display : "inline-block",
-                                    width : 400,
-                                    height : 300,
-                                    borderRadius : 8,
-                                    margin : 5,
-                                    padding : 5,
-                                    overflow : "hidden",
-                                }}
-                            >
-                                {e}
-                            </div>
-                    )
+                    e : (...args)=>{                            
+                            let key=""    
+                            if (args[0]){
+                                if (args[0].key){
+                                    key=args[0].key
+                                }
+                                if (args[0].name){
+                                    key=args[0].name
+                                }
+                            }
+
+                            if (key===""){
+                                key=uuidv4()
+                            }
+
+                            return (             
+                                <div
+                                    key={key}
+                                    style={{
+                                        background : "white",
+                                        position : "relative",
+                                        display : "inline-block",
+                                        width : 400,
+                                        height : 300,
+                                        borderRadius : 8,
+                                        margin : 5,
+                                        padding : 5,
+                                        overflow : "hidden",
+                                    }}
+                                >
+                                    {e}
+                                </div>
+                        )
+                    }
                 };
     
                 i++;
@@ -1103,11 +1207,40 @@ export const Views=(props)=>{
                             
                             let assetName=layoutStatePropertiesPosAddName;
                             
-                            if (layoutposContsO[assetName]){        
+                            if (layoutposContsODyn[assetName]){        
                                 
-                                if (layoutposContsStates[layoutcurrStateSel]){                               
-                                    let nst0={...layoutposContsStates}                                                                                
-                                    nst0[layoutcurrStateSel].posCont.push(assetName)
+                                if (layoutposContsStatesDyn[layoutcurrStateSel]){     
+                                    let newInstanceID=""
+                                    let countIdx=0;
+                                    if (instances.current.counts[assetName]){
+                                        instances.current.counts[assetName].count++ ;
+                                    }else{
+                                        instances.current.counts[assetName]={
+                                            name : assetName,
+                                            count : 0,
+                                        }
+                                    } 
+                                    countIdx=instances.current.counts[assetName].count    
+                                    newInstanceID=assetName + "__inst" + countIdx  ;                
+                                    instances.current.all[newInstanceID]={};          
+                                    instances.current.all[newInstanceID].id=newInstanceID;
+                                    instances.current.all[newInstanceID].uuid=uuidv4();
+                                    instances.current.all[newInstanceID].dateCreate=new Date();
+                                    instances.current.all[newInstanceID].assetSource=assetName;
+                                    
+                                    let nst0={...layoutposContsStates};   
+                                    // nst0[layoutcurrStateSel].posCont.push(assetName);
+                                    nst0[layoutcurrStateSel].posCont.push(instances.current.all[newInstanceID].id);
+                                    setLayoutposContsODyn((st)=>{
+                                        let nst={...st}   
+
+                                        let layoutname=instances.current.all[newInstanceID].assetSource;
+                                        nst[newInstanceID]={...st[layoutname]};
+                                        nst[newInstanceID].name=newInstanceID;
+                                        // #TODO generate new E  and key 
+                                        // nst[newInstanceID].generate({ key : newInstanceID});
+                                        return nst;
+                                    })
                                     setLayoutposContsStatesDyn((st)=>{
                                         let nst={...st}   
 
