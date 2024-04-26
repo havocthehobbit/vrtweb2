@@ -29,8 +29,8 @@ export const Views=(props)=>{
     
     let [project,setProject]=useState("");
 
-    let cmptMeDef={ "name" :"" , "name_cmpt" : "" ,"version" : "0","data" : {} ,"type" : "" , "types" : [], "views" : [] , "subView" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
-    let cmptMeSubDef={ "name" :"" , "name_cmpt" : "","data" : {}  ,"type" : "" , "types" : [], "views" : [], "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
+    let cmptMeDef={ "name" :"" , "name_cmpt" : "" ,"version" : "0","data" : {} ,"type" : "" , "types" : [], "view" : {} , "subView" : {} , "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}" }
+    let cmptMeSubDef={ "name" :"" , "name_cmpt" : "","data" : {}  ,"type" : "" , "types" : [], "view" : {}, "desc" : "" , "notes" : "" , "keys" : {} ,"idx" : {} , "example" : "{}","linked" : false, "link" : { "path"  : "" , "name" : "" } }
     
     let [descTxt,setDescTxt]=useState("");
     let [notesTxt,setNotesTxt]=useState("");
@@ -55,6 +55,10 @@ export const Views=(props)=>{
     let [currentCmptMeSubTxt,setCurrentSchemaSubTxt]=useState("__vw__main");
     
     let currentCmptMeSubPrevRef=useRef("");
+    
+    let cmptMeBeforeTxtRef=useRef(cmptMeTxt);
+
+
 
     // 
     let [currentNewCmpt,setCurrentNewCmp]=useState({});
@@ -93,6 +97,15 @@ export const Views=(props)=>{
             layoutposContsStatesAddInitial();
         }        
     },[]);
+
+    useEffect(()=>{
+    
+        let tmpstr=JSON.stringify(cmptMe,null,2)
+        setCmptMeTxt(JSON.stringify(cmptMe,null,2))
+        
+
+        cmptMeBeforeTxtRef.current=tmpstr;
+    },[cmptMe])
 
 
     // --------------------------------
@@ -373,6 +386,7 @@ export const Views=(props)=>{
             let layoutposContsO={};
             let layoutname="";
 
+            let LayoutposContsODynTmp0
             setLayoutposContsODyn((st)=>{
                 let nst={...st} ;
 
@@ -650,8 +664,25 @@ export const Views=(props)=>{
                     }
                 };
                 nst[layoutname]=layoutposContsO[layoutname]
-
+                LayoutposContsODynTmp0=nst
                 return nst
+            })
+            setCmptMe((st)=>{
+                let nst={...st};
+
+                if (nst.view.layoutposContsO){}else{
+                    nst.view.layoutposContsO={}
+                }
+                let layoutposContsOTmp={}
+                for ( let p in LayoutposContsODynTmp0){
+                    let r=LayoutposContsODynTmp0[p]
+                    layoutposContsOTmp[p]={
+                        
+                    }
+                }
+                nst.view.layoutposContsO=layoutposContsOTmp
+
+                return nst;
             })
 
             updateStateForce()
@@ -731,6 +762,7 @@ export const Views=(props)=>{
             let layoutposContsO={};
             let layoutname="";
 
+            let LayoutposContsStatesDynTmp0
             setLayoutposContsStatesDyn((st)=>{
                 let nst={...st} ;
 
@@ -792,8 +824,26 @@ export const Views=(props)=>{
                 nst[layoutname]=layoutposContsStates[layoutname]
             
                 
-
+                LayoutposContsStatesDynTmp0=nst
                 return nst
+            })
+            setCmptMe((st)=>{
+                let nst={...st};
+
+                if (nst.view.LayoutposContsStates){}else{
+                    nst.view.LayoutposContsStates={}
+                }
+                let LayoutposContsStatesDynTmp={}
+                for ( let p in LayoutposContsStatesDynTmp0){
+                    let r=LayoutposContsStatesDynTmp0[p]
+                    LayoutposContsStatesDynTmp[p]={
+                        name : r.name,
+                        posCont : r.posCont
+                    }
+                }
+                nst.view.LayoutposContsStates=LayoutposContsStatesDynTmp
+
+                return nst;
             })
 
             updateStateForce()
