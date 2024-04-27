@@ -16,6 +16,7 @@ export const Views=(props)=>{
     let [updateStete,setUpdateStete]=useState(new Date());
     // ---------------------------------  
     
+    
 
     // ---------------------------------  
 
@@ -87,7 +88,7 @@ export const Views=(props)=>{
     })
 
     // --------------------------------
-
+    let wSize=useWindowSize();
 
     useEffect(()=>{
         if (initC.current){
@@ -172,6 +173,9 @@ export const Views=(props)=>{
 
         setDescTxt("");
         setNotesTxt("");
+
+        // ------------------------
+        setLayoutposContsStatesDyn({})
     }
 
     // currently not using , using saveCmptMeBE directly on button , #TODO
@@ -310,7 +314,8 @@ export const Views=(props)=>{
             return nst
         });
         setLayoutposContsStatesDyn((st)=>{
-            let nst={...st} ;
+            //let nst={...st} ;
+            let nst={} ;
 
             for (let p in LayoutposContsStatesDynTmp0){
                 let r=LayoutposContsStatesDynTmp0[p];
@@ -1083,7 +1088,7 @@ export const Views=(props)=>{
             let style={
                 poistion : "relative",
                 display : "inline-block",
-                width : 40,
+                //width : 40,
                 height : 40,
                 margin : 1,
                 padding : 2,
@@ -1273,16 +1278,91 @@ export const Views=(props)=>{
                 Layout States 
                 <br/>
                 ==========
-                <br/>
-                <button
-                    style={{
-                        fontSize : 9,
-                        
-                    }}
-                    onClick={()=>{
+                <br/>               
+                <label
+                    >
+                        add layout
+                    </label>
+                    <input 
+                        value={currentNewCmptName}
+                        onChange={(e)=>{
+                            let val=e.target.value;
+                            setCurrentNewCmpName(val)
+                        }}
+                        onBlur={(e)=>{
 
-                    }}
-                >add</button>
+                        }}
+                    />
+                    <button
+                        onClick={()=>{
+                            let layoutname=currentNewCmptName;
+
+                            let LayoutposContsStatesDynTmp0;
+                            setLayoutposContsStatesDyn((st)=>{
+                                let nst={...st};
+
+                                let nr={
+                                    name : layoutname,
+                                }
+                                
+                                nr={
+                                    name : layoutname,
+                                    posCont : [ ],            
+                                    eLogic : function(){
+                                        let tt=this;
+                                        let args=arguments;
+                                        if (args.length > 0){
+                                            tt=args[0]
+                                        }
+                                        let ret=tt.posCont
+                                        // custom code 
+
+                                        return ret
+                                    }
+                                }
+
+                                nst[layoutname]=nr;
+                                LayoutposContsStatesDynTmp0=nst[layoutname]
+
+                                return nst;
+                            })
+
+                            setCmptMe((st)=>{
+                                let nst={...st};
+                
+                                if (nst.view.LayoutposContsStates){}else{
+                                    nst.view.LayoutposContsStates={}
+                                }
+                                
+                                nst.view.LayoutposContsStates[layoutname]=LayoutposContsStatesDynTmp0;
+
+                                return nst;
+                            })
+                            
+                            
+                            
+                        }}
+                    >add</button>
+                    <button
+                        onClick={()=>{
+                            let layoutname=layoutcurrStateSel;
+                            setLayoutposContsStatesDyn((st)=>{
+                                let nst={...st};
+
+                                delete nst[layoutname]
+                                return nst;
+                                
+                            })
+                            setCmptMe((st)=>{
+                                let nst={...st};
+
+                                delete nst.view.LayoutposContsStates[layoutname]
+
+                                return nst;
+                            })
+                        }}
+                    >del</button>
+                    <br/>
                 <br/>
                 {arrE}
             </div>
@@ -1381,10 +1461,14 @@ export const Views=(props)=>{
                             // insert into from Layout Assets                             
                             
                             let assetName=layoutStatePropertiesPosAddName;
-                            
+                            if (layoutposContsODyn[assetName].assetSource){
+                                assetName=layoutposContsODyn[assetName].assetSource;
+                            }
                             if (layoutposContsODyn[assetName]){        
                                 
                                 if (layoutposContsStatesDyn[layoutcurrStateSel]){     
+                                    let nst0={...layoutposContsStates};   
+
                                     let newInstanceID=""
                                     let countIdx=0;
                                     if (instances.current.counts[assetName]){
@@ -1396,14 +1480,22 @@ export const Views=(props)=>{
                                         }
                                     } 
                                     countIdx=instances.current.counts[assetName].count    
-                                    newInstanceID=assetName + "__inst" + countIdx  ;                
+                                    
+                                    newInstanceID=assetName + "__inst" + countIdx  ;
+                                    
                                     instances.current.all[newInstanceID]={};          
                                     instances.current.all[newInstanceID].id=newInstanceID;
                                     instances.current.all[newInstanceID].uuid=uuidv4();
                                     instances.current.all[newInstanceID].dateCreate=new Date();
-                                    instances.current.all[newInstanceID].assetSource=assetName;
+
+                                    if (layoutposContsODyn[assetName].assetSource){
+                                        instances.current.all[newInstanceID].assetSource=layoutposContsODyn[assetName].assetSource
+                                    }else{
+                                        instances.current.all[newInstanceID].assetSource=assetName;
+                                    }
                                     
-                                    let nst0={...layoutposContsStates};   
+                                    
+                                    
                                     // nst0[layoutcurrStateSel].posCont.push(assetName);
 
 
@@ -1768,6 +1860,26 @@ export const Views=(props)=>{
         style={...style,...props.style}
     }
 
+    let previewStyle={}
+    if (props.previewStyle){
+        previewStyle={previewStyle,...props.previewStyle}
+    }
+
+    if (style.width>800){
+
+    }
+
+    let innerStyle={
+        position : "relative",
+        overflow : "auto" , 
+        //width : 1200,
+        width : style.width - 50,
+        height : 600, 
+    }
+    if (props.previewStyle){
+        innerStyle={innerStyle,...props.innerStyle}
+    }
+
     return (
         <div
             style={style}
@@ -1776,18 +1888,13 @@ export const Views=(props)=>{
 
             
             <div
-                style={{
-                    position : "relative",
-                    overflow : "auto" , 
-                    width : 1200,
-                    height : 600, 
-                 }}
+                style={innerStyle}
 
             >
                 <div
                     style={{
                         position : "relative",
-                        
+                        float : "left",
                     }}
 
                 >
@@ -1898,12 +2005,12 @@ export const Views=(props)=>{
 
                 </div>
 
-                <div style={{ clear : "left" }} />
+                {/*<div style={{ clear : "left" }} /> */}
 
                 <div
                     style={{
                         position : "relative",
-                        
+                        float : "left",
                     }}
 
                 >    
@@ -1943,51 +2050,67 @@ export const Views=(props)=>{
 
                 </div>
 
-                <div style={{ clear : "left" }} />
+                { /* <div style={{ clear : "left" }} /> */}
 
                 <div
                     style={{
                         position : "relative",
-                        
+                        float : "left",
+                        width : 700,
+                        //background : "purple",
                     }}
 
                 > 
-                    <input 
-                        value={currentNewCmptName}
-                        onChange={(e)=>{
-                            let val=e.target.value;
-                            setCurrentNewCmpName(val)
-                        }}
-                        onBlur={(e)=>{
-
-                        }}
-                    />
-                    <button
-                        onClick={()=>{
-                            addToLayout()
-                        }}
-                    >add</button>
+                    
                     {toolsCmptMeE}
                     {layoutAssetsE}
-                    {viewLayoutStatesE}
                     
-                    <br/>
+                    
+                </div>
+
+               
+
+                <div
+                    style={{
+                        position : "relative",
+                        float : "left",
+                        width : 700,
+                        
+                    }}
+
+                >       
+                    {viewLayoutStatesE}
+                  
+                </div>
+                <div
+                    style={{
+                        position : "relative",
+                        float : "left",
+                        width : 700,
+                        
+                    }}
+
+                >       
+                  
                     {layoutStatePropertiesE}
                     {mainLayoutPropertiesE}
                 </div>
-
+                
                 <div style={{ clear : "left" }} />
 
                 <div
                     style={{
                         position : "relative",
-                        
+                        float : "left",
+                        width : 300
                     }}
 
                 >    
                     <div
                         style={{
+                            position : "relative",
                             float : "left",
+                           
                         }}
                     >
                         
@@ -1997,7 +2120,9 @@ export const Views=(props)=>{
                     </div>
                     <div
                         style={{
+                            position : "relative",
                             float : "left",
+                            
                         }}
                     >
                         {propsListE}
@@ -2005,7 +2130,9 @@ export const Views=(props)=>{
                     </div>
                     <div
                         style={{
+                            position : "relative",
                             float : "left",
+                            display : "inline-block",
                         }}
                     >
                         {propCmptMeE}
@@ -2013,46 +2140,60 @@ export const Views=(props)=>{
                     
                     <div style={{ clear : "left" }} />
 
-                    <div
+                    <div style={{ clear : "left" }} />
+
+                    { /* <div style={{ clear : "left" }} /> */}
+                </div>
+
+                {/* preview */}
+                <div style={{ clear : "left" }} />
+
+                <div
+                    style={{
+                        position : "relative",
+                        
+                    }}
+                >    
+                    <label
                         style={{
                             position : "relative",
+                        }}
+                    >preview</label>
+                    <div
+                        style={{
+                            ...{
+                            position : "relative",
+                            width  : 1820,
+                            height  : 1220,
+                            overflow : "hidden",
+                            border  : "solid thin black",
+                            },
+                            ...previewStyle
                             
                         }}
                     >    
-                        <label
-                            style={{
-
-                            }}
-                        >preview</label>
                         <div
                             style={{
+                                background : "lightgrey",
                                 position : "relative",
-                                width  : 1820,
-                                height  : 1220,
-                                overflow : "hidden",
-                                border  : "solid thin black",
+                                width  : 1800,
+                                height  : 1200,
+                                overflow : "auto",
                                 
                             }}
-                        >    
-                            <div
-                                style={{
-                                    background : "lightgrey",
-                                    position : "relative",
-                                    width  : 1800,
-                                    height  : 1200,
-                                    overflow : "auto",
-                                    
-                                }}
-                            >   
-                                    {layoutmyLayout}
+                        >   
+                                {layoutmyLayout}
 
-                            </div>
                         </div>
                     </div>
 
-                    <div style={{ clear : "left" }} />
-                </div>
+
+                </div>            
+            
             </div>
+
+
+
         </div>
     )
 

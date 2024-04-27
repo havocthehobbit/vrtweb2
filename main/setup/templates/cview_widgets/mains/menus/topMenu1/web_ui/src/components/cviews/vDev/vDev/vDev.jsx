@@ -5,6 +5,9 @@ import { useState,useEffect,useRef,useContext ,Context , useMemo, useCallback} f
 //import { Window0001 } from "../../../widgets/containers/window0001"
 //import { $cn } from "../../../../common/libNative"
 //import { v4 as uuidv4 } from 'uuid';
+import { useWindowSize} from "../../../common/widgets/containers/useWindowSize";
+
+
 
 import { Db } from "./db/db"
 import { Server } from "./Server/server"
@@ -17,17 +20,38 @@ import { Cmpt } from "./cmpt/cmpt"
 import { Schemas } from "./schemas/schema"
 import { Projects } from "./projects/projects"
 
-export const vDev=(props)=>{
+export const VDev=(props)=>{
+
     
+    let wSize=useWindowSize();
+
+    let style={ 
+        position : "relative",
+        top : 50,
+        margin : 10
+
+    };
+    if (props.style){
+        style={...style,...props.style};
+    }
+    
+    let viewsStyle={
+        width : wSize.wWidth - 50
+    }
+
+    if (wSize.wWidth<2600){
+        //viewsStyle.width=1750
+    }
+    if (wSize.wWidth<1800){
+       // viewsStyle.width=1750
+    }
+    if (wSize.wWidth<1600){
+       // viewsStyle.width=1750
+    }
 
     return (
         <div
-            style={{ 
-                position : "relative",
-                top : 50,
-                margin : 10
-
-            }}
+            style={style}
         >
             DEV
             
@@ -85,11 +109,14 @@ export const vDev=(props)=>{
             <br/>
 
             <Views
-                style={{ 
-                    position : "relaive",
-                    display : "inline-block",
-                    margin : 5 
-                }}
+                style={
+                    {...{ 
+                        position : "relaive",
+                        display : "inline-block",
+                        margin : 5 ,
+                        width : 600,
+                    },...viewsStyle}
+                }
             />
             <br/>
 
