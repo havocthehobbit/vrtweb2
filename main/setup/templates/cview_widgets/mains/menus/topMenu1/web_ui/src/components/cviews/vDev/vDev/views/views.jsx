@@ -79,6 +79,7 @@ export const Views=(props)=>{
 
     let [layoutStatePropertiesPosContCurr,setLayoutStatePropertiesPosContCurr]=useState("");
     let [layoutStatePropertiesPosAddName,setLayoutStatePropertiesPosContAddName]=useState("");
+    let [layoutStatePropertiesPosContCurrSel,setLayoutStatePropertiesPosContCurrSel]=useState("");
 
     let instances=useRef({
         all : {},
@@ -173,6 +174,7 @@ export const Views=(props)=>{
         setNotesTxt("");
     }
 
+    // currently not using , using saveCmptMeBE directly on button , #TODO
     let saveCmptMe=(...args)=>{
         let ndt={}
         
@@ -199,7 +201,90 @@ export const Views=(props)=>{
                 data={...data,...args[0].data}
             }
         }
+
+
+        //------------------------
+
        
+        let LayoutposContsODynTmp0={};
+        let LayoutposContsStatesDynTmp0={};
+
+        if (true){
+            let layoutname="";
+            if (data.view){
+                if (data.view.layoutposContsO){
+                    for (let p in data.view.layoutposContsO){
+                        layoutname=p
+                        let r=data.view.layoutposContsO[p];
+                
+                        LayoutposContsODynTmp0[layoutname]={
+                            name : layoutname,                       
+                        };
+                        if (r.assetSource){
+                            LayoutposContsODynTmp0[layoutname].e=layoutposContsO[r.assetSource].e  ; 
+                        }else{
+                            if (layoutposContsODyn[p]){
+                                LayoutposContsODynTmp0[layoutname].e=layoutposContsODyn[p].e
+                            }else{
+                                LayoutposContsODynTmp0[layoutname].e=(...args)=>{
+                                        
+                                    let key=""    
+                                    if (args[0]){
+                                        if (args[0].key){
+                                            key=args[0].key
+                                        }
+                                        if (args[0].name){
+                                            key=args[0].name
+                                        }
+                                    }
+
+                                    if (key===""){
+                                        key=uuidv4()
+                                    }
+                                    return (  
+                                        <div
+                                            key={key}
+                                            style={layoutmenuStyle}
+                                        >
+                                            <h4>unknown asset {key} </h4> 
+                                            
+                                            </div>
+                                    )   ;
+
+                                }
+                            }
+                        }
+                        
+
+                    }
+                }
+                if (data.view.LayoutposContsStates){
+                    for (let p in data.view.LayoutposContsStates){
+                        layoutname=p
+                        let r=data.view.LayoutposContsStates[p];              
+
+                        LayoutposContsStatesDynTmp0[layoutname]={
+                            name : layoutname,
+                            posCont :   r.posCont,                         
+                            eLogic : function(){
+                                let tt=this;
+                                let args=arguments;
+                                if (args.length > 0){
+                                    tt=args[0]
+                                }
+                                let ret=tt.posCont
+                                if (wWidth < 700){
+                                    //ret=[ "menu" , "summary"  ]
+                                }
+                                return ret
+                            }
+                        }
+                    }
+                }
+            }
+        };
+       
+        //------------------------
 
         setCmptMe(data);
         
@@ -211,6 +296,29 @@ export const Views=(props)=>{
 
         setDescTxt(data.desc);
         setNotesTxt(data.notes);
+
+        //------------------------
+
+        setLayoutposContsODyn((st)=>{
+            let nst={...st} ;
+
+            for (let p in LayoutposContsODynTmp0){                
+                let r=LayoutposContsODynTmp0[p];
+                nst[p]=r;
+            }
+
+            return nst
+        });
+        setLayoutposContsStatesDyn((st)=>{
+            let nst={...st} ;
+
+            for (let p in LayoutposContsStatesDynTmp0){
+                let r=LayoutposContsStatesDynTmp0[p];
+                nst[p]=r;
+            }
+
+            return nst
+        });
         
     }
 
@@ -393,242 +501,218 @@ export const Views=(props)=>{
                 let layoutposContsO={};
                 let layoutname="";
 
-                
-                layoutname="menu";
-                layoutposContsO[layoutname]={
-                    name : layoutname,            
-                    e : (...args)=>{
-                            
-                        let key=""    
-                        if (args[0]){
-                            if (args[0].key){
-                                key=args[0].key
-                            }
-                            if (args[0].name){
-                                key=args[0].name
-                            }
-                        }
-
-                        if (key===""){
-                            key=uuidv4()
-                        }
-                        return (  
-                            <div
-                                key={key}
-                                style={layoutmenuStyle}
-                            >
-                                <h4>menu</h4>                             
+                if (true){
+                    layoutname="menu";
+                    layoutposContsO[layoutname]={
+                        name : layoutname,            
+                        e : (...args)=>{
                                 
+                            let key=""    
+                            if (args[0]){
+                                if (args[0].key){
+                                    key=args[0].key
+                                }
+                                if (args[0].name){
+                                    key=args[0].name
+                                }
+                            }
+
+                            if (key===""){
+                                key=uuidv4()
+                            }
+                            return (  
                                 <div
-                                    menuname={"viewMain"}
-                                    style={{
-                                        position : "relative",
-                                        display : "inline-block",
-                                        cursor : "pointer",
-                                        width : 100,
-                                    }}
-                                    onClick={(e)=>{
-                                        let menuname=e.target.getAttribute("menuname");
-                                        layoutsetCurrStateRef.current(menuname)
-                                    }}
+                                    key={key}
+                                    style={layoutmenuStyle}
                                 >
-                                    <label
+                                    <h4>menu</h4>                             
+                                    
+                                    <div
                                         menuname={"viewMain"}
-                                    >Main</label>                            
-                                </div>   
-                                <div
-                                    menuname={"viewSummary"}
-                                    style={{
-                                        position : "relative",
-                                        display : "inline-block",
-                                        cursor : "pointer",
-                                        width : 100,
-                                    }}
-                                    onClick={(e)=>{
-                                        let menuname=e.target.getAttribute("menuname");
-                                        layoutsetCurrStateRef.current(menuname)
-                                    }}
-                                >
-                                    <label
+                                        style={{
+                                            position : "relative",
+                                            display : "inline-block",
+                                            cursor : "pointer",
+                                            width : 100,
+                                        }}
+                                        onClick={(e)=>{
+                                            let menuname=e.target.getAttribute("menuname");
+                                            layoutsetCurrStateRef.current(menuname)
+                                        }}
+                                    >
+                                        <label
+                                            menuname={"viewMain"}
+                                        >Main</label>                            
+                                    </div>   
+                                    <div
                                         menuname={"viewSummary"}
-                                    >Summary</label>                            
-                                </div>          
-                                <div
-                                    menuname={"editSettings"}
-                                    style={{
-                                        position : "relative",
-                                        display : "inline-block",
-                                        cursor : "pointer",
-                                        width : 100,
-                                    }}
-                                    onClick={(e)=>{
-                                        let menuname=e.target.getAttribute("menuname");
-                                        layoutsetCurrStateRef.current(menuname)
-                                    }}
-                                >
-                                    <label
+                                        style={{
+                                            position : "relative",
+                                            display : "inline-block",
+                                            cursor : "pointer",
+                                            width : 100,
+                                        }}
+                                        onClick={(e)=>{
+                                            let menuname=e.target.getAttribute("menuname");
+                                            layoutsetCurrStateRef.current(menuname)
+                                        }}
+                                    >
+                                        <label
+                                            menuname={"viewSummary"}
+                                        >Summary</label>                            
+                                    </div>          
+                                    <div
                                         menuname={"editSettings"}
-                                    >Settings</label>                            
-                                </div>           
+                                        style={{
+                                            position : "relative",
+                                            display : "inline-block",
+                                            cursor : "pointer",
+                                            width : 100,
+                                        }}
+                                        onClick={(e)=>{
+                                            let menuname=e.target.getAttribute("menuname");
+                                            layoutsetCurrStateRef.current(menuname)
+                                        }}
+                                    >
+                                        <label
+                                            menuname={"editSettings"}
+                                        >Settings</label>                            
+                                    </div>           
 
-                            </div>
-                        )
-                    },
-                };
-                nst[layoutname]=layoutposContsO[layoutname]
-
-                layoutname="Main";
-                layoutposContsO[layoutname]={
-                    name : layoutname,            
-                    e : (...args)=>{
-                            
-                            let key=""    
-                            if (args[0]){
-                                if (args[0].key){
-                                    key=args[0].key
-                                }
-                                if (args[0].name){
-                                    key=args[0].name
-                                }
-                            }
-
-                            if (key===""){
-                                key=uuidv4()
-                            }
-
-                            return (               
-                                <div
-                                    key={key}
-                                    style={{
-                                        background : "white",
-                                        position : "relative",
-                                        display : "inline-block",
-                                        width : 400,
-                                        height : 300,
-                                        borderRadius : 8,
-                                        margin : 5,
-                                        padding : 5,
-                                        overflow : "hidden"
-                                    }}
-                                >
-                                    <h4>Main</h4>                
                                 </div>
-                        )
-                    }
+                            )
+                        },
+                    };
+                    nst[layoutname]=layoutposContsO[layoutname]
 
-                };
-                nst[layoutname]=layoutposContsO[layoutname]
-
-                layoutname="Settings";
-                layoutposContsO[layoutname]={
-                    name : layoutname,            
-                    e : (...args)=>{                            
-                            let key=""    
-                            if (args[0]){
-                                if (args[0].key){
-                                    key=args[0].key
+                    layoutname="Main";
+                    layoutposContsO[layoutname]={
+                        name : layoutname,            
+                        e : (...args)=>{
+                                
+                                let key=""    
+                                if (args[0]){
+                                    if (args[0].key){
+                                        key=args[0].key
+                                    }
+                                    if (args[0].name){
+                                        key=args[0].name
+                                    }
                                 }
-                                if (args[0].name){
-                                    key=args[0].name
+
+                                if (key===""){
+                                    key=uuidv4()
                                 }
-                            }
 
-                            if (key===""){
-                                key=uuidv4()
-                            }
-                            
-                            return (                  
-                                <div
-                                    key={key}
-                                    style={{
-                                        background : "white",
-                                        position : "relative",
-                                        display : "inline-block",
-                                        width : 400,
-                                        height : 300,
-                                        borderRadius : 8,
-                                        margin : 5,
-                                        padding : 5,
-                                        overflow : "hidden"
-                                    }}
-                                >
-                                    <h4>Settings</h4>                
-                                </div>
-                        )
-                    }
-                };
-                nst[layoutname]=layoutposContsO[layoutname]
-
-                layoutname="title";
-                layoutposContsO[layoutname]={
-                    name : layoutname,            
-                    e : (...args)=>{                            
-                            let key=""    
-                            if (args[0]){
-                                if (args[0].key){
-                                    key=args[0].key
-                                }
-                                if (args[0].name){
-                                    key=args[0].name
-                                }
-                            }
-
-                            if (key===""){
-                                key=uuidv4()
-                            }
-
-                            return (                  
-                                <div
-                                    key={key}
-                                    style={{
-                                        background : "white",
-                                        position : "relative",
-                                        display : "inline-block",
-                                        width : 300,
-                                        height : 90,
-                                        borderRadius : 8,
-                                        margin : 5,
-                                        padding : 5,
-                                        overflow : "hidden"
-                                    }}
-                                >
-                                    <h4>my title</h4>                
-                                </div>
-                        )
-                    }
-
-                };
-                nst[layoutname]=layoutposContsO[layoutname]
-
-                layoutname="linebreak1";
-                layoutposContsO[layoutname]={
-                    name : layoutname,            
-                    e : (...args)=>{
-                            
-                        let key=""    
-                        if (args[0]){
-                            if (args[0].key){
-                                key=args[0].key
-                            }
-                            if (args[0].name){
-                                key=args[0].name
-                            }
+                                return (               
+                                    <div
+                                        key={key}
+                                        style={{
+                                            background : "white",
+                                            position : "relative",
+                                            display : "inline-block",
+                                            width : 400,
+                                            height : 300,
+                                            borderRadius : 8,
+                                            margin : 5,
+                                            padding : 5,
+                                            overflow : "hidden"
+                                        }}
+                                    >
+                                        <h4>Main</h4>                
+                                    </div>
+                            )
                         }
 
-                        if (key===""){
-                            key=uuidv4()
+                    };
+                    nst[layoutname]=layoutposContsO[layoutname]
+
+                    layoutname="Settings";
+                    layoutposContsO[layoutname]={
+                        name : layoutname,            
+                        e : (...args)=>{                            
+                                let key=""    
+                                if (args[0]){
+                                    if (args[0].key){
+                                        key=args[0].key
+                                    }
+                                    if (args[0].name){
+                                        key=args[0].name
+                                    }
+                                }
+
+                                if (key===""){
+                                    key=uuidv4()
+                                }
+                                
+                                return (                  
+                                    <div
+                                        key={key}
+                                        style={{
+                                            background : "white",
+                                            position : "relative",
+                                            display : "inline-block",
+                                            width : 400,
+                                            height : 300,
+                                            borderRadius : 8,
+                                            margin : 5,
+                                            padding : 5,
+                                            overflow : "hidden"
+                                        }}
+                                    >
+                                        <h4>Settings</h4>                
+                                    </div>
+                            )
+                        }
+                    };
+                    nst[layoutname]=layoutposContsO[layoutname]
+
+                    layoutname="title";
+                    layoutposContsO[layoutname]={
+                        name : layoutname,            
+                        e : (...args)=>{                            
+                                let key=""    
+                                if (args[0]){
+                                    if (args[0].key){
+                                        key=args[0].key
+                                    }
+                                    if (args[0].name){
+                                        key=args[0].name
+                                    }
+                                }
+
+                                if (key===""){
+                                    key=uuidv4()
+                                }
+
+                                return (                  
+                                    <div
+                                        key={key}
+                                        style={{
+                                            background : "white",
+                                            position : "relative",
+                                            display : "inline-block",
+                                            width : 300,
+                                            height : 90,
+                                            borderRadius : 8,
+                                            margin : 5,
+                                            padding : 5,
+                                            overflow : "hidden"
+                                        }}
+                                    >
+                                        <h4>my title</h4>                
+                                    </div>
+                            )
                         }
 
-                        return (<br key={key} />)
-                    },
-                };  
-                nst[layoutname]=layoutposContsO[layoutname]
+                    };
+                    nst[layoutname]=layoutposContsO[layoutname]
 
-                layoutname="summary";
-                layoutposContsO[layoutname]={
-                    name : layoutname,            
-                    e : (...args)=>{
-                            
+                    layoutname="linebreak1";
+                    layoutposContsO[layoutname]={
+                        name : layoutname,            
+                        e : (...args)=>{
+                                
                             let key=""    
                             if (args[0]){
                                 if (args[0].key){
@@ -643,26 +727,51 @@ export const Views=(props)=>{
                                 key=uuidv4()
                             }
 
-                            return (             
-                                <div
-                                    key={key}
-                                    style={{
-                                        background : "white",
-                                        position : "relative",
-                                        display : "inline-block",
-                                        width : 400,
-                                        height : 300,
-                                        borderRadius : 8,
-                                        margin : 5,
-                                        padding : 5,
-                                        overflow : "hidden",
-                                    }}
-                                >
-                                    <h4>Summary</h4>                
-                                </div>
-                        )
-                    }
-                };
+                            return (<br key={key} />)
+                        },
+                    };  
+                    nst[layoutname]=layoutposContsO[layoutname]
+
+                    layoutname="summary";
+                    layoutposContsO[layoutname]={
+                        name : layoutname,            
+                        e : (...args)=>{
+                                
+                                let key=""    
+                                if (args[0]){
+                                    if (args[0].key){
+                                        key=args[0].key
+                                    }
+                                    if (args[0].name){
+                                        key=args[0].name
+                                    }
+                                }
+
+                                if (key===""){
+                                    key=uuidv4()
+                                }
+
+                                return (             
+                                    <div
+                                        key={key}
+                                        style={{
+                                            background : "white",
+                                            position : "relative",
+                                            display : "inline-block",
+                                            width : 400,
+                                            height : 300,
+                                            borderRadius : 8,
+                                            margin : 5,
+                                            padding : 5,
+                                            overflow : "hidden",
+                                        }}
+                                    >
+                                        <h4>Summary</h4>                
+                                    </div>
+                            )
+                        }
+                    };
+                }
                 nst[layoutname]=layoutposContsO[layoutname]
                 LayoutposContsODynTmp0=nst
                 return nst
@@ -766,63 +875,64 @@ export const Views=(props)=>{
             setLayoutposContsStatesDyn((st)=>{
                 let nst={...st} ;
 
-                layoutname="viewMain";
-                layoutposContsStates[layoutname]={
-                    name : layoutname,
-                    posCont : [ "title" , "linebreak1" , "menu" ,"Main" ],            
-                    eLogic : function(){
-                        let tt=this;
-                        let args=arguments;
-                        if (args.length > 0){
-                            tt=args[0]
+                if (true){
+                    layoutname="viewMain";
+                    layoutposContsStates[layoutname]={
+                        name : layoutname,
+                        posCont : [ "title" , "linebreak1" , "menu" ,"Main" ],            
+                        eLogic : function(){
+                            let tt=this;
+                            let args=arguments;
+                            if (args.length > 0){
+                                tt=args[0]
+                            }
+                            let ret=tt.posCont
+                            if (wWidth < 700){
+                                ret=[ "menu" , "Main"  ]
+                            }
+                            return ret
                         }
-                        let ret=tt.posCont
-                        if (wWidth < 700){
-                            ret=[ "menu" , "Main"  ]
-                        }
-                        return ret
                     }
-                }
-                nst[layoutname]=layoutposContsStates[layoutname]
+                    nst[layoutname]=layoutposContsStates[layoutname]
 
-                layoutname="viewSummary";
-                layoutposContsStates[layoutname]={
-                    name : layoutname,
-                    posCont : [ "title" , "linebreak1" , "menu" , "summary"  ],            
-                    eLogic : function(){
-                        let tt=this;
-                        let args=arguments;
-                        if (args.length > 0){
-                            tt=args[0]
+                    layoutname="viewSummary";
+                    layoutposContsStates[layoutname]={
+                        name : layoutname,
+                        posCont : [ "title" , "linebreak1" , "menu" , "summary"  ],            
+                        eLogic : function(){
+                            let tt=this;
+                            let args=arguments;
+                            if (args.length > 0){
+                                tt=args[0]
+                            }
+                            let ret=tt.posCont
+                            if (wWidth < 700){
+                                ret=[ "menu" , "Main"  ]
+                            }
+                            return ret
                         }
-                        let ret=tt.posCont
-                        if (wWidth < 700){
-                            ret=[ "menu" , "Main"  ]
-                        }
-                        return ret
                     }
-                }
-                nst[layoutname]=layoutposContsStates[layoutname]
+                    nst[layoutname]=layoutposContsStates[layoutname]
 
-                layoutname="editSettings";
-                layoutposContsStates[layoutname]={
-                    name : layoutname,
-                    posCont :   [ "title" , "linebreak1" , "menu" , "Settings" ],                         
-                    eLogic : function(){
-                        let tt=this;
-                        let args=arguments;
-                        if (args.length > 0){
-                            tt=args[0]
+                    layoutname="editSettings";
+                    layoutposContsStates[layoutname]={
+                        name : layoutname,
+                        posCont :   [ "title" , "linebreak1" , "menu" , "Settings" ],                         
+                        eLogic : function(){
+                            let tt=this;
+                            let args=arguments;
+                            if (args.length > 0){
+                                tt=args[0]
+                            }
+                            let ret=tt.posCont
+                            if (wWidth < 700){
+                                //ret=[ "menu" , "summary"  ]
+                            }
+                            return ret
                         }
-                        let ret=tt.posCont
-                        if (wWidth < 700){
-                            //ret=[ "menu" , "summary"  ]
-                        }
-                        return ret
                     }
+                    nst[layoutname]=layoutposContsStates[layoutname]
                 }
-                nst[layoutname]=layoutposContsStates[layoutname]
-            
                 
                 LayoutposContsStatesDynTmp0=nst
                 return nst
@@ -999,6 +1109,7 @@ export const Views=(props)=>{
                         params={ ...{},...r };                        
                         //addToLayout(params)                        
                         setLayoutcurrAssetsSel(val)
+                        setLayoutStatePropertiesPosContAddName(val)
                     }}
                 >
                     {toolname}
@@ -1008,8 +1119,6 @@ export const Views=(props)=>{
 
             i++;
         }
-
-
 
         /*
          .forEach((r,i)=>{
@@ -1028,7 +1137,8 @@ export const Views=(props)=>{
             )
          })
         */
-        return (
+        
+         return (
             <div
                 style={{
                     position : "relative",
@@ -1054,7 +1164,11 @@ export const Views=(props)=>{
                     <br/>
                     ==========
                     <br/>
-                    <button>add</button>
+                    <button
+                        onClick={()=>{
+                            
+                        }}
+                    >add</button>
                     <br/>
                     {arrE}
                 </div>
@@ -1178,28 +1292,39 @@ export const Views=(props)=>{
     let layoutStatePropertiesE=(()=>{
         let arrE=[];
 
+        let styledef={
+            position : "relative",
+            display : "inline-block",                                
+            border : "black solid transparent",
+            borderRadius : 5,
+            overflow : "hidden",
+            margin : 1,
+            padding : 4,
+            color : "white",
+            background : "orange",
+        }
+
         let curr={}
         let currStr="{}"
         let currPosContE=[]
         if (layoutposContsStates[layoutcurrStateSel]){
             curr=layoutposContsStates[layoutcurrStateSel];
-
+           
             if (curr.posCont){                
                 currStr=JSON.stringify(curr)
 
                 curr.posCont.forEach((r,i)=>{
+                    let style={...styledef}
+                    if (r===layoutStatePropertiesPosContCurrSel){
+                        style.background="blue";
+                    }
+                   
+
                     currPosContE.push(
                         <div
-                            style={{
-                                position : "relative",
-                                display : "inline-block",                                
-                                border : "black solid transparent",
-                                borderRadius : 5,
-                                overflow : "hidden",
-                                margin : 1,
-                                padding : 4,
-                                color : "white",
-                                background : "orange",
+                            style={style}
+                            onClick={()=>{
+                                setLayoutStatePropertiesPosContCurrSel(r)
                             }}
                         >
                             {r}
@@ -1280,25 +1405,82 @@ export const Views=(props)=>{
                                     
                                     let nst0={...layoutposContsStates};   
                                     // nst0[layoutcurrStateSel].posCont.push(assetName);
-                                    nst0[layoutcurrStateSel].posCont.push(instances.current.all[newInstanceID].id);
+
+
+                                    // nst0[layoutcurrStateSel].posCont.push(instances.current.all[newInstanceID].id);
+                                    let currIdx=(()=>{
+                                        let foundI=false
+                                        let idx=0
+                                        nst0[layoutcurrStateSel].posCont.forEach((r1,i2)=>{
+                                            if (r1===layoutStatePropertiesPosContCurrSel ){
+                                                foundI=true;
+                                                idx=i2 + 1 ;
+                                            }
+                                        })
+
+                                        if (foundI===false){
+                                            return nst0[layoutcurrStateSel].posCont.length ; // same as push to end of last ;
+                                        }
+                                        return idx
+                                    })();
+                                    nst0[layoutcurrStateSel].posCont.splice(currIdx, 0,instances.current.all[newInstanceID].id)
+
+
+                                    let LayoutposContsODynTmp0
+                                    let  LayoutposContsStatesDynTmp0
                                     setLayoutposContsODyn((st)=>{
                                         let nst={...st}   
 
                                         let layoutname=instances.current.all[newInstanceID].assetSource;
                                         nst[newInstanceID]={...st[layoutname]};
                                         nst[newInstanceID].name=newInstanceID;
+                                        nst[newInstanceID].assetSource=layoutname;
                                         // #TODO generate new E  and key 
                                         // nst[newInstanceID].generate({ key : newInstanceID});
+                                        LayoutposContsODynTmp0=nst
                                         return nst;
-                                    })
+                                    })  ;                                 
                                     setLayoutposContsStatesDyn((st)=>{
                                         let nst={...st}   
 
                                         nst[layoutcurrStateSel].posCont=nst0[layoutcurrStateSel].posCont;
 
+                                        LayoutposContsStatesDynTmp0=nst
+                                        return nst;
+                                    });
+                                    setCmptMe((st)=>{
+                                        let nst={...st};
+
+                                        if (nst.view.layoutposContsO){}else{
+                                            nst.view.layoutposContsO={}
+                                        }
+                                        let layoutposContsOTmp={}
+                                        for ( let p in LayoutposContsODynTmp0){
+                                            let r=LayoutposContsODynTmp0[p]
+                                            layoutposContsOTmp[p]={
+                                                assetSource : r.assetSource
+                                            }
+                                        }
+                                        nst.view.layoutposContsO=layoutposContsOTmp
                                         
+                                        // -------------------------------
+                                        if (nst.view.LayoutposContsStates){}else{
+                                            nst.view.LayoutposContsStates={}
+                                        }
+                                        let LayoutposContsStatesDynTmp={}
+                                        for ( let p in LayoutposContsStatesDynTmp0){
+                                            let r=LayoutposContsStatesDynTmp0[p]
+                                            LayoutposContsStatesDynTmp[p]={
+                                                name : r.name,
+                                                posCont : r.posCont
+                                            }
+                                        }
+                                        nst.view.LayoutposContsStates=LayoutposContsStatesDynTmp
+                        
                                         return nst;
                                     })
+
+                                    
                                 }
                             }
                         }}
@@ -1311,6 +1493,65 @@ export const Views=(props)=>{
                         }}
                     
                     />
+                    <button
+                        style={{
+                            fontSize : 9,                        
+                        }}
+                        onClick={()=>{
+                            if (layoutposContsStatesDyn[layoutcurrStateSel]){
+                                let nst0={...layoutposContsStates};  
+
+                                let currIdx=(()=>{
+                                    let foundI=false
+                                    let idx=0
+                                    nst0[layoutcurrStateSel].posCont.forEach((r1,i2)=>{
+                                        if (r1===layoutStatePropertiesPosContCurrSel ){
+                                            foundI=true;
+                                            idx=i2  ;
+                                        }
+                                    })
+
+                                    if (foundI===false){
+                                        return nst0[layoutcurrStateSel].posCont.length ; // same as push to end of last ;
+                                    }
+                                    return idx
+                                })();
+                                nst0[layoutcurrStateSel].posCont.splice(currIdx, 1)
+
+                                let LayoutposContsODynTmp0
+                                let  LayoutposContsStatesDynTmp0
+                                setLayoutposContsStatesDyn((st)=>{
+                                    let nst={...st}   
+
+                                    nst[layoutcurrStateSel].posCont=nst0[layoutcurrStateSel].posCont;
+
+                                    LayoutposContsStatesDynTmp0=nst
+                                    return nst;
+                                })
+                                setCmptMe((st)=>{
+                                    let nst={...st};
+                                                                       
+                                    // -------------------------------
+                                    if (nst.view.LayoutposContsStates){}else{
+                                        nst.view.LayoutposContsStates={}
+                                    }
+                                    let LayoutposContsStatesDynTmp={}
+                                    for ( let p in LayoutposContsStatesDynTmp0){
+                                        let r=LayoutposContsStatesDynTmp0[p]
+                                        LayoutposContsStatesDynTmp[p]={
+                                            name : r.name,
+                                            posCont : r.posCont
+                                        }
+                                    }
+                                    nst.view.LayoutposContsStates=LayoutposContsStatesDynTmp
+                    
+                                    return nst;
+                                })
+                            }
+
+                        }}
+                    >del</button>
+
                     <br/>
                     {currPosContE}
                     
@@ -1353,7 +1594,7 @@ export const Views=(props)=>{
                         overflow : "auto"
                     }}
                 >
-                    <lable>Startup layout </lable>
+                    <label>Startup layout </label>
                     <input 
                         style={{
                             fontSize : 11,
@@ -1589,7 +1830,7 @@ export const Views=(props)=>{
 
                                 }}
                                 onClick={()=>{
-                                    let nd={...cmptMeJsn}
+                                    let nd={...cmptMe}
                                     nd.name=cmptMeName.replace(/ / ,"");
                                     saveCmptMeBE( { name : nd.name , data :  nd , project : project.replace(/ / ,"")  } , ()=>{
                                         listCmptMe()

@@ -828,6 +828,12 @@ export const Db=(props)=>{
                     );
                     arrTmpArr.push(p)
 
+                    let val=r[p] ;
+
+                    if (typeof(val)==="object"){
+                        val=JSON.stringify(val)
+                    }
+
                     arrTmpE.push(
                         <td
                             recmongoid={r._id}
@@ -844,7 +850,7 @@ export const Db=(props)=>{
                                 setInsertRecsData(JSON.stringify(data,null,2))
                             }}
                         >
-                            {r[p]}
+                            {val}
                         </td>
                     )
                     c++;
