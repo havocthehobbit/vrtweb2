@@ -314,7 +314,7 @@ let main={
                                             
                                             let collection=db.collection(name) ; // current driver version 
                                             let cursor=collection.find(params.criteria, params.option_aggregation)
-
+                                            
                                             let dtn=[];
                                             if (true){
                                                 dtn=await cursor.toArray()
@@ -327,8 +327,8 @@ let main={
                                                     dtn.push(nr)
                                                 
                                                 });   
-                                            }                                     
-
+                                            }                           
+                                           
                                             res.jsonp({ data : { all : dtn} , status : "success" ,bStatus : true});
                                         }
 
@@ -360,7 +360,7 @@ let main={
                                                     nr.name=r.name;
                                                     dtn.push(nr)
                                                 });
-                                            
+                                                
                                                 /*
                                                     dt.forEach((r,i)=>{
                                                         let nr={...r}

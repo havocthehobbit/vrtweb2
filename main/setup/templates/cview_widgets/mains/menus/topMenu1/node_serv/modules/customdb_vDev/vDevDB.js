@@ -9,7 +9,7 @@ let crypto = require('crypto');
 
 var main={
     "auto_run" : ()=>{
-        console.log("vDev customDB")
+        console.log("db lib : vDev customDB")
     },
     db : {         
         projectsVdev : {
