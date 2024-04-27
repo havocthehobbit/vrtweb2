@@ -119,7 +119,7 @@ let main={
                                                     "name" : "admin",
                                                     "views" : [
                                                         "home",                                     
-                                                        "vDev",         
+                                                        "VDev",         
                                                                                             
                                                     ]
                                                 }
@@ -137,13 +137,13 @@ let main={
                                                     "e" : "Home",
                                                 },                  
                                                 { 
-                                                    "id" : "vDev",
-                                                    "name" : "vDev",
-                                                    "title": "vDev",
-                                                    "pathname" : "/vDev", 
+                                                    "id" : "VDev",
+                                                    "name" : "VDev",
+                                                    "title": "VDev",
+                                                    "pathname" : "/VDev", 
                                                     "showMenu" : true, 
-                                                    "e" : "vDev",                                        
-                                                },                                        
+                                                    "e" : "VDev",                                        
+                                                },                                      
                                             ]
 
                                             let viewsObj={}

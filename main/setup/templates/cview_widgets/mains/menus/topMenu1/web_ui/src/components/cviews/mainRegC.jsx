@@ -1,6 +1,6 @@
 // ##~importsStart
 
-import { vDev } from './vDev/vDev/vDev.jsx';
+import { VDev } from './vDev/vDev/vDev.jsx';
 import { Home } from './home/home.jsx';
 import { AdminSettings } from './admin/adminSettings.jsx';
 
@@ -12,7 +12,7 @@ let allMainEles={}
 allMainEles={ 
     // ##~menuComonentsStart
     Home, 
-    vDev, 
+    VDev, 
     AdminSettings,    
     // ##~menuComonentsEnd
 }
