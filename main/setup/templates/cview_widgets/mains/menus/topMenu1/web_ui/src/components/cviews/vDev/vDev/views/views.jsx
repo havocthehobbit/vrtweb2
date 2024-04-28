@@ -87,8 +87,25 @@ export const Views=(props)=>{
         counts : {},
     })
 
+    let [srcTxt,setSrcTxt]=useState("");
+
+
     // --------------------------------
-    let wSize=useWindowSize();
+    let [loadShowHide,setLoadShowHide]=useState(true)
+    let [newSaveShowHide,setNewSaveShowHide]=useState(true)
+    let [textMainShowHide,setTextMainShowHide]=useState(true)
+    let [toolsShowHide,setToolsShowHide]=useState(true)
+    let [toolAssetsShowHide,setToolAssetsShowHide]=useState(true)
+    let [layoutStatesShowHide,setLayoutStatesShowHide]=useState(true)
+    let [layoutStatesPropertiesShowHide,setLayoutStatesPropertiesShowHide]=useState(true)
+    let [mainlayoutStatesPropertiesShowHide,setMainLayoutStatesPropertiesShowHide]=useState(true)
+    let [previewShowHide,setPreviewShowHide]=useState(true)
+
+
+    
+  
+
+    // -----------------------------
 
     useEffect(()=>{
         if (initC.current){
@@ -342,6 +359,231 @@ export const Views=(props)=>{
             
         }
 
+    // --------------------------------
+
+        let generateSrc=(...args)=>{
+            let txt=""
+
+            let txtImports=""
+
+            if (true){
+                txtImports+=`import { useState,useEffect,useRef,useContext ,Context , useMemo, useCallback} from "react";`;
+                txtImports+="\n";
+                txtImports+="\n";
+                txtImports+=`import { useMyLayout } from "../../../../common/widgets/containers/useMyLayout";`;
+                txtImports+="\n";
+                txtImports+=`import { useWindowSize } from "../../../../common/widgets/containers/useWindowSize";`;
+                txtImports+="\n";
+            }
+            txt+=txtImports;
+
+            if (true){
+                txt+="\n";
+                txt+=`export const ${"CmptName"}=(props)=>{`;
+                txt+="\n";
+                txt+=`  let initC=useRef(true)`;
+                txt+="\n";
+                txt+=`  let [updateStete,setUpdateStete]=useState(new Date());`;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  let layoutsetCurrStateRef=useRef(()=>{});`;
+                txt+="\n";
+                txt+=`  let [layoutcurrStateDef,setLayoutcurrStateDef]=useState("viewMain");`;
+                txt+="\n";                
+                txt+=`  let [layoutposContsStatesDyn,setLayoutposContsStatesDyn]=useState({});`;
+                txt+="\n";                
+                txt+=`  let [layoutposContsODyn,setLayoutposContsODyn]=useState({});`;
+                txt+="\n";                
+                txt+=`  layoutcurrStateDef`;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";                
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";                
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  let wSize=useWindowSize();`;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";                
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  useEffect(()=>{`;
+                txt+="\n";                
+                txt+=`      if (initC.current){`;
+                txt+="\n";
+                txt+=`          initC.current=false;`;
+                txt+="\n";                
+                txt+=`          `;
+                txt+="\n";
+                txt+=`      }`;
+                txt+="\n";
+                txt+=`  },[]);`;
+                txt+="\n"; 
+                txt+=`  `;
+                txt+="\n"; 
+                txt+=`  let updateStateForce=()=>{ setUpdateStete(new Date()) }`;
+                txt+="\n"; 
+                txt+=`  `;
+                txt+="\n"; 
+                txt+=`  let layoutposContsStates={};`;
+                txt+="\n"; 
+                txt+=`  let layoutposContsO={};`;
+                txt+="\n"; 
+                txt+=`  let layoutname="";`;
+                txt+="\n"; 
+                txt+=`  `;
+                txt+="\n"; 
+                txt+=`  let layoutmenuStyle={`;
+                txt+="\n";
+                txt+=`      background : "white",`;
+                txt+="\n";
+                txt+=`      position : "relative",`;
+                txt+="\n";
+                txt+=`      display : "inline-block",`;
+                txt+="\n";
+                txt+=`      width : 100,`;
+                txt+="\n";
+                txt+=`      height : 300,`;
+                txt+="\n";
+                txt+=`      borderRadius : 8,`;
+                txt+="\n";
+                txt+=`      margin : 5,`;
+                txt+="\n";
+                txt+=`      padding : 5,`;
+                txt+="\n";
+                txt+=`      overflow : "hidden", `;                
+                txt+="\n";
+                txt+=`  };`;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  let layoutposContsODynGenerateDynamic=(()=>{`;
+                txt+="\n";
+                txt+=`      layoutposContsO={...layoutposContsO,...layoutposContsODyn}`;
+                txt+="\n";
+                txt+=`  })()`;
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  let layoutposContsStatesGenerateDynamic=(()=>{`;
+                txt+="\n";
+                txt+=`      layoutposContsStates={...layoutposContsStates,...layoutposContsStatesDyn}`;
+                txt+="\n";
+                txt+=`  })()`;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+="\n";                
+                txt+=`  let layoutRetUseMyLayout=useMyLayout({ posContsStates : layoutposContsStates , posContsO : layoutposContsO  ,/* allState : layoutallState ,*/ currStateDef : layoutcurrStateDef })`;
+                txt+="\n";
+                txt+=`  let layoutmyLayout=layoutRetUseMyLayout.myLayout;`;
+                txt+="\n";
+                txt+=`  let layoutcurrState=layoutRetUseMyLayout.currState;`;
+                txt+="\n";
+                txt+=`  let layoutsetCurrState=layoutRetUseMyLayout.setCurrState;`;
+                txt+="\n";
+                txt+=`  layoutsetCurrStateRef.current=layoutsetCurrState;`;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  let style={`;
+                txt+="\n";
+                txt+=`      position  : "relative",`;
+                txt+="\n";
+                txt+=`      `;
+                txt+="\n";
+                txt+=`      `;
+                txt+="\n";
+                txt+=`      `;
+                txt+="\n";
+                txt+=`  }`;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  if (props.style){`;
+                txt+="\n";
+                txt+=`      style={...style,...props.style}`;
+                txt+="\n";
+                txt+=`  }`;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`   return (`;
+                txt+="\n";
+                txt+=`      <div`;
+                txt+="\n";
+                txt+=`          style={style}`;
+                txt+="\n";
+                txt+=`      >`;
+                txt+="\n";
+                txt+=`          `;
+                txt+="\n";
+                txt+=`          {layoutmyLayout}`;
+                txt+="\n";
+                txt+=`          `;
+                txt+="\n";
+                txt+=`          `;                
+                txt+="\n";
+                txt+=`          `;
+                txt+="\n";
+                txt+=`          `;
+                txt+="\n";
+                txt+=`      </div>`;                
+                txt+="\n";
+                txt+=`  )`;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`  `;
+                txt+="\n";
+                txt+=`}`;
+                txt+="\n";
+                txt+=``;
+            }
+
+
+            if (cmptMe.view){
+                if (cmptMe.view.layoutposContsO){
+
+                }
+
+                if (cmptMe.view.LayoutposContsStates){
+
+                }
+            }
+
+
+            
+
+            return txt;
+        }
     // --------------------------------
 
         let layoutPrefabsList={
@@ -982,7 +1224,17 @@ export const Views=(props)=>{
 
     // --------------------------------
 
-
+    let toolsShowHideStyle={
+        border : "solid thin lightgrey",
+        width : 400,
+        height : 150,
+    }
+    if (toolsShowHide===false){
+        toolsShowHideStyle.display="none"        
+        toolsShowHideStyle.border=undefined
+        toolsShowHideStyle.width=undefined
+        toolsShowHideStyle.height=undefined
+    }
     let toolsCmptMeE=(()=>{
         let arrE=[];
 
@@ -1030,48 +1282,52 @@ export const Views=(props)=>{
             i++;
         }
 
-
-
-        /*
-         .forEach((r,i)=>{
-            arrE.push(
-                <div
-                    key={i}
-                    style={{
-
-                    }}
-                    onClick={()=>{
-
-                    }}
-                >
-                    {""}
-                </div>
-            )
-         })
-        */
         return (
             <div
                 style={{
                     position : "relative",
                     display : "inline-block",
-                    width : 400,
-                    height : 100,
+                    width : toolsShowHideStyle.width,
+                    height : toolsShowHideStyle.height,
                     margin : 5 ,
                     padding : 5 ,
-                    border : "solid thin lightgrey",
+                    border : toolsShowHideStyle.border,
                     borderRadius : 5 , 
                 }}
             >   
-                Tools
-                <br/>
-                ==========
-                <br/>
-                {arrE}
+                <button 
+                    onClick={()=>{
+                        setToolsShowHide(!toolsShowHide)
+                    }}
+                >show/hide tlas</button>
+                
+                <div
+                    style={{
+                        display : toolsShowHideStyle.display,
+                    }}
+                >
+                    Tools
+                    <br/>
+                    ==========
+                    <br/>
+                    {arrE}
+                </div>
             </div>
         )
     })();
 
         
+    let toolAssetsShowHideStyle={
+        border : "solid thin lightgrey",
+        width : 400,
+        height : 150,
+    }
+    if (toolAssetsShowHide===false){
+        toolAssetsShowHideStyle.display="none"        
+        toolAssetsShowHideStyle.border=undefined
+        toolAssetsShowHideStyle.width=undefined
+        toolAssetsShowHideStyle.height=undefined
+    }
     let layoutAssetsE=(()=>{
         let arrE=[];
 
@@ -1124,45 +1380,34 @@ export const Views=(props)=>{
 
             i++;
         }
-
-        /*
-         .forEach((r,i)=>{
-            arrE.push(
-                <div
-                    key={i}
-                    style={{
-
-                    }}
-                    onClick={()=>{
-
-                    }}
-                >
-                    {""}
-                </div>
-            )
-         })
-        */
-        
-         return (
+       
+        return (
             <div
                 style={{
                     position : "relative",
                     display : "inline-block",
-                    width : 400,
-                    height : 150,
+                    width : toolAssetsShowHideStyle.width,
+                    height : toolAssetsShowHideStyle.height,
                     margin : 5 ,
                     padding : 5 ,
-                    border : "solid thin lightgrey",
+                    border : toolAssetsShowHideStyle.border,
                     borderRadius : 5 , 
                     overflow : "hidden",
                 }}
             >   
+                <button 
+                    onClick={()=>{
+                        setToolAssetsShowHide(!toolAssetsShowHide)
+                    }}
+                >show/hide tlas</button>
+                
                 <div
                     style={{
                         position : "relative",
                         width : 385,
                         height : 135 ,
                         overflow : "auto",
+                        display : toolAssetsShowHideStyle.display
                     }}
                 >
                     Layout Assets 
@@ -1184,11 +1429,16 @@ export const Views=(props)=>{
 
     
 
-
+    let layoutStatesShowHideStyle={
+        border : "solid thin lightgrey",
+       
+    }
+    if (layoutStatesShowHide===false){
+        layoutStatesShowHideStyle.display="none"        
+        layoutStatesShowHideStyle.border=undefined
+    }
     let viewLayoutStatesE=(()=>{
         let arrE=[];
-
-        
         
         let i=0
         for ( let p in layoutposContsStates){
@@ -1246,129 +1496,132 @@ export const Views=(props)=>{
 
             i++;
         }
-
-
-
-        /*
-         .forEach((r,i)=>{
-            arrE.push(
-                <div
-                    key={i}
-                    style={{
-
-                    }}
-                    onClick={()=>{
-
-                    }}
-                >
-                    {""}
-                </div>
-            )
-         })
-        */
+       
         return (
             <div
                 style={{
                     margin : 5 ,
                     padding : 5 ,
-                    border : "solid thin lightgrey",
+                    border : layoutStatesShowHideStyle.border,
                     borderRadius : 5 , 
                 }}
             >   
-                Layout States 
-                <br/>
-                ==========
-                <br/>               
-                <label
-                    >
-                        add layout
-                    </label>
-                    <input 
-                        value={currentNewCmptName}
-                        onChange={(e)=>{
-                            let val=e.target.value;
-                            setCurrentNewCmpName(val)
-                        }}
-                        onBlur={(e)=>{
-
-                        }}
-                    />
-                    <button
-                        onClick={()=>{
-                            let layoutname=currentNewCmptName;
-
-                            let LayoutposContsStatesDynTmp0;
-                            setLayoutposContsStatesDyn((st)=>{
-                                let nst={...st};
-
-                                let nr={
-                                    name : layoutname,
-                                }
-                                
-                                nr={
-                                    name : layoutname,
-                                    posCont : [ ],            
-                                    eLogic : function(){
-                                        let tt=this;
-                                        let args=arguments;
-                                        if (args.length > 0){
-                                            tt=args[0]
-                                        }
-                                        let ret=tt.posCont
-                                        // custom code 
-
-                                        return ret
-                                    }
-                                }
-
-                                nst[layoutname]=nr;
-                                LayoutposContsStatesDynTmp0=nst[layoutname]
-
-                                return nst;
-                            })
-
-                            setCmptMe((st)=>{
-                                let nst={...st};
-                
-                                if (nst.view.LayoutposContsStates){}else{
-                                    nst.view.LayoutposContsStates={}
-                                }
-                                
-                                nst.view.LayoutposContsStates[layoutname]=LayoutposContsStatesDynTmp0;
-
-                                return nst;
-                            })
-                            
-                            
-                            
-                        }}
-                    >add</button>
-                    <button
-                        onClick={()=>{
-                            let layoutname=layoutcurrStateSel;
-                            setLayoutposContsStatesDyn((st)=>{
-                                let nst={...st};
-
-                                delete nst[layoutname]
-                                return nst;
-                                
-                            })
-                            setCmptMe((st)=>{
-                                let nst={...st};
-
-                                delete nst.view.LayoutposContsStates[layoutname]
-
-                                return nst;
-                            })
-                        }}
-                    >del</button>
+                <button 
+                    onClick={()=>{
+                        setLayoutStatesShowHide(!layoutStatesShowHide)
+                    }}
+                >show/hide lst</button>
+                <div
+                    style={{
+                        display : layoutStatesShowHideStyle.display
+                    }}
+                >
+                    Layout States 
                     <br/>
-                <br/>
-                {arrE}
+                    ==========
+                    <br/>               
+                    <label
+                        >
+                            add layout
+                        </label>
+                        <input 
+                            value={currentNewCmptName}
+                            onChange={(e)=>{
+                                let val=e.target.value;
+                                setCurrentNewCmpName(val)
+                            }}
+                            onBlur={(e)=>{
+
+                            }}
+                        />
+                        <button
+                            onClick={()=>{
+                                let layoutname=currentNewCmptName;
+
+                                let LayoutposContsStatesDynTmp0;
+                                setLayoutposContsStatesDyn((st)=>{
+                                    let nst={...st};
+
+                                    let nr={
+                                        name : layoutname,
+                                    }
+                                    
+                                    nr={
+                                        name : layoutname,
+                                        posCont : [ ],            
+                                        eLogic : function(){
+                                            let tt=this;
+                                            let args=arguments;
+                                            if (args.length > 0){
+                                                tt=args[0]
+                                            }
+                                            let ret=tt.posCont
+                                            // custom code 
+
+                                            return ret
+                                        }
+                                    }
+
+                                    nst[layoutname]=nr;
+                                    LayoutposContsStatesDynTmp0=nst[layoutname]
+
+                                    return nst;
+                                })
+
+                                setCmptMe((st)=>{
+                                    let nst={...st};
+                    
+                                    if (nst.view.LayoutposContsStates){}else{
+                                        nst.view.LayoutposContsStates={}
+                                    }
+                                    
+                                    nst.view.LayoutposContsStates[layoutname]=LayoutposContsStatesDynTmp0;
+
+                                    return nst;
+                                })
+                                
+                                
+                                
+                            }}
+                        >add</button>
+                        <button
+                            onClick={()=>{
+                                let layoutname=layoutcurrStateSel;
+                                setLayoutposContsStatesDyn((st)=>{
+                                    let nst={...st};
+
+                                    delete nst[layoutname]
+                                    return nst;
+                                    
+                                })
+                                setCmptMe((st)=>{
+                                    let nst={...st};
+
+                                    delete nst.view.LayoutposContsStates[layoutname]
+
+                                    return nst;
+                                })
+                            }}
+                        >del</button>
+                        <br/>
+                    <br/>
+                    {arrE}
+                </div>
             </div>
         )
     })()
 
+    let layoutStatesPropertiesShowHideStyle={
+        border : "solid thin black",
+        width : 300,
+        height : 200,
+    }
+    if (layoutStatesPropertiesShowHide===false){
+        layoutStatesPropertiesShowHideStyle.display="none"        
+        layoutStatesPropertiesShowHideStyle.border=undefined
+        layoutStatesPropertiesShowHideStyle.width=undefined
+        layoutStatesPropertiesShowHideStyle.height=undefined
+    }
     let layoutStatePropertiesE=(()=>{
         let arrE=[];
 
@@ -1422,10 +1675,10 @@ export const Views=(props)=>{
                 style={{
                     position : "relative",
                     display : "inline-block",
-                    border : "solid thin black",
+                    border : layoutStatesPropertiesShowHideStyle.border,
                     fontSize  : 11,
-                    width : 300,
-                    height : 200,
+                    width : layoutStatesPropertiesShowHideStyle.width,
+                    height : layoutStatesPropertiesShowHideStyle.height,
                     overflow : "hidden",
                     padding : 5,
                     margin : 5,
@@ -1433,10 +1686,15 @@ export const Views=(props)=>{
 
                 }}
             >   
+                <button 
+                    onClick={()=>{
+                        setLayoutStatesPropertiesShowHide(!layoutStatesPropertiesShowHide)
+                    }}
+                >show/hide lstpr</button>
                 <div
                     style={{
                         position : "relative",
-                        display : "inline-block",                        
+                        display : layoutStatesPropertiesShowHideStyle.display,                        
                         fontSize  : 11,
                         width : 285,
                         height : 150,
@@ -1655,55 +1913,78 @@ export const Views=(props)=>{
     })()
 
 
+    let mainlayoutStatesPropertiesShowHideStyle={
+        border : "solid thin black",
+        width : 200,
+        height : 100,
+    }
+    if (mainlayoutStatesPropertiesShowHide===false){
+        mainlayoutStatesPropertiesShowHideStyle.display="none"
+        mainlayoutStatesPropertiesShowHideStyle.border=undefined
+        mainlayoutStatesPropertiesShowHideStyle.width=undefined
+        mainlayoutStatesPropertiesShowHideStyle.height=undefined
+    }
     let mainLayoutPropertiesE=(()=>{
 
         return (
+
             <div
-                style={{
+                style={{...{
                     position : "relative",
                     display : "inline-block",
-                    border : "solid thin black",
+                    border : mainlayoutStatesPropertiesShowHideStyle.border,
                     fontSize  : 11,
-                    width : 200,
-                    height : 100,
+                    width : mainlayoutStatesPropertiesShowHideStyle.width,
+                    height : mainlayoutStatesPropertiesShowHideStyle.height,
                     overflow : "hidden",
                     padding : 5,
                     margin : 5,
 
 
-                }}
+                },...{}}}
             >   
-                main layout properties
-                <br/>-----------------------------
-                
+                <button 
+                    onClick={()=>{
+                        setMainLayoutStatesPropertiesShowHide(!mainlayoutStatesPropertiesShowHide)
+                    }}
+                >show/hide mlpr</button>
                 <div
                     style={{
-                        position : "relative",
-                        display : "inline-block",                        
-                        fontSize  : 11,
-                        width : 185,
-                        height : 85,
-                        overflow : "auto"
+                        display : mainlayoutStatesPropertiesShowHideStyle.display
                     }}
                 >
-                    <label>Startup layout </label>
-                    <input 
+                    main layout properties
+                    <br/>-----------------------------
+                    
+                    <div
                         style={{
-                            fontSize : 11,
-                            width : 80,
+                            position : "relative",
+                            display : "inline-block",                        
+                            fontSize  : 11,
+                            width : 185,
+                            height : 85,
+                            overflow : "auto"
                         }}
-                        value={layoutcurrStateDefTxt}
-                        onChange={(e)=>{
-                            let val=e.target.value;
-                            setLayoutcurrStateDefTxt(val)
-                        }}
-                        onBlur={(e)=>{
-                            // #TODO validate default layout
-                            setLayoutcurrStateDef(layoutcurrStateDefTxt)
-                        }}
-                        
+                    >
+                        <label>Startup layout </label>
+                        <input 
+                            style={{
+                                fontSize : 11,
+                                width : 80,
+                            }}
+                            value={layoutcurrStateDefTxt}
+                            onChange={(e)=>{
+                                let val=e.target.value;
+                                setLayoutcurrStateDefTxt(val)
+                            }}
+                            onBlur={(e)=>{
+                                // #TODO validate default layout
+                                setLayoutcurrStateDef(layoutcurrStateDefTxt)
+                            }}
+                            
 
-                    />
+                        />
+                    </div>
                 </div>
             </div>
         )
@@ -1876,9 +2157,34 @@ export const Views=(props)=>{
         width : style.width - 50,
         height : 600, 
     }
-    if (props.previewStyle){
+    if (props.innerStyle){
         innerStyle={innerStyle,...props.innerStyle}
     }
+
+    if (previewShowHide===false){
+        previewStyle.display="none"
+    }
+
+    let loadShowHideStyle={}
+    if (loadShowHide===false){
+        loadShowHideStyle.display="none"
+    }
+
+    let newSaveShowHideStyle={}
+    if (newSaveShowHide===false){
+        newSaveShowHideStyle.display="none"
+    }
+
+    let textMainShowHideStyle={}
+    if (textMainShowHide===false){
+        textMainShowHideStyle.display="none"
+    }
+
+
+    
+    
+    
+
 
     return (
         <div
@@ -1912,90 +2218,105 @@ export const Views=(props)=>{
                                 float : "left",
                             }}
                         >
+                            <button 
+                                    onClick={()=>{
+                                        setLoadShowHide(!loadShowHide)
+                                    }}
+                            >show/hide ld</button>
+                            <div
+                                style={loadShowHideStyle}
+                            >
                             {listCmptMeE}
+                            </div>
                         </div>
                         <div
                             style={{
                                 float : "left",
                             }}
                         >
-
-                        
-                            <button
-                                style={{
-
-                                }}
-                                onClick={()=>{
-                                    newCmptMe()
-                                }}
+                            <button 
+                                    onClick={()=>{
+                                        setNewSaveShowHide(!newSaveShowHide)
+                                    }}
+                            >show/hide nw-sv</button>
+                            <div
+                                 style={newSaveShowHideStyle}
                             >
-                                new
-                            </button>
+                                <button
+                                    style={{
 
-                            <button
-                                style={{
+                                    }}
+                                    onClick={()=>{
+                                        newCmptMe()
+                                    }}
+                                >
+                                    new
+                                </button>
 
-                                }}
-                                onClick={()=>{
-                                    let nd={...cmptMe}
-                                    nd.name=cmptMeName.replace(/ / ,"");
-                                    saveCmptMeBE( { name : nd.name , data :  nd , project : project.replace(/ / ,"")  } , ()=>{
-                                        listCmptMe()
-                                    })
-                                }}
-                            >
-                                save
-                            </button>
+                                <button
+                                    style={{
+
+                                    }}
+                                    onClick={()=>{
+                                        let nd={...cmptMe}
+                                        nd.name=cmptMeName.replace(/ / ,"");
+                                        saveCmptMeBE( { name : nd.name , data :  nd , project : project.replace(/ / ,"")  } , ()=>{
+                                            listCmptMe()
+                                        })
+                                    }}
+                                >
+                                    save
+                                </button>
+                                
+                                
+                                <br/>
+
+                                <input 
+                                    placeholder='CmptMe Name'
+                                    value={cmptMeName}
+                                    onChange={(e)=>{
+                                        let val=e.target.value;
+
+                                        setCmptMeName(val)
+                                    }}
+                                />
+
+                                <input 
+                                    placeholder='Project'
+                                    value={project}
+                                    onChange={(e)=>{
+                                        let val=e.target.value;
+
+                                        setProject(val)
+                                    }}
+                                    onBlur={()=>{
+                                        listCmptMe({project : project})
+                                    }}
+                                />
+
+                                <br/>
+
+                                <textarea 
+                                    placeholder='descTxt'
+                                    value={descTxt}
+                                    onChange={(e)=>{
+                                        let val=e.target.value;
+
+                                        setDescTxt(val)
+                                    }}
+                                />
+
+                                <textarea 
+                                    placeholder='notesTxt'
+                                    value={notesTxt}
+                                    onChange={(e)=>{
+                                        let val=e.target.value;
+
+                                        setNotesTxt(val)
+                                    }}
+                                />
                             
-                            
-                            <br/>
-
-                            <input 
-                                placeholder='CmptMe Name'
-                                value={cmptMeName}
-                                onChange={(e)=>{
-                                    let val=e.target.value;
-
-                                    setCmptMeName(val)
-                                }}
-                            />
-
-                            <input 
-                                placeholder='Project'
-                                value={project}
-                                onChange={(e)=>{
-                                    let val=e.target.value;
-
-                                    setProject(val)
-                                }}
-                                onBlur={()=>{
-                                    listCmptMe({project : project})
-                                }}
-                            />
-
-                            <br/>
-
-                            <textarea 
-                                placeholder='descTxt'
-                                value={descTxt}
-                                onChange={(e)=>{
-                                    let val=e.target.value;
-
-                                    setDescTxt(val)
-                                }}
-                            />
-
-                            <textarea 
-                                placeholder='notesTxt'
-                                value={notesTxt}
-                                onChange={(e)=>{
-                                    let val=e.target.value;
-
-                                    setNotesTxt(val)
-                                }}
-                            />
-                        
-                        
+                            </div>
                         </div>
 
 
@@ -2014,12 +2335,23 @@ export const Views=(props)=>{
                     }}
 
                 >    
-                    <div
+                    <button 
                         style={{
+                            position : "relative",
                             float : "left",
                         }}
+                        onClick={()=>{
+                            setTextMainShowHide(!textMainShowHide)
+                        }}
+                    >show/hide txt</button>
+                    <br/>
+                    <div
+                        style={{...{
+                            float : "left",
+                        },...textMainShowHideStyle}}
                     >                    
                         <label>Text Main</label>
+                        
                         <br/>
                         <textarea 
                             value={cmptMeTxt}
@@ -2145,13 +2477,12 @@ export const Views=(props)=>{
                     { /* <div style={{ clear : "left" }} /> */}
                 </div>
 
-                {/* preview */}
+                
                 <div style={{ clear : "left" }} />
-
+                {/* preview */}
                 <div
                     style={{
                         position : "relative",
-                        
                     }}
                 >    
                     <label
@@ -2159,6 +2490,11 @@ export const Views=(props)=>{
                             position : "relative",
                         }}
                     >preview</label>
+                    <button 
+                        onClick={()=>{
+                            setPreviewShowHide(!previewShowHide)
+                        }}
+                    >show/hide</button>
                     <div
                         style={{
                             ...{
@@ -2190,6 +2526,41 @@ export const Views=(props)=>{
 
                 </div>            
             
+                <div style={{ clear : "left" }} />
+
+                <div
+                    style={{
+                        position : "relative",
+                        
+                    }}
+                >    
+                    <br/>
+                    <button
+                        onClick={()=>{
+                            let txt=generateSrc()
+                            setSrcTxt(txt)
+                        }}
+                    >generate source</button>
+                    <br/>
+                    <textarea
+                        value={srcTxt}
+                        style={{
+                            width : 1200,
+                            height : 500,
+                            
+                        }}
+                        onChange={(e)=>{
+                            let val=e.target.value
+                            setSrcTxt(val)
+
+                        }}
+                        
+                        
+                    >
+
+                    </textarea>
+
+                </div>
             </div>
 
 
