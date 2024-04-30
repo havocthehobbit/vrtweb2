@@ -7,6 +7,8 @@ import { useState,useEffect,useRef,useContext ,Context , useMemo, useCallback} f
 import { v4 as uuidv4 } from 'uuid';
 import { saveViewsBE as saveCmptMeBE ,listViewsBE as listCmptMeBE,loadViewsBE as loadCmptMeBE} from './libs/backend';
 
+import { genCommonAssets, parseAssetsParamsFn } from "./assetsCommon/commonAssetsBasic";
+
 import { useMyLayout } from "../../../../common/widgets/containers/useMyLayout";
 import { useWindowSize } from "../../../../common/widgets/containers/useWindowSize";
 
@@ -82,10 +84,20 @@ export const Views=(props)=>{
     let [layoutStatePropertiesPosAddName,setLayoutStatePropertiesPosContAddName]=useState("");
     let [layoutStatePropertiesPosContCurrSel,setLayoutStatePropertiesPosContCurrSel]=useState("");
 
-    let instances=useRef({
+    //let [assetProperty,setAssetProperty]=useState({});
+    let [assetPropertyBackground,setAssetPropertyBackground]=useState("");
+
+
+    let [assetPropertyCurrSel,setAssetPropertyCurrSel]=useState("");
+    
+    let instancesPropertiesDef={
+        style : {},
+    }
+    let instancesDef={
         all : {},
         counts : {},
-    })
+    }
+    let instances=useRef({...instancesDef})
 
     let [srcTxt,setSrcTxt]=useState("");
 
@@ -126,6 +138,8 @@ export const Views=(props)=>{
         cmptMeBeforeTxtRef.current=tmpstr;
     },[cmptMe])
 
+
+ 
 
     // --------------------------------
 
@@ -192,6 +206,8 @@ export const Views=(props)=>{
         setNotesTxt("");
 
         // ------------------------
+        instances.current={...instancesDef}
+
         setLayoutposContsStatesDyn({})
     }
 
@@ -302,6 +318,11 @@ export const Views=(props)=>{
                         }
                     }
                 }
+
+                if (data.view.instances){
+                    instances.current=data.view.instances
+                }
+               
             }
         };
        
@@ -741,36 +762,83 @@ export const Views=(props)=>{
             let layoutposContsO={};
             let layoutname="";
 
+            let genCommonAssetsNew={}
+
+            let genCommonAssetsTmp=genCommonAssets();
+
+            genCommonAssetsTmp.forEach((r,i)=>{
+                let nr={}
+                layoutname=r.name;
+                nr={
+                    "name" : layoutname, 
+                };
+                if (r.e){
+                    nr.e=r.e
+                }else{
+                    nr.e=(...args)=>{
+                        let key=""    
+                        if (args[0]){
+                            if (args[0].key){
+                                key=args[0].key
+                            }
+                            if (args[0].name){
+                                key=args[0].name
+                            }
+                        }
+
+                        if (key===""){
+                            key=uuidv4()
+                        }
+
+                        return (               
+                            <div
+                                key={key}
+                            >
+                                <h4>{layoutname}</h4>                
+                            </div>
+                        )
+                        
+
+                    };
+                }
+                
+
+                genCommonAssetsNew[layoutname]=nr
+            })
+
             let LayoutposContsODynTmp0
             setLayoutposContsODyn((st)=>{
                 let nst={...st} ;
 
-                let layoutposContsO={};
-                let layoutname="";
+                //let layoutposContsO={};
+                //let layoutname="";
+                if (true){
+                    
+
+                    for (let np in genCommonAssetsNew){
+                        let r=genCommonAssetsNew[np];
+                        layoutname=np;
+                        layoutposContsO[layoutname]={
+                            name : layoutname,    
+                            e : r.e,
+                        };
+                        nst[layoutname]=layoutposContsO[layoutname];
+                    }
+                }
 
                 if (true){
                     layoutname="menu";
                     layoutposContsO[layoutname]={
                         name : layoutname,            
                         e : (...args)=>{
-                                
-                            let key=""    
-                            if (args[0]){
-                                if (args[0].key){
-                                    key=args[0].key
-                                }
-                                if (args[0].name){
-                                    key=args[0].name
-                                }
-                            }
+                            
+                            let params={}
+                            parseAssetsParamsFn(params, args);
 
-                            if (key===""){
-                                key=uuidv4()
-                            }
                             return (  
                                 <div
-                                    key={key}
-                                    style={layoutmenuStyle}
+                                    key={params.key}
+                                    style={{...layoutmenuStyle,...params.style}}
                                 >
                                     <h4>menu</h4>                             
                                     
@@ -837,24 +905,14 @@ export const Views=(props)=>{
                         name : layoutname,            
                         e : (...args)=>{
                                 
-                                let key=""    
-                                if (args[0]){
-                                    if (args[0].key){
-                                        key=args[0].key
-                                    }
-                                    if (args[0].name){
-                                        key=args[0].name
-                                    }
-                                }
+                                let params={}
+                                parseAssetsParamsFn(params, args);
 
-                                if (key===""){
-                                    key=uuidv4()
-                                }
 
                                 return (               
                                     <div
-                                        key={key}
-                                        style={{
+                                        key={params.key}
+                                        style={{...{
                                             background : "white",
                                             position : "relative",
                                             display : "inline-block",
@@ -864,7 +922,7 @@ export const Views=(props)=>{
                                             margin : 5,
                                             padding : 5,
                                             overflow : "hidden"
-                                        }}
+                                        },...params.style}}
                                     >
                                         <h4>Main</h4>                
                                     </div>
@@ -878,24 +936,14 @@ export const Views=(props)=>{
                     layoutposContsO[layoutname]={
                         name : layoutname,            
                         e : (...args)=>{                            
-                                let key=""    
-                                if (args[0]){
-                                    if (args[0].key){
-                                        key=args[0].key
-                                    }
-                                    if (args[0].name){
-                                        key=args[0].name
-                                    }
-                                }
+                                let params={}
+                                parseAssetsParamsFn(params, args);
 
-                                if (key===""){
-                                    key=uuidv4()
-                                }
                                 
                                 return (                  
                                     <div
-                                        key={key}
-                                        style={{
+                                        key={params.key}
+                                        style={{...{
                                             background : "white",
                                             position : "relative",
                                             display : "inline-block",
@@ -905,7 +953,7 @@ export const Views=(props)=>{
                                             margin : 5,
                                             padding : 5,
                                             overflow : "hidden"
-                                        }}
+                                        },...params.style}}
                                     >
                                         <h4>Settings</h4>                
                                     </div>
@@ -918,24 +966,14 @@ export const Views=(props)=>{
                     layoutposContsO[layoutname]={
                         name : layoutname,            
                         e : (...args)=>{                            
-                                let key=""    
-                                if (args[0]){
-                                    if (args[0].key){
-                                        key=args[0].key
-                                    }
-                                    if (args[0].name){
-                                        key=args[0].name
-                                    }
-                                }
+                                let params={}
+                                parseAssetsParamsFn(params, args);
 
-                                if (key===""){
-                                    key=uuidv4()
-                                }
 
                                 return (                  
                                     <div
-                                        key={key}
-                                        style={{
+                                        key={params.key}
+                                        style={{...{
                                             background : "white",
                                             position : "relative",
                                             display : "inline-block",
@@ -945,7 +983,7 @@ export const Views=(props)=>{
                                             margin : 5,
                                             padding : 5,
                                             overflow : "hidden"
-                                        }}
+                                        },...params.style}}
                                     >
                                         <h4>my title</h4>                
                                     </div>
@@ -960,21 +998,11 @@ export const Views=(props)=>{
                         name : layoutname,            
                         e : (...args)=>{
                                 
-                            let key=""    
-                            if (args[0]){
-                                if (args[0].key){
-                                    key=args[0].key
-                                }
-                                if (args[0].name){
-                                    key=args[0].name
-                                }
-                            }
+                            let params={}
+                            parseAssetsParamsFn(params, args);
 
-                            if (key===""){
-                                key=uuidv4()
-                            }
 
-                            return (<br key={key} />)
+                            return (<br key={params.key} />)
                         },
                     };  
                     nst[layoutname]=layoutposContsO[layoutname]
@@ -984,24 +1012,14 @@ export const Views=(props)=>{
                         name : layoutname,            
                         e : (...args)=>{
                                 
-                                let key=""    
-                                if (args[0]){
-                                    if (args[0].key){
-                                        key=args[0].key
-                                    }
-                                    if (args[0].name){
-                                        key=args[0].name
-                                    }
-                                }
+                                let params={}
+                                parseAssetsParamsFn(params, args);
 
-                                if (key===""){
-                                    key=uuidv4()
-                                }
 
                                 return (             
                                     <div
-                                        key={key}
-                                        style={{
+                                        key={params.key}
+                                        style={{...{
                                             background : "white",
                                             position : "relative",
                                             display : "inline-block",
@@ -1011,13 +1029,17 @@ export const Views=(props)=>{
                                             margin : 5,
                                             padding : 5,
                                             overflow : "hidden",
-                                        }}
+                                        },...params.style}}
                                     >
                                         <h4>Summary</h4>                
                                     </div>
                             )
                         }
                     };
+
+                    
+
+
                 }
                 nst[layoutname]=layoutposContsO[layoutname]
                 LayoutposContsODynTmp0=nst
@@ -1215,7 +1237,11 @@ export const Views=(props)=>{
         
         //layout
         //let { myLayout,currState ,setCurrState  }=useMyLayout({ posContsStates, posContsO , allState , currStateDef : "viewSummary" })
-        let layoutRetUseMyLayout=useMyLayout({ posContsStates : layoutposContsStates , posContsO : layoutposContsO  ,/* allState : layoutallState ,*/ currStateDef : layoutcurrStateDef })
+        let layoutRetUseMyLayout=useMyLayout({ posContsStates : layoutposContsStates , posContsO : layoutposContsO  ,
+            /* allState : layoutallState ,*/ 
+            currStateDef : layoutcurrStateDef,
+            extra : {instancesRef : instances },
+        })
         let layoutmyLayout=layoutRetUseMyLayout.myLayout;
         let layoutcurrState=layoutRetUseMyLayout.currState;
         let layoutsetCurrState=layoutRetUseMyLayout.setCurrState;
@@ -1371,6 +1397,7 @@ export const Views=(props)=>{
                         //addToLayout(params)                        
                         setLayoutcurrAssetsSel(val)
                         setLayoutStatePropertiesPosContAddName(val)
+                        setAssetPropertyCurrSel(val)
                     }}
                 >
                     {toolname}
@@ -1380,6 +1407,8 @@ export const Views=(props)=>{
 
             i++;
         }
+
+       
        
         return (
             <div
@@ -1426,7 +1455,109 @@ export const Views=(props)=>{
         )
     })()
 
+    let AssetPropertyE=(()=>{
 
+
+
+        let newInstanceFn=()=>{
+            if (instances.current.all[assetPropertyCurrSel]){}else{
+                let newInstanceID=assetPropertyCurrSel
+                instances.current.all[newInstanceID]={
+                    style : {},
+                }
+                instances.current.all[newInstanceID].id=newInstanceID
+                instances.current.all[newInstanceID].properties={...instancesPropertiesDef};
+                instances.current.all[newInstanceID].assetSource=assetPropertyCurrSel
+                if (layoutposContsODyn[newInstanceID]){
+                    if (layoutposContsODyn[newInstanceID].assetSource){
+                        instances.current.all[newInstanceID].assetSource=layoutposContsODyn[newInstanceID].assetSource
+                    }
+                }
+            };                                   
+
+            if (instances.current.all[assetPropertyCurrSel].properties){}else{
+                instances.current.all[assetPropertyCurrSel].properties={...instancesPropertiesDef}
+            }
+
+            if (instances.current.all[assetPropertyCurrSel].properties.style){}else{
+                instances.current.all[assetPropertyCurrSel].properties.style={}
+            }
+        }
+
+
+        return (
+            <div
+                style={{
+                    position : "relative",
+                    display : "inline-block",
+                    width : 200,
+                    height : 150,
+                    margin : 5 ,
+                    padding : 5 ,
+                    borderRadius : 5 , 
+                    border : "solid thin lightgrey",
+                    overflow : "hidden",
+                }}
+            >
+                <div
+                    style={{
+                        position : "relative",
+                        width : 195,
+                        height : 145,
+                        overflow : "auto",
+                        //background : "lightgrey",
+
+                    }}
+                >
+                    <u>{assetPropertyCurrSel}</u> 
+                    <div
+                            style={{
+                                
+                            }}
+                    >
+                        <div>
+                            <label
+                                style={{
+                                
+                                }}
+                            >Background : </label>
+                            <input
+                                value={assetPropertyBackground}
+                                style={{
+                                    width : 80,
+                                }}
+                                onChange={(e)=>{
+                                    let val=e.target.value
+                                    setAssetPropertyBackground(val)
+                                }}
+                                onBlur={(e)=>{
+                                    let val=e.target.value
+                                    
+                                    newInstanceFn();
+                                     
+                                    if (val!==""){
+                                        instances.current.all[assetPropertyCurrSel].properties.style.background=val;                                        
+                                    }else{
+                                        if (instances.current.all[assetPropertyCurrSel].properties.style.background){
+                                            delete instances.current.all[assetPropertyCurrSel].properties.style.background;
+                                        }
+                                    }
+
+                                    setCmptMe((st)=>{
+                                        let nst={...st};
+                                        nst.view.instances=instances.current
+                                        return nst;
+                                    })
+                                    //updateStateForce();
+                                
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    })()
     
 
     let layoutStatesShowHideStyle={
@@ -1657,7 +1788,9 @@ export const Views=(props)=>{
                         <div
                             style={style}
                             onClick={()=>{
+                                //#region click state state 
                                 setLayoutStatePropertiesPosContCurrSel(r)
+                                setAssetPropertyCurrSel(r)
                             }}
                         >
                             {r}
@@ -1745,6 +1878,7 @@ export const Views=(props)=>{
                                     instances.current.all[newInstanceID].id=newInstanceID;
                                     instances.current.all[newInstanceID].uuid=uuidv4();
                                     instances.current.all[newInstanceID].dateCreate=new Date();
+                                    instances.current.all[newInstanceID].properties={};
 
                                     if (layoutposContsODyn[assetName].assetSource){
                                         instances.current.all[newInstanceID].assetSource=layoutposContsODyn[assetName].assetSource
@@ -2181,11 +2315,6 @@ export const Views=(props)=>{
     }
 
 
-    
-    
-    
-
-
     return (
         <div
             style={style}
@@ -2377,6 +2506,18 @@ export const Views=(props)=>{
                                 height : 200,
                             }}
                         />
+
+                        <textarea 
+                            style={{
+                                display : "inline-block",
+                                width : 400,
+                                height : 200,
+                            }}
+                            value={JSON.stringify(instances,null,2)}
+                            onChange={()=>{
+
+                            }}
+                        />
                         
                     </div>
 
@@ -2396,7 +2537,7 @@ export const Views=(props)=>{
                     
                     {toolsCmptMeE}
                     {layoutAssetsE}
-                    
+                    {AssetPropertyE}
                     
                 </div>
 
