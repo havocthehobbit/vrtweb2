@@ -239,6 +239,10 @@ export const useMyLayout=(props)=>{
     if (props.allState){
         allState=props.allState
     }   
+    let extra={}
+    if (props.extra){
+        extra=props.extra
+    }
 
     let currStateDef=""
     if (props.currStateDef){
@@ -483,7 +487,7 @@ export const useMyLayout=(props)=>{
                     if (posContsO[r]){
                         let E;   
                         if (typeof(posContsO[r].e)==="function"){
-                            E=posContsO[r].e({ name : r });
+                            E=posContsO[r].e({ name : r , extra : extra });
                         }else{
                             E=posContsO[r].e;
                         }                 
