@@ -68,6 +68,11 @@ export const Views=(props)=>{
     let [currentNewCmptName,setCurrentNewCmpName]=useState("");
 
     // --------------------------------
+    let [componentName, setComponentName]=useState("")
+    let [componentPath, setComponentPath]=useState("cview")
+
+
+    // --------------------------------
 
     let layoutsetCurrStateRef=useRef(()=>{});
     let {wWidth,wHeight}=useWindowSize();    
@@ -100,6 +105,14 @@ export const Views=(props)=>{
     let instances=useRef({...instancesDef})
 
     let [srcTxt,setSrcTxt]=useState("");
+
+    // --------------------------------
+
+    let [fns,setFns]=useState({});
+    let [fnsName,setFnsName]=useState("");
+    let [fnsProps,setFnsProps]=useState("");
+    
+    let [sigil,setSigil]=useState({}); // proxyText
 
 
     // --------------------------------
@@ -341,6 +354,7 @@ export const Views=(props)=>{
 
         //------------------------
 
+        setComponentName(data.name_cmpt);
         setLayoutposContsODyn((st)=>{
             let nst={...st} ;
 
@@ -380,6 +394,12 @@ export const Views=(props)=>{
             
         }
 
+
+        let createUpdateFiles=(...args)=>{
+
+        }
+
+
     // --------------------------------
 
         let generateSrc=(...args)=>{
@@ -400,7 +420,7 @@ export const Views=(props)=>{
 
             if (true){
                 txt+="\n";
-                txt+=`export const ${"CmptName"}=(props)=>{`;
+                txt+=`export const ${componentName}=(props)=>{`;
                 txt+="\n";
                 txt+=`  let initC=useRef(true)`;
                 txt+="\n";
@@ -2620,6 +2640,71 @@ export const Views=(props)=>{
 
                 
                 <div style={{ clear : "left" }} />
+                
+                <input 
+                    placeholder={"component name"}
+                    value={componentName}
+                    onChange={(e)=>{
+                        let val=e.target.value;
+                        setComponentName(val)
+                    }}
+                    onBlur={(e)=>{
+                        let val=e.target.value;
+                        
+                        setCmptMe((st)=>{
+                            let nst={...st}
+                            
+                            let hasSpaces=false;
+                            if ((new RegExp(" +")).test(val)===false){                                
+                                nst.name_cmpt=val;
+                            }else{
+                                hasSpaces=true;
+                                alert("error : component name contains space or invalid characters, space not permitted ")
+                            }
+                            
+
+                            return nst
+                        })
+                    }}
+                    
+                />
+
+                <input 
+                    placeholder={"component path"}
+                    value={componentPath}
+                    onChange={(e)=>{
+                        let val=e.target.value;
+                        setComponentPath(val)
+                    }}
+                    onBlur={(e)=>{
+                        let val=e.target.value;
+                        
+                        setCmptMe((st)=>{
+                            let nst={...st}
+                            
+                            let hasSpaces=false;
+                            if ((new RegExp(" +")).test(val)===false){                                
+                                nst.cmpt_path=val;
+                            }else{
+                                hasSpaces=true;
+                                alert("error : component name contains space or invalid characters, space not permitted ")
+                            }
+                            
+
+                            return nst
+                        })
+                    }}
+                    
+                />
+                <button
+                    onClick={()=>{
+                        createUpdateFiles();
+                    }}
+                >create/update files</button>
+
+                <div style={{ clear : "left" }} />
+
+
                 {/* preview */}
                 <div
                     style={{
