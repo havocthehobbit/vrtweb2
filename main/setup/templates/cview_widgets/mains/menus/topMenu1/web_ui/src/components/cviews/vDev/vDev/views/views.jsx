@@ -90,7 +90,38 @@ export const Views=(props)=>{
     let [layoutStatePropertiesPosContCurrSel,setLayoutStatePropertiesPosContCurrSel]=useState("");
 
     //let [assetProperty,setAssetProperty]=useState({});
-    let [assetPropertyBackground,setAssetPropertyBackground]=useState("");
+    let [assetPropertyStyleBackground,setAssetPropertyStyleBackground]=useState("");
+    let [assetPropertyStyleColor,setAssetPropertyStyleColor]=useState("");
+    let [assetPropertyStyleZindex,setAssetPropertyStyleZindex]=useState(0);
+    let [assetPropertyStyleBorder,setAssetPropertyStyleBorder]=useState("");
+    let [assetPropertyStyleBorderRadius,setAssetPropertyStyleBorderRadius]=useState(0);
+    let [assetPropertyStyleFloat,setAssetPropertyStyleFloat]=useState("");
+    let [assetPropertyStyleClear,setAssetPropertyStyleClear]=useState("");
+    let [assetPropertyStyleFontFamily,setAssetPropertyStyleFontFamily]=useState("");
+    let [assetPropertyStyleFontSize,setAssetPropertyStyleFontSize]=useState(0);
+    let [assetPropertyStyleFontWeight,setAssetPropertyStyleFontWeight]=useState("");
+    let [assetPropertyStyleTextAlign,setAssetPropertyStyleTextAlign]=useState("");
+    let [assetPropertyStyleCursor,setAssetPropertyStyleCursor]=useState("");
+    let [assetPropertyStyleLeft,setAssetPropertyStyleLeft]=useState(0);
+    let [assetPropertyStyleRight,setAssetPropertyStyleRight]=useState(0);
+    let [assetPropertyStyleTop,setAssetPropertyStyleTop]=useState(0);
+    let [assetPropertyStyleBottom,setAssetPropertyStyleBottom]=useState(0);
+    let [assetPropertyStyleMargin,setAssetPropertyStyleMargin]=useState("");
+    let [assetPropertyStylePadding,setAssetPropertyStylePadding]=useState("");    
+    let [assetPropertyStylePostion,setAssetPropertyStylePostion]=useState("");    
+    let [assetPropertyStyleDisplay,setAssetPropertyStyleDisplay]=useState("");    
+
+    let [assetPropertyClass,setAssetPropertyClass]=useState("");
+    let [assetPropertyID,setAssetPropertyID]=useState("");
+
+    let [assetPropertySrc,setAssetPropertySrc]=useState("");
+    let [assetPropertyHref,setAssetPropertyHref]=useState("");
+    
+    let [assetPropertyValue,setAssetPropertyValue]=useState("");
+    let [assetPropertyPlaceholder,setAssetPropertyPlaceholder]=useState("");
+    let [assetPropertyType,setAssetPropertyType]=useState("");
+
+
 
 
     let [assetPropertyCurrSel,setAssetPropertyCurrSel]=useState("");
@@ -105,6 +136,27 @@ export const Views=(props)=>{
     let instances=useRef({...instancesDef})
 
     let [srcTxt,setSrcTxt]=useState("");
+
+    // --------------------------------
+    let vmodesTypesDef={ 
+        all : ["design",],
+        default : "nomode",
+        modes : {
+            "nomode" : { name : "nomode" },
+            "edit" : { name : "edit" },
+            "design" : { name : "design" },
+            "run" : { name : "run" },
+            "profileTest" : { name : "profiletest" },
+            "deploy" : { name : "deploy" },
+            "componentEdit" : { name : "componentEdit" },
+            "planning" : { name : "planning" },
+            "debugData" : { name : "debugData" },
+        }
+    }
+    let [vmodes,setVmodes]=useState({"nomode" : {}});
+    let [vmodesMultiMode,setVmodesMultiMode]=useState(false);
+    let [vmodesTypes,setVmodesTypes]=useState({...vmodesTypesDef});
+
 
     // --------------------------------
 
@@ -626,7 +678,9 @@ export const Views=(props)=>{
             return txt;
         }
     // --------------------------------
-
+        let layoutPrefabsList={};
+        let prefabs={};
+        /*
         let layoutPrefabsList={
             "label" : {
                 "name_cmpt" : "label",
@@ -750,6 +804,7 @@ export const Views=(props)=>{
                 "prompts" : []
             },
         }
+        */
 
         
 
@@ -1083,7 +1138,7 @@ export const Views=(props)=>{
                 return nst;
             })
 
-            updateStateForce()
+            //updateStateForce()
         }
 
         let layoutposContsODynGenerateDynamic=(()=>{
@@ -1091,62 +1146,67 @@ export const Views=(props)=>{
 
         })()
 
-        let buildLayoutAssets=(()=>{
-            let i=0;
-            for ( let p in layoutPrefabsList){
-                let r={...layoutPrefabsList[p]};
-                
-                let e
-                if (prefabs[layoutname]){
-                    if (prefabs[layoutname].generate){
-                        e=prefabs[layoutname].generate().e;
-                    }
+        let buildLayoutAssets
+        /*
+        if (false){
+            buildLayoutAssets=(()=>{
+                let i=0;
+                for ( let p in layoutPrefabsList){
+                    let r={...layoutPrefabsList[p]};
                     
+                    let e
+                    if (prefabs[layoutname]){
+                        if (prefabs[layoutname].generate){
+                            e=prefabs[layoutname].generate().e;
+                        }
+                        
+                    }
+
+                    layoutname=r.name_cmpt;
+                    layoutposContsO[layoutname]={
+                        name : layoutname,            
+                        e : (...args)=>{                            
+                                let key=""    
+                                if (args[0]){
+                                    if (args[0].key){
+                                        key=args[0].key
+                                    }
+                                    if (args[0].name){
+                                        key=args[0].name
+                                    }
+                                }
+
+                                if (key===""){
+                                    key=uuidv4()
+                                }
+
+                                return (             
+                                    <div
+                                        key={key}
+                                        style={{
+                                            background : "white",
+                                            position : "relative",
+                                            display : "inline-block",
+                                            width : 400,
+                                            height : 300,
+                                            borderRadius : 8,
+                                            margin : 5,
+                                            padding : 5,
+                                            overflow : "hidden",
+                                        }}
+                                    >
+                                        {e}
+                                    </div>
+                            )
+                        }
+                    };
+        
+                    i++;
                 }
 
-                layoutname=r.name_cmpt;
-                layoutposContsO[layoutname]={
-                    name : layoutname,            
-                    e : (...args)=>{                            
-                            let key=""    
-                            if (args[0]){
-                                if (args[0].key){
-                                    key=args[0].key
-                                }
-                                if (args[0].name){
-                                    key=args[0].name
-                                }
-                            }
-
-                            if (key===""){
-                                key=uuidv4()
-                            }
-
-                            return (             
-                                <div
-                                    key={key}
-                                    style={{
-                                        background : "white",
-                                        position : "relative",
-                                        display : "inline-block",
-                                        width : 400,
-                                        height : 300,
-                                        borderRadius : 8,
-                                        margin : 5,
-                                        padding : 5,
-                                        overflow : "hidden",
-                                    }}
-                                >
-                                    {e}
-                                </div>
-                        )
-                    }
-                };
-    
-                i++;
-            }
-
-        })();
+            })();
+        }
+        */
         
 
         // ---- 
@@ -1245,7 +1305,7 @@ export const Views=(props)=>{
                 return nst;
             })
 
-            updateStateForce()
+            //updateStateForce()
         }
 
         let layoutposContsStatesGenerateDynamic=(()=>{
@@ -1281,87 +1341,89 @@ export const Views=(props)=>{
         toolsShowHideStyle.width=undefined
         toolsShowHideStyle.height=undefined
     }
-    let toolsCmptMeE=(()=>{
-        let arrE=[];
+    let toolsCmptMeE
+    if (false){
+        toolsCmptMeE=(()=>{
+            let arrE=[];
 
-        let i=0
-        for ( let p in layoutPrefabsList){
-            let r={...layoutPrefabsList[p]};
-            let toolname="tool";
-            
-            if (r.toolname){
-                toolname=r.toolname
-            }else{
-                toolname=r.name_cmpt
+            let i=0
+            for ( let p in layoutPrefabsList){
+                let r={...layoutPrefabsList[p]};
+                let toolname="tool";
+                
+                if (r.toolname){
+                    toolname=r.toolname
+                }else{
+                    toolname=r.name_cmpt
+                }
+
+                arrE.push(
+                    <div
+                        key={i}
+                        style={{
+                            poistion : "relative",
+                            display : "inline-block",
+                            width : 40,
+                            height : 40,
+                            margin : 1,
+                            padding : 2,
+                            overflow : "hidden",
+                            border : "solid lightgrey thin",
+                            borderRadius : 5,
+                            cursor : "pointer",
+
+                        }}
+                        onClick={(e)=>{
+                            let params={};
+                            params={ ...{},...r };
+
+
+                            
+                            addToLayout()
+                        }}
+                    >
+                        {toolname}
+                    </div>
+                )
+
+
+                i++;
             }
 
-            arrE.push(
+            return (
                 <div
-                    key={i}
                     style={{
-                        poistion : "relative",
+                        position : "relative",
                         display : "inline-block",
-                        width : 40,
-                        height : 40,
-                        margin : 1,
-                        padding : 2,
-                        overflow : "hidden",
-                        border : "solid lightgrey thin",
-                        borderRadius : 5,
-                        cursor : "pointer",
-
+                        width : toolsShowHideStyle.width,
+                        height : toolsShowHideStyle.height,
+                        margin : 5 ,
+                        padding : 5 ,
+                        border : toolsShowHideStyle.border,
+                        borderRadius : 5 , 
                     }}
-                    onClick={(e)=>{
-                        let params={};
-                        params={ ...{},...r };
-
-
-                        
-                        addToLayout()
-                    }}
-                >
-                    {toolname}
+                >   
+                    <button 
+                        onClick={()=>{
+                            setToolsShowHide(!toolsShowHide)
+                        }}
+                    >show/hide tlas</button>
+                    
+                    <div
+                        style={{
+                            display : toolsShowHideStyle.display,
+                        }}
+                    >
+                        Tools
+                        <br/>
+                        ==========
+                        <br/>
+                        {arrE}
+                    </div>
                 </div>
             )
-
-
-            i++;
-        }
-
-        return (
-            <div
-                style={{
-                    position : "relative",
-                    display : "inline-block",
-                    width : toolsShowHideStyle.width,
-                    height : toolsShowHideStyle.height,
-                    margin : 5 ,
-                    padding : 5 ,
-                    border : toolsShowHideStyle.border,
-                    borderRadius : 5 , 
-                }}
-            >   
-                <button 
-                    onClick={()=>{
-                        setToolsShowHide(!toolsShowHide)
-                    }}
-                >show/hide tlas</button>
-                
-                <div
-                    style={{
-                        display : toolsShowHideStyle.display,
-                    }}
-                >
-                    Tools
-                    <br/>
-                    ==========
-                    <br/>
-                    {arrE}
-                </div>
-            </div>
-        )
-    })();
-
+        })();
+    }
         
     let toolAssetsShowHideStyle={
         border : "solid thin lightgrey",
@@ -1374,211 +1436,1363 @@ export const Views=(props)=>{
         toolAssetsShowHideStyle.width=undefined
         toolAssetsShowHideStyle.height=undefined
     }
-    let layoutAssetsE=(()=>{
-        let arrE=[];
+    let layoutAssetsE
+    if (vmodes["nomode"] ){
+        layoutAssetsE=(()=>{
+            let arrE=[];
 
-        // layoutposContsO[layoutname].name
-        let i=0
-        for ( let p in layoutposContsO){
-            let r={...layoutposContsO[p]};
-            let toolname="tool";
-            
-            if (r.name){
-                toolname=r.name
+            // layoutposContsO[layoutname].name
+            let i=0
+            for ( let p in layoutposContsO){
+                let r={...layoutposContsO[p]};
+                let toolname="tool";
+                
+                if (r.name){
+                    toolname=r.name
+                }
+
+                let style={
+                    poistion : "relative",
+                    display : "inline-block",
+                    //width : 40,
+                    height : 20,
+                    margin : 1,
+                    padding : 2,
+                    overflow : "hidden",
+                    border : "solid lightgrey thin",
+                    borderRadius : 5,
+                    cursor : "pointer",
+                    fontSize : 11,
+                    background : "grey",
+                    color : "white",
+
+                };
+
+                if  ( r.name===layoutcurrAssetsSel){
+                    style.background="lightgrey";
+                }
+
+                arrE.push(
+                    <div
+                        key={i}
+                        layoutname={r.name}
+                        style={style}
+                        onClick={(e)=>{
+                            let val=e.target.getAttribute("layoutname");
+                            let params={};
+                            params={ ...{},...r };                        
+                            //addToLayout(params)                        
+                            setLayoutcurrAssetsSel(val)
+                            setLayoutStatePropertiesPosContAddName(val)
+                            setAssetPropertyCurrSel(val)
+                        }}
+                    >
+                        {toolname}
+                    </div>
+                )
+
+
+                i++;
             }
 
-            let style={
-                poistion : "relative",
-                display : "inline-block",
-                //width : 40,
-                height : 40,
-                margin : 1,
-                padding : 2,
-                overflow : "hidden",
-                border : "solid lightgrey thin",
-                borderRadius : 5,
-                cursor : "pointer",
-
-            };
-
-            if  ( r.name===layoutcurrAssetsSel){
-                style.background="lightgrey";
-            }
-
-            arrE.push(
+        
+        
+            return (
                 <div
-                    key={i}
-                    layoutname={r.name}
-                    style={style}
-                    onClick={(e)=>{
-                        let val=e.target.getAttribute("layoutname");
-                        let params={};
-                        params={ ...{},...r };                        
-                        //addToLayout(params)                        
-                        setLayoutcurrAssetsSel(val)
-                        setLayoutStatePropertiesPosContAddName(val)
-                        setAssetPropertyCurrSel(val)
+                    style={{
+                        position : "relative",
+                        display : "inline-block",
+                        width : toolAssetsShowHideStyle.width,
+                        height : toolAssetsShowHideStyle.height,
+                        margin : 5 ,
+                        padding : 5 ,
+                        border : toolAssetsShowHideStyle.border,
+                        borderRadius : 5 , 
+                        overflow : "hidden",
                     }}
-                >
-                    {toolname}
+                >   
+
+                    <u>Layout Assets </u>   
+                    <button 
+                        style={{                        
+                            fontSize : 9,           
+                            marginLeft : 8, position : "relative"
+                        }}
+                        onClick={()=>{
+                            setToolAssetsShowHide(!toolAssetsShowHide)
+                        }}
+                    >show/hide tlas</button>
+                    
+                    <div
+                        style={{
+                            position : "relative",
+                            display : "inline-block",
+                            width : 385,
+                            height : 135 ,
+                            overflow : "auto",
+                            display : toolAssetsShowHideStyle.display
+                        }}
+                    >                    
+                        {arrE}
+                    </div>
                 </div>
             )
+        })()
+    }
 
-
-            i++;
-        }
-
-       
-       
-        return (
-            <div
-                style={{
-                    position : "relative",
-                    display : "inline-block",
-                    width : toolAssetsShowHideStyle.width,
-                    height : toolAssetsShowHideStyle.height,
-                    margin : 5 ,
-                    padding : 5 ,
-                    border : toolAssetsShowHideStyle.border,
-                    borderRadius : 5 , 
-                    overflow : "hidden",
-                }}
-            >   
-                <button 
-                    onClick={()=>{
-                        setToolAssetsShowHide(!toolAssetsShowHide)
-                    }}
-                >show/hide tlas</button>
-                
-                <div
-                    style={{
-                        position : "relative",
-                        width : 385,
-                        height : 135 ,
-                        overflow : "auto",
-                        display : toolAssetsShowHideStyle.display
-                    }}
-                >
-                    Layout Assets 
-                    <br/>
-                    ==========
-                    <br/>
-                    <button
-                        onClick={()=>{
-                            
-                        }}
-                    >add</button>
-                    <br/>
-                    {arrE}
-                </div>
-            </div>
-        )
-    })()
-
-    let AssetPropertyE=(()=>{
+    let AssetPropertyE
+    if (vmodes["nomode"] ){
+        AssetPropertyE=(()=>{
 
 
 
-        let newInstanceFn=()=>{
-            if (instances.current.all[assetPropertyCurrSel]){}else{
-                let newInstanceID=assetPropertyCurrSel
-                instances.current.all[newInstanceID]={
-                    style : {},
-                }
-                instances.current.all[newInstanceID].id=newInstanceID
-                instances.current.all[newInstanceID].properties={...instancesPropertiesDef};
-                instances.current.all[newInstanceID].assetSource=assetPropertyCurrSel
-                if (layoutposContsODyn[newInstanceID]){
-                    if (layoutposContsODyn[newInstanceID].assetSource){
-                        instances.current.all[newInstanceID].assetSource=layoutposContsODyn[newInstanceID].assetSource
+            let newInstanceFn=()=>{
+                if (instances.current.all[assetPropertyCurrSel]){}else{
+                    let newInstanceID=assetPropertyCurrSel
+                    instances.current.all[newInstanceID]={
+                        style : {},
                     }
+                    instances.current.all[newInstanceID].id=newInstanceID
+                    instances.current.all[newInstanceID].properties={...instancesPropertiesDef};
+                    instances.current.all[newInstanceID].assetSource=assetPropertyCurrSel
+                    if (layoutposContsODyn[newInstanceID]){
+                        if (layoutposContsODyn[newInstanceID].assetSource){
+                            instances.current.all[newInstanceID].assetSource=layoutposContsODyn[newInstanceID].assetSource
+                        }
+                    }
+                };                                   
+
+                if (instances.current.all[assetPropertyCurrSel].properties){}else{
+                    instances.current.all[assetPropertyCurrSel].properties={...instancesPropertiesDef}
                 }
-            };                                   
 
-            if (instances.current.all[assetPropertyCurrSel].properties){}else{
-                instances.current.all[assetPropertyCurrSel].properties={...instancesPropertiesDef}
+                if (instances.current.all[assetPropertyCurrSel].properties.style){}else{
+                    instances.current.all[assetPropertyCurrSel].properties.style={}
+                }
             }
 
-            if (instances.current.all[assetPropertyCurrSel].properties.style){}else{
-                instances.current.all[assetPropertyCurrSel].properties.style={}
-            }
-        }
 
-
-        return (
-            <div
-                style={{
-                    position : "relative",
-                    display : "inline-block",
-                    width : 200,
-                    height : 150,
-                    margin : 5 ,
-                    padding : 5 ,
-                    borderRadius : 5 , 
-                    border : "solid thin lightgrey",
-                    overflow : "hidden",
-                }}
-            >
+            return (
                 <div
                     style={{
                         position : "relative",
-                        width : 195,
-                        height : 145,
-                        overflow : "auto",
-                        //background : "lightgrey",
-
+                        display : "inline-block",
+                        width : 200,
+                        height : 150,
+                        margin : 5 ,
+                        padding : 5 ,
+                        borderRadius : 5 , 
+                        border : "solid thin lightgrey",
+                        overflow : "hidden",
                     }}
                 >
-                    <u>{assetPropertyCurrSel}</u> 
                     <div
-                            style={{
-                                
-                            }}
-                    >
-                        <div>
-                            <label
-                                style={{
-                                
-                                }}
-                            >Background : </label>
-                            <input
-                                value={assetPropertyBackground}
-                                style={{
-                                    width : 80,
-                                }}
-                                onChange={(e)=>{
-                                    let val=e.target.value
-                                    setAssetPropertyBackground(val)
-                                }}
-                                onBlur={(e)=>{
-                                    let val=e.target.value
-                                    
-                                    newInstanceFn();
-                                     
-                                    if (val!==""){
-                                        instances.current.all[assetPropertyCurrSel].properties.style.background=val;                                        
-                                    }else{
-                                        if (instances.current.all[assetPropertyCurrSel].properties.style.background){
-                                            delete instances.current.all[assetPropertyCurrSel].properties.style.background;
-                                        }
-                                    }
+                        style={{
+                            position : "relative",
+                            width : 195,
+                            height : 145,
+                            overflow : "auto",
+                            //background : "lightgrey",
 
-                                    setCmptMe((st)=>{
-                                        let nst={...st};
-                                        nst.view.instances=instances.current
-                                        return nst;
-                                    })
-                                    //updateStateForce();
+                        }}
+                    >
+                        <u>{assetPropertyCurrSel}</u> 
+                        <div
+                                style={{}}
+                        >
+                            <div>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Background : </label>
+                                <input
+                                    value={assetPropertyStyleBackground}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleBackground(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="background"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Text Color : </label>
+                                <input
+                                    value={assetPropertyStyleColor}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleColor(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="color"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >z-Index : </label>
+                                <input
+                                    value={assetPropertyStyleZindex}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleZindex(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+
+                                        newInstanceFn();
+                                        
+                                        let tmp="zIndex"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                                    
+                                            let type="number";
+                                            if (type==="number"){
+                                                try {
+                                                    val=parseInt(val)
+                                                } catch (error) {
+                                                    alert("not a number")
+                                                    return
+                                                }
+                                            }
+
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Border : </label>
+                                <input
+                                    value={assetPropertyStyleBorder}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleBorder(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="border"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Border Radius : </label>
+                                <input
+                                    value={assetPropertyStyleBorderRadius}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleBorderRadius(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="borderRadius"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                                    
+                                            let type="number";
+                                            if (type==="number"){
+                                                try {
+                                                    val=parseInt(val)
+                                                } catch (error) {
+                                                    alert("not a number")
+                                                    return
+                                                }
+                                            }
+
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Float : </label>
+                                <input
+                                    value={assetPropertyStyleFloat}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleFloat(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="float"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Clear : </label>
+                                <input
+                                    value={assetPropertyStyleClear}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleClear(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="clear"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
                                 
-                                }}
-                            />
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >FontFamily : </label>
+                                <input
+                                    value={assetPropertyStyleFontFamily}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleFontFamily(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="fontFamily"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >FontSize : </label>
+                                <input
+                                    value={assetPropertyStyleFontSize}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleFontSize(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="fontSize"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                                    
+                                            let type="number";
+                                            if (type==="number"){
+                                                try {
+                                                    val=parseInt(val)
+                                                } catch (error) {
+                                                    alert("not a number")
+                                                    return
+                                                }
+                                            }
+
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >FontWeight : </label>
+                                <input
+                                    value={assetPropertyStyleFontWeight}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleFontWeight(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="fontWeight"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >TextAlign : </label>
+                                <input
+                                    value={assetPropertyStyleTextAlign}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleTextAlign(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="textAlign"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Cursor : </label>
+                                <input
+                                    value={assetPropertyStyleCursor}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleCursor(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="cursor"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Left : </label>
+                                <input
+                                    value={assetPropertyStyleLeft}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleLeft(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="left"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                                    
+                                            let type="number";
+                                            if (type==="number"){
+                                                try {
+                                                    val=parseInt(val)
+                                                } catch (error) {
+                                                    alert("not a number")
+                                                    return
+                                                }
+                                            }
+
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Right : </label>
+                                <input
+                                    value={assetPropertyStyleRight}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleRight(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="right"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                                
+                                            let type="number";
+                                            if (type==="number"){
+                                                try {
+                                                    val=parseInt(val)
+                                                } catch (error) {
+                                                    alert("not a number")
+                                                    return
+                                                }
+                                            }
+
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+                                
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Top : </label>
+                                <input
+                                    value={assetPropertyStyleTop}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleTop(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="top"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            
+                                            let type="number";
+                                            if (type==="number"){
+                                                try {
+                                                    val=parseInt(val)
+                                                } catch (error) {
+                                                    alert("not a number")
+                                                    return
+                                                }
+                                            }
+
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />
+                                
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Bottom : </label>
+                                <input
+                                    value={assetPropertyStyleBottom}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleBottom(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="bottom"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                                    
+                                            let type="number";
+                                            if (type==="number"){
+                                                try {
+                                                    val=parseInt(val)
+                                                } catch (error) {
+                                                    alert("not a number")
+                                                    return
+                                                }
+                                            }
+
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />                            
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Margin : </label>
+                                <input
+                                    value={assetPropertyStyleMargin}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleMargin(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="margin"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                                    
+                                            let type="number";
+                                            if (type==="number"){
+                                                try {
+                                                    val=parseInt(val)
+                                                } catch (error) {
+                                                    alert("not a number")
+                                                    return
+                                                }
+                                            }
+
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />                            
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Padding : </label>
+                                <input
+                                    value={assetPropertyStylePadding}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStylePadding(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="padding"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                                    
+                                            let type="number";
+                                            if (type==="number"){
+                                                try {
+                                                    val=parseInt(val)
+                                                } catch (error) {
+                                                    alert("not a number")
+                                                    return
+                                                }
+                                            }
+
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />                            
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Postion : </label>
+                                <input
+                                    value={assetPropertyStylePostion}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStylePostion(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="postion"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />                            
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Display : </label>
+                                <input
+                                    value={assetPropertyStyleDisplay}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyStyleDisplay(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="display"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />                            
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Class : </label>
+                                <input
+                                    value={assetPropertyClass}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyClass(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="className"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />                           
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >ID : </label>
+                                <input
+                                    value={assetPropertyID}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyID(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="id"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />                            
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Src : </label>
+                                <input
+                                    value={assetPropertySrc}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertySrc(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="src"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />                            
+                                
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Href : </label>
+                                <input
+                                    value={assetPropertyHref}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyHref(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="href"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />        
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Value : </label>
+                                <input
+                                    value={assetPropertyValue}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyValue(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="value"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />        
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Placeholder : </label>
+                                <input
+                                    value={assetPropertyPlaceholder}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyPlaceholder(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="placeholder"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />        
+
+                                <br/>
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >Input Type : </label>
+                                <input
+                                    value={assetPropertyType}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyType(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="type"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                        if (val!==""){
+                                            insrec[tmp]=val;                                        
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />                        
+                                
+                                
+
+
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        )
-    })()
-    
+            )
+        })()
+    }  
 
     let layoutStatesShowHideStyle={
         border : "solid thin lightgrey",
@@ -1588,184 +2802,219 @@ export const Views=(props)=>{
         layoutStatesShowHideStyle.display="none"        
         layoutStatesShowHideStyle.border=undefined
     }
-    let viewLayoutStatesE=(()=>{
-        let arrE=[];
-        
-        let i=0
-        for ( let p in layoutposContsStates){
-            let r={...layoutposContsStates[p]};
-            let toolname="tool";
-            let posCont=[];
-            let posContStr="";
-
-            if (r.name){
-                toolname=r.name
-            }
-
-            if (r.posCont){
-                posContStr=JSON.stringify(r.posCont)
-            }
+    let viewLayoutStatesE
+    if (vmodes["nomode"] ){
+        viewLayoutStatesE=(()=>{
+            let arrE=[];
             
-            let style={
-                poistion : "relative",
-                display : "inline-block",
-                width : 200,
-                height : 60,
-                margin : 1,
-                padding : 2,
-                overflow : "hidden",
-                border : "solid lightgrey thin",
-                borderRadius : 5,
-                cursor : "pointer",
-                fontSize : 11,
+            let posCosntsShow=false;
 
+            let i=0
+            for ( let p in layoutposContsStates){
+                let r={...layoutposContsStates[p]};
+                let toolname="tool";
+                let posCont=[];
+                let posContStr="";
+
+                if (r.name){
+                    toolname=r.name
+                }
+
+                if (r.posCont){
+                    posContStr=JSON.stringify(r.posCont)
+                }
+                
+                let style={
+                    poistion : "relative",
+                    display : "inline-block",
+                    width : 200,
+                    height : 60,
+                    margin : 1,
+                    padding : 2,
+                    overflow : "hidden",
+                    border : "solid lightgrey thin",
+                    borderRadius : 5,
+                    cursor : "pointer",
+                    fontSize : 11,
+
+                }
+
+                if (posCosntsShow){
+                    style.width=200
+                    style.height=60
+                }else{
+                    style.width=undefined;
+                    style.height=undefined;
+                }
+
+                if (layoutcurrStateSel===r.name){
+                    style.background="lightgrey"
+                }
+
+                arrE.push(
+                    <div
+                        key={i}
+                        layoutname={r.name}
+                        style={style}
+                        onClick={(e)=>{
+                            let val=e.target.getAttribute("layoutname");
+                            let params={};
+                            params={ ...{},...r };                        
+                            //addToLayout()
+                            setLayoutcurrStateSel(val)
+                        }}
+                    >
+                        {toolname}
+                        {(()=>{
+                            if (posCosntsShow){
+                                return (
+                                    <>
+                                    <br/>
+                                    {posContStr}
+                                    
+                                    </>
+                                )
+                            }
+                        })()}
+                        
+                        
+                    </div>
+                )
+
+
+                i++;
             }
-
-            if (layoutcurrStateSel===r.name){
-                style.background="lightgrey"
-            }
-
-            arrE.push(
-                <div
-                    key={i}
-                    layoutname={r.name}
-                    style={style}
-                    onClick={(e)=>{
-                        let val=e.target.getAttribute("layoutname");
-                        let params={};
-                        params={ ...{},...r };                        
-                        //addToLayout()
-                        setLayoutcurrStateSel(val)
-                    }}
-                >
-                    {toolname}
-                    <br/>
-                    {posContStr}
-                </div>
-            )
-
-
-            i++;
-        }
-       
-        return (
-            <div
-                style={{
-                    margin : 5 ,
-                    padding : 5 ,
-                    border : layoutStatesShowHideStyle.border,
-                    borderRadius : 5 , 
-                }}
-            >   
-                <button 
-                    onClick={()=>{
-                        setLayoutStatesShowHide(!layoutStatesShowHide)
-                    }}
-                >show/hide lst</button>
+        
+            return (
                 <div
                     style={{
-                        display : layoutStatesShowHideStyle.display
+                        position : "relative",
+                        margin : 5 ,
+                        padding : 5 ,
+                        border : layoutStatesShowHideStyle.border,
+                        borderRadius : 5 , 
+                        width : 270,
+                        height : 150,
                     }}
-                >
-                    Layout States 
-                    <br/>
-                    ==========
-                    <br/>               
-                    <label
+                >   
+                    <div
+
+                        style={{
+                            position : "relative",
+                            margin : 2 ,
+                            padding : 5 ,                            
+                            width : 260,
+                            height : 145,
+                        }}
+                    >
+                        <u>Layout States </u>
+                        <button 
+                            style={{ fontSize : 9 , marginLeft : 8, position : "relative"}}
+                            onClick={()=>{
+                                setLayoutStatesShowHide(!layoutStatesShowHide)
+                            }}
+                        >show/hide lst</button>
+                        <div
+                            style={{
+                                position : "relative",
+                                display : layoutStatesShowHideStyle.display
+                            }}
                         >
-                            add layout
-                        </label>
-                        <input 
-                            value={currentNewCmptName}
-                            onChange={(e)=>{
-                                let val=e.target.value;
-                                setCurrentNewCmpName(val)
-                            }}
-                            onBlur={(e)=>{
+                            
+                            
+                            <input 
+                                placeholder={"add layout"}
+                                value={currentNewCmptName}
+                                onChange={(e)=>{
+                                    let val=e.target.value;
+                                    setCurrentNewCmpName(val)
+                                }}
+                                onBlur={(e)=>{
 
-                            }}
-                        />
-                        <button
-                            onClick={()=>{
-                                let layoutname=currentNewCmptName;
+                                }}
+                            />
+                            <button
+                                onClick={()=>{
+                                    let layoutname=currentNewCmptName;
 
-                                let LayoutposContsStatesDynTmp0;
-                                setLayoutposContsStatesDyn((st)=>{
-                                    let nst={...st};
+                                    let LayoutposContsStatesDynTmp0;
+                                    setLayoutposContsStatesDyn((st)=>{
+                                        let nst={...st};
 
-                                    let nr={
-                                        name : layoutname,
-                                    }
-                                    
-                                    nr={
-                                        name : layoutname,
-                                        posCont : [ ],            
-                                        eLogic : function(){
-                                            let tt=this;
-                                            let args=arguments;
-                                            if (args.length > 0){
-                                                tt=args[0]
-                                            }
-                                            let ret=tt.posCont
-                                            // custom code 
-
-                                            return ret
+                                        let nr={
+                                            name : layoutname,
                                         }
-                                    }
+                                        
+                                        nr={
+                                            name : layoutname,
+                                            posCont : [ ],            
+                                            eLogic : function(){
+                                                let tt=this;
+                                                let args=arguments;
+                                                if (args.length > 0){
+                                                    tt=args[0]
+                                                }
+                                                let ret=tt.posCont
+                                                // custom code 
 
-                                    nst[layoutname]=nr;
-                                    LayoutposContsStatesDynTmp0=nst[layoutname]
+                                                return ret
+                                            }
+                                        }
 
-                                    return nst;
-                                })
+                                        nst[layoutname]=nr;
+                                        LayoutposContsStatesDynTmp0=nst[layoutname]
 
-                                setCmptMe((st)=>{
-                                    let nst={...st};
-                    
-                                    if (nst.view.LayoutposContsStates){}else{
-                                        nst.view.LayoutposContsStates={}
-                                    }
+                                        return nst;
+                                    })
+
+                                    setCmptMe((st)=>{
+                                        let nst={...st};
+                        
+                                        if (nst.view.LayoutposContsStates){}else{
+                                            nst.view.LayoutposContsStates={}
+                                        }
+                                        
+                                        nst.view.LayoutposContsStates[layoutname]=LayoutposContsStatesDynTmp0;
+
+                                        return nst;
+                                    })
                                     
-                                    nst.view.LayoutposContsStates[layoutname]=LayoutposContsStatesDynTmp0;
-
-                                    return nst;
-                                })
-                                
-                                
-                                
-                            }}
-                        >add</button>
-                        <button
-                            onClick={()=>{
-                                let layoutname=layoutcurrStateSel;
-                                setLayoutposContsStatesDyn((st)=>{
-                                    let nst={...st};
-
-                                    delete nst[layoutname]
-                                    return nst;
                                     
-                                })
-                                setCmptMe((st)=>{
-                                    let nst={...st};
+                                    
+                                }}
+                            >add</button>
+                            <button
+                                onClick={()=>{
+                                    let layoutname=layoutcurrStateSel;
+                                    setLayoutposContsStatesDyn((st)=>{
+                                        let nst={...st};
 
-                                    delete nst.view.LayoutposContsStates[layoutname]
+                                        delete nst[layoutname]
+                                        return nst;
+                                        
+                                    })
+                                    setCmptMe((st)=>{
+                                        let nst={...st};
 
-                                    return nst;
-                                })
-                            }}
-                        >del</button>
-                        <br/>
-                    <br/>
-                    {arrE}
+                                        delete nst.view.LayoutposContsStates[layoutname]
+
+                                        return nst;
+                                    })
+                                }}
+                            >del</button>
+                            <br/>                        
+                            {arrE}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        )
-    })()
+            )
+        })()
+    }
 
-    let layoutStatesPropertiesShowHideStyle={
-        border : "solid thin black",
-        width : 300,
-        height : 200,
+    let layoutStatesPropertiesShowHideStyle={        
+        border : "solid thin lightgrey",        
+        width : 400,
+        height : 150,
     }
     if (layoutStatesPropertiesShowHide===false){
         layoutStatesPropertiesShowHideStyle.display="none"        
@@ -1773,152 +3022,243 @@ export const Views=(props)=>{
         layoutStatesPropertiesShowHideStyle.width=undefined
         layoutStatesPropertiesShowHideStyle.height=undefined
     }
-    let layoutStatePropertiesE=(()=>{
-        let arrE=[];
+    
+    let layoutStatePropertiesE
+    if (vmodes["nomode"] ){
+        layoutStatePropertiesE=(()=>{
+            let arrE=[];
 
-        let styledef={
-            position : "relative",
-            display : "inline-block",                                
-            border : "black solid transparent",
-            borderRadius : 5,
-            overflow : "hidden",
-            margin : 1,
-            padding : 4,
-            color : "white",
-            background : "orange",
-        }
+            let styledef={
+                position : "relative",
+                display : "inline-block",                                
+                border : "black solid transparent",
+                borderRadius : 5,
+                overflow : "hidden",
+                margin : 1,
+                padding : 4,
+                color : "white",
+                background : "orange",
+            }
 
-        let curr={}
-        let currStr="{}"
-        let currPosContE=[]
-        if (layoutposContsStates[layoutcurrStateSel]){
-            curr=layoutposContsStates[layoutcurrStateSel];
-           
-            if (curr.posCont){                
-                currStr=JSON.stringify(curr)
+            let curr={}
+            let currStr="{}"
+            let currPosContE=[]
+            if (layoutposContsStates[layoutcurrStateSel]){
+                curr=layoutposContsStates[layoutcurrStateSel];
+            
+                if (curr.posCont){                
+                    currStr=JSON.stringify(curr)
 
-                curr.posCont.forEach((r,i)=>{
-                    let style={...styledef}
-                    if (r===layoutStatePropertiesPosContCurrSel){
-                        style.background="blue";
-                    }
-                   
+                    curr.posCont.forEach((r,i)=>{
+                        let style={...styledef}
+                        if (r===layoutStatePropertiesPosContCurrSel){
+                            style.background="blue";
+                        }
+                    
 
-                    currPosContE.push(
-                        <div
-                            style={style}
-                            onClick={()=>{
-                                //#region click state state 
-                                setLayoutStatePropertiesPosContCurrSel(r)
-                                setAssetPropertyCurrSel(r)
-                            }}
-                        >
-                            {r}
-                        </div>
-                    )
-                });
-                
+                        currPosContE.push(
+                            <div
+                                style={style}
+                                onClick={()=>{
+                                    //#region click state state 
+                                    setLayoutStatePropertiesPosContCurrSel(r)
+                                    setAssetPropertyCurrSel(r)
+                                }}
+                            >
+                                {r}
+                            </div>
+                        )
+                    });
+                    
+
+                }
 
             }
 
-        }
-
-        return (
-            <div
-                style={{
-                    position : "relative",
-                    display : "inline-block",
-                    border : layoutStatesPropertiesShowHideStyle.border,
-                    fontSize  : 11,
-                    width : layoutStatesPropertiesShowHideStyle.width,
-                    height : layoutStatesPropertiesShowHideStyle.height,
-                    overflow : "hidden",
-                    padding : 5,
-                    margin : 5,
-
-
-                }}
-            >   
-                <button 
-                    onClick={()=>{
-                        setLayoutStatesPropertiesShowHide(!layoutStatesPropertiesShowHide)
-                    }}
-                >show/hide lstpr</button>
+            return (
                 <div
                     style={{
                         position : "relative",
-                        display : layoutStatesPropertiesShowHideStyle.display,                        
+                        display : "inline-block",
+                        border : layoutStatesPropertiesShowHideStyle.border,
                         fontSize  : 11,
-                        width : 285,
-                        height : 150,
-                        overflow : "auto"
+                        width : layoutStatesPropertiesShowHideStyle.width,
+                        height : layoutStatesPropertiesShowHideStyle.height,
+                        overflow : "hidden",
+                        margin : 5 ,
+                        padding : 5 ,                        
+                        borderRadius : 5 , 
+
                     }}
-                >
-                    Layout State Properties 
-                    <br/>
-                    ==========
-                    <br/>
-                    name : {curr.name}
-                    <br/>
-                    
-                    posCont: 
-                    <br/>
-
-                    <button
-                        style={{
-                            fontSize : 9,                        
-                        }}
+                >   
+                    <u>Layout State Properties </u>
+                    <button 
+                        style={{fontSize : 9, marginLeft : 8 }}
                         onClick={()=>{
-                            // insert into from Layout Assets                             
-                            
-                            let assetName=layoutStatePropertiesPosAddName;
-                            if (layoutposContsODyn[assetName].assetSource){
-                                assetName=layoutposContsODyn[assetName].assetSource;
-                            }
-                            if (layoutposContsODyn[assetName]){        
+                            setLayoutStatesPropertiesShowHide(!layoutStatesPropertiesShowHide)
+                        }}
+                    >show/hide lstpr</button>
+
+                    <div
+                        style={{
+                            position : "relative",
+                            display : layoutStatesPropertiesShowHideStyle.display,                        
+                            fontSize  : 11,
+                            width : 385,
+                            height : 145,
+                            overflow : "auto"
+                        }}
+                    >                    
+                        name : {curr.name}
+                        <br/>                    
+                        <button
+                            style={{
+                                fontSize : 9,                        
+                            }}
+                            onClick={()=>{
+                                // insert into from Layout Assets                             
                                 
-                                if (layoutposContsStatesDyn[layoutcurrStateSel]){     
-                                    let nst0={...layoutposContsStates};   
+                                let assetName=layoutStatePropertiesPosAddName;
+                                if (layoutposContsODyn[assetName].assetSource){
+                                    assetName=layoutposContsODyn[assetName].assetSource;
+                                }
+                                if (layoutposContsODyn[assetName]){        
+                                    
+                                    if (layoutposContsStatesDyn[layoutcurrStateSel]){     
+                                        let nst0={...layoutposContsStates};   
 
-                                    let newInstanceID=""
-                                    let countIdx=0;
-                                    if (instances.current.counts[assetName]){
-                                        instances.current.counts[assetName].count++ ;
-                                    }else{
-                                        instances.current.counts[assetName]={
-                                            name : assetName,
-                                            count : 0,
+                                        let newInstanceID=""
+                                        let countIdx=0;
+                                        if (instances.current.counts[assetName]){
+                                            instances.current.counts[assetName].count++ ;
+                                        }else{
+                                            instances.current.counts[assetName]={
+                                                name : assetName,
+                                                count : 0,
+                                            }
+                                        } 
+                                        countIdx=instances.current.counts[assetName].count    
+                                        
+                                        newInstanceID=assetName + "__inst" + countIdx  ;
+                                        
+                                        instances.current.all[newInstanceID]={};          
+                                        instances.current.all[newInstanceID].id=newInstanceID;
+                                        instances.current.all[newInstanceID].uuid=uuidv4();
+                                        instances.current.all[newInstanceID].dateCreate=new Date();
+                                        instances.current.all[newInstanceID].properties={};
+
+                                        if (layoutposContsODyn[assetName].assetSource){
+                                            instances.current.all[newInstanceID].assetSource=layoutposContsODyn[assetName].assetSource
+                                        }else{
+                                            instances.current.all[newInstanceID].assetSource=assetName;
                                         }
-                                    } 
-                                    countIdx=instances.current.counts[assetName].count    
-                                    
-                                    newInstanceID=assetName + "__inst" + countIdx  ;
-                                    
-                                    instances.current.all[newInstanceID]={};          
-                                    instances.current.all[newInstanceID].id=newInstanceID;
-                                    instances.current.all[newInstanceID].uuid=uuidv4();
-                                    instances.current.all[newInstanceID].dateCreate=new Date();
-                                    instances.current.all[newInstanceID].properties={};
+                                        
+                                        
+                                        
+                                        // nst0[layoutcurrStateSel].posCont.push(assetName);
 
-                                    if (layoutposContsODyn[assetName].assetSource){
-                                        instances.current.all[newInstanceID].assetSource=layoutposContsODyn[assetName].assetSource
-                                    }else{
-                                        instances.current.all[newInstanceID].assetSource=assetName;
+
+                                        // nst0[layoutcurrStateSel].posCont.push(instances.current.all[newInstanceID].id);
+                                        let currIdx=(()=>{
+                                            let foundI=false
+                                            let idx=0
+                                            nst0[layoutcurrStateSel].posCont.forEach((r1,i2)=>{
+                                                if (r1===layoutStatePropertiesPosContCurrSel ){
+                                                    foundI=true;
+                                                    idx=i2 + 1 ;
+                                                }
+                                            })
+
+                                            if (foundI===false){
+                                                return nst0[layoutcurrStateSel].posCont.length ; // same as push to end of last ;
+                                            }
+                                            return idx
+                                        })();
+                                        nst0[layoutcurrStateSel].posCont.splice(currIdx, 0,instances.current.all[newInstanceID].id)
+
+
+                                        let LayoutposContsODynTmp0
+                                        let  LayoutposContsStatesDynTmp0
+                                        setLayoutposContsODyn((st)=>{
+                                            let nst={...st}   
+
+                                            let layoutname=instances.current.all[newInstanceID].assetSource;
+                                            nst[newInstanceID]={...st[layoutname]};
+                                            nst[newInstanceID].name=newInstanceID;
+                                            nst[newInstanceID].assetSource=layoutname;
+                                            // #TODO generate new E  and key 
+                                            // nst[newInstanceID].generate({ key : newInstanceID});
+                                            LayoutposContsODynTmp0=nst
+                                            return nst;
+                                        })  ;                                 
+                                        setLayoutposContsStatesDyn((st)=>{
+                                            let nst={...st}   
+
+                                            nst[layoutcurrStateSel].posCont=nst0[layoutcurrStateSel].posCont;
+
+                                            LayoutposContsStatesDynTmp0=nst
+                                            return nst;
+                                        });
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+
+                                            if (nst.view.layoutposContsO){}else{
+                                                nst.view.layoutposContsO={}
+                                            }
+                                            let layoutposContsOTmp={}
+                                            for ( let p in LayoutposContsODynTmp0){
+                                                let r=LayoutposContsODynTmp0[p]
+                                                layoutposContsOTmp[p]={
+                                                    assetSource : r.assetSource
+                                                }
+                                            }
+                                            nst.view.layoutposContsO=layoutposContsOTmp
+                                            
+                                            // -------------------------------
+                                            if (nst.view.LayoutposContsStates){}else{
+                                                nst.view.LayoutposContsStates={}
+                                            }
+                                            let LayoutposContsStatesDynTmp={}
+                                            for ( let p in LayoutposContsStatesDynTmp0){
+                                                let r=LayoutposContsStatesDynTmp0[p]
+                                                LayoutposContsStatesDynTmp[p]={
+                                                    name : r.name,
+                                                    posCont : r.posCont
+                                                }
+                                            }
+                                            nst.view.LayoutposContsStates=LayoutposContsStatesDynTmp
+                            
+                                            return nst;
+                                        })
+
+                                        
                                     }
-                                    
-                                    
-                                    
-                                    // nst0[layoutcurrStateSel].posCont.push(assetName);
+                                }
+                            }}
+                        >add</button>
+                        <input
+                            value={layoutStatePropertiesPosAddName}
+                            onChange={(e)=>{
+                                let val=e.target.value
+                                setLayoutStatePropertiesPosContAddName(val)
+                            }}
+                        
+                        />
+                        <button
+                            style={{
+                                fontSize : 9,                        
+                            }}
+                            onClick={()=>{
+                                if (layoutposContsStatesDyn[layoutcurrStateSel]){
+                                    let nst0={...layoutposContsStates};  
 
-
-                                    // nst0[layoutcurrStateSel].posCont.push(instances.current.all[newInstanceID].id);
                                     let currIdx=(()=>{
                                         let foundI=false
                                         let idx=0
                                         nst0[layoutcurrStateSel].posCont.forEach((r1,i2)=>{
                                             if (r1===layoutStatePropertiesPosContCurrSel ){
                                                 foundI=true;
-                                                idx=i2 + 1 ;
+                                                idx=i2  ;
                                             }
                                         })
 
@@ -1927,23 +3267,10 @@ export const Views=(props)=>{
                                         }
                                         return idx
                                     })();
-                                    nst0[layoutcurrStateSel].posCont.splice(currIdx, 0,instances.current.all[newInstanceID].id)
-
+                                    nst0[layoutcurrStateSel].posCont.splice(currIdx, 1)
 
                                     let LayoutposContsODynTmp0
                                     let  LayoutposContsStatesDynTmp0
-                                    setLayoutposContsODyn((st)=>{
-                                        let nst={...st}   
-
-                                        let layoutname=instances.current.all[newInstanceID].assetSource;
-                                        nst[newInstanceID]={...st[layoutname]};
-                                        nst[newInstanceID].name=newInstanceID;
-                                        nst[newInstanceID].assetSource=layoutname;
-                                        // #TODO generate new E  and key 
-                                        // nst[newInstanceID].generate({ key : newInstanceID});
-                                        LayoutposContsODynTmp0=nst
-                                        return nst;
-                                    })  ;                                 
                                     setLayoutposContsStatesDyn((st)=>{
                                         let nst={...st}   
 
@@ -1951,22 +3278,10 @@ export const Views=(props)=>{
 
                                         LayoutposContsStatesDynTmp0=nst
                                         return nst;
-                                    });
+                                    })
                                     setCmptMe((st)=>{
                                         let nst={...st};
-
-                                        if (nst.view.layoutposContsO){}else{
-                                            nst.view.layoutposContsO={}
-                                        }
-                                        let layoutposContsOTmp={}
-                                        for ( let p in LayoutposContsODynTmp0){
-                                            let r=LayoutposContsODynTmp0[p]
-                                            layoutposContsOTmp[p]={
-                                                assetSource : r.assetSource
-                                            }
-                                        }
-                                        nst.view.layoutposContsO=layoutposContsOTmp
-                                        
+                                                                        
                                         // -------------------------------
                                         if (nst.view.LayoutposContsStates){}else{
                                             nst.view.LayoutposContsStates={}
@@ -1983,94 +3298,26 @@ export const Views=(props)=>{
                         
                                         return nst;
                                     })
-
-                                    
                                 }
-                            }
-                        }}
-                    >add</button>
-                    <input
-                        value={layoutStatePropertiesPosAddName}
-                        onChange={(e)=>{
-                            let val=e.target.value
-                            setLayoutStatePropertiesPosContAddName(val)
-                        }}
-                    
-                    />
-                    <button
-                        style={{
-                            fontSize : 9,                        
-                        }}
-                        onClick={()=>{
-                            if (layoutposContsStatesDyn[layoutcurrStateSel]){
-                                let nst0={...layoutposContsStates};  
 
-                                let currIdx=(()=>{
-                                    let foundI=false
-                                    let idx=0
-                                    nst0[layoutcurrStateSel].posCont.forEach((r1,i2)=>{
-                                        if (r1===layoutStatePropertiesPosContCurrSel ){
-                                            foundI=true;
-                                            idx=i2  ;
-                                        }
-                                    })
+                            }}
+                        >del</button>
 
-                                    if (foundI===false){
-                                        return nst0[layoutcurrStateSel].posCont.length ; // same as push to end of last ;
-                                    }
-                                    return idx
-                                })();
-                                nst0[layoutcurrStateSel].posCont.splice(currIdx, 1)
-
-                                let LayoutposContsODynTmp0
-                                let  LayoutposContsStatesDynTmp0
-                                setLayoutposContsStatesDyn((st)=>{
-                                    let nst={...st}   
-
-                                    nst[layoutcurrStateSel].posCont=nst0[layoutcurrStateSel].posCont;
-
-                                    LayoutposContsStatesDynTmp0=nst
-                                    return nst;
-                                })
-                                setCmptMe((st)=>{
-                                    let nst={...st};
-                                                                       
-                                    // -------------------------------
-                                    if (nst.view.LayoutposContsStates){}else{
-                                        nst.view.LayoutposContsStates={}
-                                    }
-                                    let LayoutposContsStatesDynTmp={}
-                                    for ( let p in LayoutposContsStatesDynTmp0){
-                                        let r=LayoutposContsStatesDynTmp0[p]
-                                        LayoutposContsStatesDynTmp[p]={
-                                            name : r.name,
-                                            posCont : r.posCont
-                                        }
-                                    }
-                                    nst.view.LayoutposContsStates=LayoutposContsStatesDynTmp
-                    
-                                    return nst;
-                                })
-                            }
-
-                        }}
-                    >del</button>
-
-                    <br/>
-                    {currPosContE}
-                    
-                    <br/>
-                    {arrE}
+                        <br/>
+                        {currPosContE}
+                        
+                        <br/>
+                        {arrE}
+                    </div>
                 </div>
-            </div>
-        )
-    })()
-
+            )
+        })()
+    }
 
     let mainlayoutStatesPropertiesShowHideStyle={
-        border : "solid thin black",
-        width : 200,
-        height : 100,
+        border : "solid thin lightgrey",
+        width : 300,                        
+        height : 150,
     }
     if (mainlayoutStatesPropertiesShowHide===false){
         mainlayoutStatesPropertiesShowHideStyle.display="none"
@@ -2078,195 +3325,204 @@ export const Views=(props)=>{
         mainlayoutStatesPropertiesShowHideStyle.width=undefined
         mainlayoutStatesPropertiesShowHideStyle.height=undefined
     }
-    let mainLayoutPropertiesE=(()=>{
+    let mainLayoutPropertiesE
+    if (vmodes["nomode"] ){
+        mainLayoutPropertiesE=(()=>{
 
-        return (
+            return (
 
-            <div
-                style={{...{
-                    position : "relative",
-                    display : "inline-block",
-                    border : mainlayoutStatesPropertiesShowHideStyle.border,
-                    fontSize  : 11,
-                    width : mainlayoutStatesPropertiesShowHideStyle.width,
-                    height : mainlayoutStatesPropertiesShowHideStyle.height,
-                    overflow : "hidden",
-                    padding : 5,
-                    margin : 5,
-
-
-                },...{}}}
-            >   
-                <button 
-                    onClick={()=>{
-                        setMainLayoutStatesPropertiesShowHide(!mainlayoutStatesPropertiesShowHide)
-                    }}
-                >show/hide mlpr</button>
                 <div
-                    style={{
-                        display : mainlayoutStatesPropertiesShowHideStyle.display
-                    }}
-                >
-                    main layout properties
-                    <br/>-----------------------------
-                    
+                    style={{...{
+                        position : "relative",
+                        display : "inline-block",
+                        border : mainlayoutStatesPropertiesShowHideStyle.border,
+                        fontSize  : 11,
+                        width : mainlayoutStatesPropertiesShowHideStyle.width,
+                        height : mainlayoutStatesPropertiesShowHideStyle.height,
+                        overflow : "hidden",
+                        padding : 5,
+                        margin : 5,                                      
+                        borderRadius : 5 , 
+
+
+                    },...{}}}
+                >   
+                    <u>main layout properties</u>
+                    <button 
+                        style={{fontSize : 9 }}
+                        onClick={()=>{
+                            setMainLayoutStatesPropertiesShowHide(!mainlayoutStatesPropertiesShowHide)
+                        }}
+                    >show/hide mlpr</button>
                     <div
                         style={{
-                            position : "relative",
-                            display : "inline-block",                        
-                            fontSize  : 11,
-                            width : 185,
-                            height : 85,
-                            overflow : "auto"
+                            display : mainlayoutStatesPropertiesShowHideStyle.display
                         }}
                     >
-                        <label>Startup layout </label>
-                        <input 
+                        
+                    
+                        
+                        <div
                             style={{
-                                fontSize : 11,
-                                width : 80,
+                                position : "relative",
+                                display : "inline-block",                        
+                                fontSize  : 11,
+                                width : 285,
+                                height : 145,
+                                overflow : "auto"
                             }}
-                            value={layoutcurrStateDefTxt}
-                            onChange={(e)=>{
-                                let val=e.target.value;
-                                setLayoutcurrStateDefTxt(val)
-                            }}
-                            onBlur={(e)=>{
-                                // #TODO validate default layout
-                                setLayoutcurrStateDef(layoutcurrStateDefTxt)
-                            }}
-                            
+                        >
+                            <label>Startup layout </label>
+                            <input 
+                                style={{
+                                    fontSize : 11,
+                                    width : 80,
+                                }}
+                                value={layoutcurrStateDefTxt}
+                                onChange={(e)=>{
+                                    let val=e.target.value;
+                                    setLayoutcurrStateDefTxt(val)
+                                }}
+                                onBlur={(e)=>{
+                                    // #TODO validate default layout
+                                    setLayoutcurrStateDef(layoutcurrStateDefTxt)
+                                }}
+                                
 
-                        />
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+            
+        })()
+
+    }
         
-    })()
-
-
-    
 
     // --------------------------------
 
-    let listCmptMeE=(()=>{
-        let arrE=[]
+    let listCmptMeE
+    if (vmodes["nomode"] ){
 
-        let styledef={
-            background : "lightblue",
-            cursor : "pointer",
-            margin : 1,
-            padding : 2,
-            borderRadius : 4,
-            border : "solid thin black"
-        }
+        listCmptMeE=(()=>{
+            let arrE=[]
 
-        let ni1=0;
-        // up/back dir
-        arrE.push(
-            <div
-                key={ni1}
-                
-                style={{...styledef,...{ padding :  0,color : "grey",overflow : "hidden"}}}
-                onClick={(e)=>{
-                    setProject("");                        
-                    setTimeout(listCmptMe({project : project}),1500 );
-                }}
-            >
+            let styledef={
+                background : "lightblue",
+                cursor : "pointer",
+                margin : 1,
+                padding : 2,
+                borderRadius : 4,
+                border : "solid thin black"
+            }
+
+            let ni1=0;
+            // up/back dir
+            arrE.push(
                 <div
-                    style={{
-                        position :"relative",
-                        height : 15,
+                    key={ni1}
+                    
+                    style={{...styledef,...{ padding :  0,color : "grey",overflow : "hidden"}}}
+                    onClick={(e)=>{
+                        setProject("");                        
+                        setTimeout(listCmptMe({project : project}),1500 );
                     }}
                 >
                     <div
                         style={{
-                            position :"absolute",                                
-                            top : -5,
-                            left : 100
-                            
+                            position :"relative",
+                            height : 15,
                         }}
-                    >{"..  <--"}</div>
+                    >
+                        <div
+                            style={{
+                                position :"absolute",                                
+                                top : -5,
+                                left : 100
+                                
+                            }}
+                        >{"..  <--"}</div>
+                        
+                    </div>
                     
-                </div>
-                
-
-            </div>
-        )
-        ni1++;
-
-        listCmptMeData.forEach((r,i)=>{
-            let name=r.name.replace(".json", "")
-            let desc=`${name}`;
-
-            let style={...styledef}
-
-            let isDir="false";
-            if (r.isDir){
-                isDir="true";
-                desc=`${name}.proj`;
-                style.background="DarkCyan";
-            }                
-            
-            let ni2=i+ni1;
-            arrE.push(
-                <div
-                    key={ni2}
-                    rname={name}
-                    isdir={isDir}
-                    style={style}
-                    onClick={(e)=>{
-                        let rname=e.target.getAttribute("rname");
-                        let isDir=e.target.getAttribute("isdir");
-
-                        if (isDir==="false"){
-                            loadCmptMe({ name : rname ,project : project },(dt)=>{                                    
-                                loadedCmptMeDataSetState(dt)                                    
-                            })
-                        }else{
-                            setProject(rname)
-                            setTimeout(listCmptMe({project : project}),1500 )
-                        }
-                    }}
-                >
-                    {desc}
 
                 </div>
             )
+            ni1++;
 
-        })
+            listCmptMeData.forEach((r,i)=>{
+                let name=r.name.replace(".json", "")
+                let desc=`${name}`;
 
-        return (
-            <div
-                style={{
-                    position : "relative",
-                    border :"black solid thin",
-                    borderRadius : 6,
-                    margin : 2,
-                    padding : 2,
-                    width : 300,
-                    height : 100,
-                    overflow : "hidden",
-                }}
-            >
-                load
+                let style={...styledef}
+
+                let isDir="false";
+                if (r.isDir){
+                    isDir="true";
+                    desc=`${name}.proj`;
+                    style.background="DarkCyan";
+                }                
+                
+                let ni2=i+ni1;
+                arrE.push(
+                    <div
+                        key={ni2}
+                        rname={name}
+                        isdir={isDir}
+                        style={style}
+                        onClick={(e)=>{
+                            let rname=e.target.getAttribute("rname");
+                            let isDir=e.target.getAttribute("isdir");
+
+                            if (isDir==="false"){
+                                loadCmptMe({ name : rname ,project : project },(dt)=>{                                    
+                                    loadedCmptMeDataSetState(dt)                                    
+                                })
+                            }else{
+                                setProject(rname)
+                                setTimeout(listCmptMe({project : project}),1500 )
+                            }
+                        }}
+                    >
+                        {desc}
+
+                    </div>
+                )
+
+            })
+
+            return (
                 <div
                     style={{
                         position : "relative",
                         border :"black solid thin",
-                        borderRadius : 4,
-                        width : 285,
-                        height : 85,
-                        overflow : "auto",
+                        borderRadius : 6,
+                        margin : 2,
+                        padding : 2,
+                        width : 300,
+                        height : 100,
+                        overflow : "hidden",
                     }}
                 >
-                    {arrE}
+                    load
+                    <div
+                        style={{
+                            position : "relative",
+                            border :"black solid thin",
+                            borderRadius : 4,
+                            width : 285,
+                            height : 85,
+                            overflow : "auto",
+                        }}
+                    >
+                        {arrE}
+                    </div>
+                    
                 </div>
-                
-            </div>
-        )
-    })()
+            )
+        })()
+    }
 
     let propCmptMeE=(()=>{
     })()
@@ -2281,9 +3537,103 @@ export const Views=(props)=>{
 
     // --------------------------------
 
+    let vmodesSelectE
+    if (true){
+        vmodesSelectE=(()=>{
+            let arrE=[]
+
+            let multiselectmode=vmodesMultiMode
+
+            for (let p in vmodesTypes.modes){
+                let selected=false
+                if (vmodes[p]){
+                    selected=true
+                }
+
+                let style={
+
+                }
+
+                if (selected){
+                    style.background="lightgrey"
+                }
+
+                arrE.push(
+                    <option
+                        style={style}
+                        key={p}
+                        value={p}
+                        //{p}
+                    >
+                        {p}
+                    </option>
+                )
+
+            }
+
+            return (
+                <>
+                    {
+                        //JSON.stringify(vmodes)
+                    }
+                    <select
+                        style={{
+                            zIndex : 9999
+                        }}
+
+                        //defaultValue={[vmodesTypes.modes["default"]]}
+                        defaultValue={vmodesTypes["default"]}
+                        multiple={false}
+                        onChange={(e) => {
+                            setVmodes((st)=>{
+                                let nst={...st}
+                                
+                                let val=e.target.value;
+                                if (multiselectmode===true){       
+                                    if ( nst[val] ){
+                                        delete nst[val]
+                                    }else{
+                                        nst[val]=vmodesTypes.modes[val]
+                                    }                                    
+                                }else{
+                                    nst={}
+                                    nst[val]=vmodesTypes.modes[val]
+                                }                                
+
+                                return nst
+                            })
+                        }}
+                    >
+                        {arrE}
+                    </select>
+                    <input 
+                        style={{position : "relative" ,zIndex : 9999 , width : 15, height : 15}}
+                        type={"checkbox"}                         
+                        key={Math.random()}
+                        defaultChecked={vmodesMultiMode}
+                        value={vmodesMultiMode}
+                        onChange={()=>{
+                            let val=!vmodesMultiMode
+                            setVmodesMultiMode((st)=>{      
+                                //alert( "new : " + val  + " , " + "stCurr : " + st)                          
+                                return val;
+                            })
+                        }}
+                    /> <label
+                        style={{ fontSize : 11}}
+                    >multi</label>
+                </> 
+                
+            )
+        })()
+    }
+
+    // --------------------------------
+
 
     let style={
         position  : "relative",
+        display  : "block",
         background : "white",
         width : 1200,
         height : 600, 
@@ -2341,7 +3691,18 @@ export const Views=(props)=>{
         >
             Views
 
-            
+            <div
+                style={{
+                    position : "absolute",
+                    //display : "inline-block",
+                    right : 80,
+                    top : 5,
+                    fontSize : 9,
+                }}
+            >
+                {vmodesSelectE}
+            </div>
+
             <div
                 style={innerStyle}
 
@@ -2523,7 +3884,7 @@ export const Views=(props)=>{
                             }}
                             style={{
                                 width : 400,
-                                height : 200,
+                                height : 100,
                             }}
                         />
 
@@ -2531,7 +3892,7 @@ export const Views=(props)=>{
                             style={{
                                 display : "inline-block",
                                 width : 400,
-                                height : 200,
+                                height : 100,
                             }}
                             value={JSON.stringify(instances,null,2)}
                             onChange={()=>{
@@ -2549,7 +3910,7 @@ export const Views=(props)=>{
                     style={{
                         position : "relative",
                         float : "left",
-                        width : 700,
+                        //width : 700,
                         //background : "purple",
                     }}
 
@@ -2567,7 +3928,7 @@ export const Views=(props)=>{
                     style={{
                         position : "relative",
                         float : "left",
-                        width : 700,
+                        //width : 700,
                         
                     }}
 
@@ -2579,7 +3940,7 @@ export const Views=(props)=>{
                     style={{
                         position : "relative",
                         float : "left",
-                        width : 700,
+                        //width : 700,
                         
                     }}
 

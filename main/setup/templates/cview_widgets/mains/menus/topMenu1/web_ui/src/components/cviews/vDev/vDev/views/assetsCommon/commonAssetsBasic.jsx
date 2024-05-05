@@ -222,6 +222,716 @@ export const genCommonAssets=()=>{
         };  
         retArr.push(layoutposContsO[layoutname])
 
+
+        layoutname="input";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onChange : ()=>{},
+                        onBlur : ()=>{},
+                    }
+                   
+                    return (               
+                        <input
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        
+        layoutname="password";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onChange : ()=>{},
+                        onBlur : ()=>{},
+                    }
+                   
+                    return (               
+                        <input
+                            key={params.key}
+                            type="password"
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="select";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onChange : ()=>{},
+                        onBlur : ()=>{},
+                    }
+                   
+                    return (               
+                        <select
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        
+        
+        layoutname="radio";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onChange : ()=>{},
+                        onBlur : ()=>{},
+                    }
+                   
+                    return (               
+                        <input
+                            key={params.key}
+                            type="radio"
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+
+        layoutname="checkbox";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onChange : ()=>{},
+                        onBlur : ()=>{},
+                    }
+                   
+                    return (               
+                        <input
+                            key={params.key}
+                            type="checkbox"
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="date";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onChange : ()=>{},
+                        onBlur : ()=>{},
+                    }
+                   
+                    return (               
+                        <input
+                            key={params.key}
+                            type="date"
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        
+        layoutname="datetime-local";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onChange : ()=>{},
+                        onBlur : ()=>{},
+                    }
+                   
+                    return (               
+                        <input
+                            key={params.key}
+                            type="datetime-local"
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="color";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onChange : ()=>{},
+                        onBlur : ()=>{},
+                    }
+                   
+                    return (               
+                        <input
+                            key={params.key}
+                            type="color"
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        
+
+
+
+        layoutname="textarea";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onChange : ()=>{},
+                        onBlur : ()=>{},
+                    }
+                   
+                    return (               
+                        <textarea
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="button";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={};
+                    let value="text abc";
+
+                    
+                   
+                    return (               
+                        <button
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        >{value}</button>
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="img";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onClick : ()=>{},     
+                        src : "",                   
+                    }
+                   
+                    return (               
+                        <img
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        
+        layoutname="svg";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={}
+                   
+                    return (               
+                        <svg
+                            key={params.key}                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        
+        layoutname="canvas";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={}
+                   
+                    return (               
+                        <canvas
+                            key={params.key}                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+        
+
+        layoutname="p";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={};
+                    let value="text abc";
+                   
+                    return (               
+                        <p
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        >{value}</p>
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="pre";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={};
+                    let value="text abc";
+                   
+                    return (               
+                        <pre
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        >{value}</pre>
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        
+        layoutname="span";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={};
+                    let value="text abc";
+                   
+                    return (               
+                        <span
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        >{value}</span>
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="h1";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={};
+                    let value="text abc";
+                   
+                    return (               
+                        <h1
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        >{value}</h1>
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="h2";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={};
+                    let value="text abc";
+                   
+                    return (               
+                        <h2
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        >{value}</h2>
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="h3";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={};
+                    let value="text abc";
+                   
+                    return (               
+                        <h3
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        >{value}</h3>
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="h4";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={};
+                    let value="text abc";
+                   
+                    return (               
+                        <h4
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        >{value}</h4>
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="li";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onClick : ()=>{},                                          
+                    }
+                   
+                    return (               
+                        <li
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        layoutname="a";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={
+                        onClick : ()=>{},                                          
+                    }
+                   
+                    return (               
+                        <a
+                            key={params.key}
+                            style={{...{                                
+                                position : "relative",                                
+                            },...params.style}}
+
+                            {...prps}
+                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+
+        
+        layoutname="audio";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={}
+                   
+                    return (               
+                        <audio
+                            key={params.key}                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+        
+        layoutname="audio";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={}
+                   
+                    return (               
+                        <audio
+                            key={params.key}                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+
+         
+        layoutname="video";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={}
+                   
+                    return (               
+                        <video
+                            key={params.key}                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+        
+
+        layoutname="iframe";
+        layoutposContsO[layoutname]={
+            name : layoutname,            
+            e : (...args)=>{
+                    let params={}
+                    parseAssetsParamsFn(params, args);
+
+                    let prps={}
+                   
+                    return (               
+                        <iframe
+                            key={params.key}                            
+                        />
+                              
+                )
+            }
+
+        };  
+        retArr.push(layoutposContsO[layoutname])
+        
+
     }
 
     return retArr;
