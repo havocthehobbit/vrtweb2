@@ -132,6 +132,10 @@ export const Views=(props)=>{
     let instancesDef={
         all : {},
         counts : {},
+        Fn : {},
+        events : {},
+        states : {},
+        vars : {},
     }
     let instances=useRef({...instancesDef})
 
@@ -212,6 +216,10 @@ export const Views=(props)=>{
             listCmptMe();
             layoutposContsOAddInitial();
             layoutposContsStatesAddInitial();
+            appFnInitial();
+            
+            
+            
         }        
     },[]);
 
@@ -332,6 +340,9 @@ export const Views=(props)=>{
         let LayoutposContsODynTmp0={};
         let LayoutposContsStatesDynTmp0={};
 
+        let nLtPCO=layoutposContsOAddInitial({ updateState : false })
+        LayoutposContsODynTmp0=nLtPCO.layoutposContsO ;
+
         if (true){
             let layoutname="";
             if (data.view){
@@ -405,6 +416,7 @@ export const Views=(props)=>{
                     }
                 }
 
+                instances.current={...instancesDef};
                 if (data.view.instances){
                     instances.current=data.view.instances
                 }
@@ -472,6 +484,41 @@ export const Views=(props)=>{
 
         }
 
+        let appFnInitial=()=>{
+            let name=""
+            //let nst0={...appFn}
+            let nst0={};
+
+            name="alert";
+            nst0[name]={
+                "fn" : alert,                    
+                "type" : "fn", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
+                "props" : [
+                    { "name" : "name"  , type : "string" , "optional" : false , "subtype" : [/* if prop is like a object and it has subtypes that need validation */]},
+                ],
+                 
+            };
+            instances.current.Fn[name]=nst0[name]
+
+           
+            name="changeLayout";
+            nst0[name]={
+                "fn" : layoutsetCurrStateRef,                    
+                "type" : "ref", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
+                "props" : [
+                    { "name" : "name"  , type : "string" , "optional" : false },
+                ],
+                "subtype" : [] // { optional }
+            };
+            instances.current.Fn[name]=nst0[name]
+
+            
+            setAppFn((st)=>{
+                let nst={...st};
+
+                return nst0;
+            })
+        }
 
     // --------------------------------
 
@@ -699,135 +746,7 @@ export const Views=(props)=>{
             return txt;
         }
     // --------------------------------
-        let layoutPrefabsList={};
-        let prefabs={};
-        /*
-        let layoutPrefabsList={
-            "label" : {
-                "name_cmpt" : "label",
-                "name" : "",     
-                "toolname" : "",     
-                "toolname_small" : "lb",     
-                "toolname_med" : "",     
-                "toolname_large" : "",     
-                "uuid"  : "",
-                "type" : "label"
-            },
-            "input" : {
-                "name_cmpt" : "input",
-                "name" : "",     
-                "toolname_small" : "",     
-                "toolname_med" : "",     
-                "toolname_large" : "",     
-                "uuid"  : "",
-                "type" : "ele",
-                "sub_type" : "label",
-            }
-        }
-
-        let prefabs={
-            "label" : {
-                "e" : (
-                    <label>label</label>
-                ),
-                "type" : "ele",
-                "generate" : (...args)=>{
-                    let cb=()=>{}
-                    let params={                        
-                        value : "label",
-                        style : {},
-                    }
-                    if (args.length){
-                        params={...params,...args[0]}
-                        if (args[1]){
-                            cb=args[1];
-                        }
-                    }
-                    let eProps={}
-                    
-                    if (params.eProps!==undefined){
-                        eProps={...eProps,...params.eProps}
-                    }
-                    if (params.key!==undefined){
-                        eProps.key=params.key
-                    }
-                    if (params.style!==undefined){
-                        eProps.style=params.style
-                    }
-                    if (params.value!==undefined){
-                        params.value=params.value
-                    }
-                    
-                    let e=prefabs["label"].e;
-                    
-                    e=(
-                        <label {...eProps}>{params.value}</label>
-                    )
-                    
-
-                    return  { e : e }
-                },
-                "prompts" : []
-            },
-            "input" : {
-                "e" : (
-                    <input />
-                ),
-                "type" : "ele",
-                "generate" : (...args)=>{
-                    let cb=()=>{}
-                    let params={                        
-                        value : "label",
-                        style : {},
-                    }
-                    if (args.length){
-                        params={...params,...args[0]}
-                        if (args[1]){
-                            cb=args[1];
-                        }
-                    }
-                    let eProps={}
-                    
-                    if (params.eProps!==undefined){
-                        eProps={...eProps,...params.eProps}
-                    }
-                    if (params.key!==undefined){
-                        eProps.key=params.key
-                    }
-                    if (params.style!==undefined){
-                        eProps.style=params.style
-                    }
-                    if (params.value!==undefined){
-                        eProps.value=params.value
-                    }
-                    if (params.onChange!==undefined){
-                        eProps.onChange=params.onChange
-                    }
-                    if (params.onBlur!==undefined){
-                        eProps.onBlur=params.onBlur
-                    }
-                    if (params.onClick!==undefined){
-                        eProps.onClick=params.onClick
-                    }
-
-                    
-                    
-                    let e=prefabs["label"].e;
-                    
-                    e=(
-                        <input {...eProps} />
-                    )
-                    
-
-                    return  { e : e }
-                },
-                
-                "prompts" : []
-            },
-        }
-        */
-
-        
+       
 
     // --------------------------------
         //cmptMe."views"
@@ -853,7 +772,12 @@ export const Views=(props)=>{
         // ----  posContsO
         
 
-        let layoutposContsOAddInitial=()=>{
+        let layoutposContsOAddInitial=(paramsIn)=>{
+            let params={ updateState : true }
+            if (paramsIn){
+                params={...params,...paramsIn}
+            }
+
             let layoutposContsStates={};
             let layoutposContsO={};
             let layoutname="";
@@ -900,264 +824,288 @@ export const Views=(props)=>{
                 
 
                 genCommonAssetsNew[layoutname]=nr
-            })
+            });
 
+           
             let LayoutposContsODynTmp0
-            setLayoutposContsODyn((st)=>{
-                let nst={...st} ;
+            let nst01={...layoutposContsODyn} ;
 
-                //let layoutposContsO={};
-                //let layoutname="";
-                if (true){
-                    
+            //let layoutposContsO={};
+            //let layoutname="";
+            if (true){
+                
 
-                    for (let np in genCommonAssetsNew){
-                        let r=genCommonAssetsNew[np];
-                        layoutname=np;
-                        layoutposContsO[layoutname]={
-                            name : layoutname,    
-                            e : r.e,
-                        };
-                        nst[layoutname]=layoutposContsO[layoutname];
-                    }
-                }
-
-                if (true){
-                    layoutname="menu";
+                for (let np in genCommonAssetsNew){
+                    let r=genCommonAssetsNew[np];
+                    layoutname=np;
                     layoutposContsO[layoutname]={
-                        name : layoutname,            
-                        e : (...args)=>{
+                        name : layoutname,    
+                        e : r.e,
+                    };
+                    nst01[layoutname]=layoutposContsO[layoutname];
+                }
+            }
+
+            if (true){
+                layoutname="menu";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (...args)=>{
+                        
+                        let params={}
+                        parseAssetsParamsFn(params, args);
+
+                        return (  
+                            <div
+                                key={params.key}
+                                style={{...layoutmenuStyle,...params.style}}
+                            >
+                                <h4>menu</h4>                             
+                                
+                                <div
+                                    menuname={"viewMain"}
+                                    style={{
+                                        position : "relative",
+                                        display : "inline-block",
+                                        cursor : "pointer",
+                                        width : 100,
+                                    }}
+                                    onClick={(e)=>{
+                                        let menuname=e.target.getAttribute("menuname");
+                                        layoutsetCurrStateRef.current(menuname)
+                                    }}
+                                >
+                                    <label
+                                        menuname={"viewMain"}
+                                    >Main</label>                            
+                                </div>   
+                                <div
+                                    menuname={"viewSummary"}
+                                    style={{
+                                        position : "relative",
+                                        display : "inline-block",
+                                        cursor : "pointer",
+                                        width : 100,
+                                    }}
+                                    onClick={(e)=>{
+                                        let menuname=e.target.getAttribute("menuname");
+                                        layoutsetCurrStateRef.current(menuname)
+                                    }}
+                                >
+                                    <label
+                                        menuname={"viewSummary"}
+                                    >Summary</label>                            
+                                </div>          
+                                <div
+                                    menuname={"editSettings"}
+                                    style={{
+                                        position : "relative",
+                                        display : "inline-block",
+                                        cursor : "pointer",
+                                        width : 100,
+                                    }}
+                                    onClick={(e)=>{
+                                        let menuname=e.target.getAttribute("menuname");
+                                        layoutsetCurrStateRef.current(menuname)
+                                    }}
+                                >
+                                    <label
+                                        menuname={"editSettings"}
+                                    >Settings</label>                            
+                                </div>           
+
+                            </div>
+                        )
+                    },
+                };
+                nst01[layoutname]=layoutposContsO[layoutname]
+
+                layoutname="Main";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (...args)=>{
                             
                             let params={}
                             parseAssetsParamsFn(params, args);
 
-                            return (  
+
+                            return (               
                                 <div
                                     key={params.key}
-                                    style={{...layoutmenuStyle,...params.style}}
+                                    style={{...{
+                                        background : "white",
+                                        position : "relative",
+                                        display : "inline-block",
+                                        width : 400,
+                                        height : 300,
+                                        borderRadius : 8,
+                                        margin : 5,
+                                        padding : 5,
+                                        overflow : "hidden"
+                                    },...params.style}}
                                 >
-                                    <h4>menu</h4>                             
-                                    
-                                    <div
-                                        menuname={"viewMain"}
-                                        style={{
-                                            position : "relative",
-                                            display : "inline-block",
-                                            cursor : "pointer",
-                                            width : 100,
-                                        }}
-                                        onClick={(e)=>{
-                                            let menuname=e.target.getAttribute("menuname");
-                                            layoutsetCurrStateRef.current(menuname)
-                                        }}
-                                    >
-                                        <label
-                                            menuname={"viewMain"}
-                                        >Main</label>                            
-                                    </div>   
-                                    <div
-                                        menuname={"viewSummary"}
-                                        style={{
-                                            position : "relative",
-                                            display : "inline-block",
-                                            cursor : "pointer",
-                                            width : 100,
-                                        }}
-                                        onClick={(e)=>{
-                                            let menuname=e.target.getAttribute("menuname");
-                                            layoutsetCurrStateRef.current(menuname)
-                                        }}
-                                    >
-                                        <label
-                                            menuname={"viewSummary"}
-                                        >Summary</label>                            
-                                    </div>          
-                                    <div
-                                        menuname={"editSettings"}
-                                        style={{
-                                            position : "relative",
-                                            display : "inline-block",
-                                            cursor : "pointer",
-                                            width : 100,
-                                        }}
-                                        onClick={(e)=>{
-                                            let menuname=e.target.getAttribute("menuname");
-                                            layoutsetCurrStateRef.current(menuname)
-                                        }}
-                                    >
-                                        <label
-                                            menuname={"editSettings"}
-                                        >Settings</label>                            
-                                    </div>           
-
+                                    <h4>Main</h4>                
                                 </div>
-                            )
-                        },
-                    };
-                    nst[layoutname]=layoutposContsO[layoutname]
+                        )
+                    }
 
-                    layoutname="Main";
-                    layoutposContsO[layoutname]={
-                        name : layoutname,            
-                        e : (...args)=>{
-                                
-                                let params={}
-                                parseAssetsParamsFn(params, args);
+                };
+                nst01[layoutname]=layoutposContsO[layoutname]
+
+                layoutname="Settings";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (...args)=>{                            
+                            let params={}
+                            parseAssetsParamsFn(params, args);
+
+                            
+                            return (                  
+                                <div
+                                    key={params.key}
+                                    style={{...{
+                                        background : "white",
+                                        position : "relative",
+                                        display : "inline-block",
+                                        width : 400,
+                                        height : 300,
+                                        borderRadius : 8,
+                                        margin : 5,
+                                        padding : 5,
+                                        overflow : "hidden"
+                                    },...params.style}}
+                                >
+                                    <h4>Settings</h4>                
+                                </div>
+                        )
+                    }
+                };
+                nst01[layoutname]=layoutposContsO[layoutname]
+
+                layoutname="title";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (...args)=>{                            
+                            let params={}
+                            parseAssetsParamsFn(params, args);
+
+                            let tmp=""
+                            let tmpO={
+                                value : "my title"
+                            } 
+                            
+                            tmp="value"
+                            if (params.props[tmp]!==undefined){
+                                tmpO[tmp]=params.props[tmp]
+                            }
+
+                            if (params.value){
+
+                            }
+                            
+                            return (                  
+                                <div
+                                    key={params.key}
+                                    style={{...{
+                                        background : "white",
+                                        position : "relative",
+                                        display : "inline-block",
+                                        width : 300,
+                                        height : 90,
+                                        borderRadius : 8,
+                                        margin : 5,
+                                        padding : 5,
+                                        overflow : "hidden"
+                                    },...params.style}}
+                                >
+                                    <h4>{tmpO["value"]}</h4>                
+                                </div>
+                        )
+                    }
+
+                };
+                nst01[layoutname]=layoutposContsO[layoutname]
+
+                layoutname="linebreak1";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (...args)=>{
+                            
+                        let params={}
+                        parseAssetsParamsFn(params, args);
 
 
-                                return (               
-                                    <div
-                                        key={params.key}
-                                        style={{...{
-                                            background : "white",
-                                            position : "relative",
-                                            display : "inline-block",
-                                            width : 400,
-                                            height : 300,
-                                            borderRadius : 8,
-                                            margin : 5,
-                                            padding : 5,
-                                            overflow : "hidden"
-                                        },...params.style}}
-                                    >
-                                        <h4>Main</h4>                
-                                    </div>
-                            )
-                        }
+                        return (<br key={params.key} />)
+                    },
+                };  
+                nst01[layoutname]=layoutposContsO[layoutname]
 
-                    };
-                    nst[layoutname]=layoutposContsO[layoutname]
-
-                    layoutname="Settings";
-                    layoutposContsO[layoutname]={
-                        name : layoutname,            
-                        e : (...args)=>{                            
-                                let params={}
-                                parseAssetsParamsFn(params, args);
-
-                                
-                                return (                  
-                                    <div
-                                        key={params.key}
-                                        style={{...{
-                                            background : "white",
-                                            position : "relative",
-                                            display : "inline-block",
-                                            width : 400,
-                                            height : 300,
-                                            borderRadius : 8,
-                                            margin : 5,
-                                            padding : 5,
-                                            overflow : "hidden"
-                                        },...params.style}}
-                                    >
-                                        <h4>Settings</h4>                
-                                    </div>
-                            )
-                        }
-                    };
-                    nst[layoutname]=layoutposContsO[layoutname]
-
-                    layoutname="title";
-                    layoutposContsO[layoutname]={
-                        name : layoutname,            
-                        e : (...args)=>{                            
-                                let params={}
-                                parseAssetsParamsFn(params, args);
-
-
-                                return (                  
-                                    <div
-                                        key={params.key}
-                                        style={{...{
-                                            background : "white",
-                                            position : "relative",
-                                            display : "inline-block",
-                                            width : 300,
-                                            height : 90,
-                                            borderRadius : 8,
-                                            margin : 5,
-                                            padding : 5,
-                                            overflow : "hidden"
-                                        },...params.style}}
-                                    >
-                                        <h4>my title</h4>                
-                                    </div>
-                            )
-                        }
-
-                    };
-                    nst[layoutname]=layoutposContsO[layoutname]
-
-                    layoutname="linebreak1";
-                    layoutposContsO[layoutname]={
-                        name : layoutname,            
-                        e : (...args)=>{
-                                
+                layoutname="summary";
+                layoutposContsO[layoutname]={
+                    name : layoutname,            
+                    e : (...args)=>{
+                            
                             let params={}
                             parseAssetsParamsFn(params, args);
 
 
-                            return (<br key={params.key} />)
-                        },
-                    };  
-                    nst[layoutname]=layoutposContsO[layoutname]
-
-                    layoutname="summary";
-                    layoutposContsO[layoutname]={
-                        name : layoutname,            
-                        e : (...args)=>{
-                                
-                                let params={}
-                                parseAssetsParamsFn(params, args);
-
-
-                                return (             
-                                    <div
-                                        key={params.key}
-                                        style={{...{
-                                            background : "white",
-                                            position : "relative",
-                                            display : "inline-block",
-                                            width : 400,
-                                            height : 300,
-                                            borderRadius : 8,
-                                            margin : 5,
-                                            padding : 5,
-                                            overflow : "hidden",
-                                        },...params.style}}
-                                    >
-                                        <h4>Summary</h4>                
-                                    </div>
-                            )
-                        }
-                    };
-
-                    
-
-
-                }
-                nst[layoutname]=layoutposContsO[layoutname]
-                LayoutposContsODynTmp0=nst
-                return nst
-            })
-            setCmptMe((st)=>{
-                let nst={...st};
-
-                if (nst.view.layoutposContsO){}else{
-                    nst.view.layoutposContsO={}
-                }
-                let layoutposContsOTmp={}
-                for ( let p in LayoutposContsODynTmp0){
-                    let r=LayoutposContsODynTmp0[p]
-                    layoutposContsOTmp[p]={
-                        
+                            return (             
+                                <div
+                                    key={params.key}
+                                    style={{...{
+                                        background : "white",
+                                        position : "relative",
+                                        display : "inline-block",
+                                        width : 400,
+                                        height : 300,
+                                        borderRadius : 8,
+                                        margin : 5,
+                                        padding : 5,
+                                        overflow : "hidden",
+                                    },...params.style}}
+                                >
+                                    <h4>Summary</h4>                
+                                </div>
+                        )
                     }
-                }
-                nst.view.layoutposContsO=layoutposContsOTmp
+                };
 
-                return nst;
-            })
+                
+
+
+            }
+            nst01[layoutname]=layoutposContsO[layoutname]
+            LayoutposContsODynTmp0=nst01;
+            
+            if (params.updateState){
+                setLayoutposContsODyn((st)=>{
+                    return nst01
+                })  
+                setCmptMe((st)=>{
+                    let nst={...st};
+
+                    if (nst.view.layoutposContsO){}else{
+                        nst.view.layoutposContsO={}
+                    }
+                    let layoutposContsOTmp={}
+                    for ( let p in LayoutposContsODynTmp0){
+                        let r=LayoutposContsODynTmp0[p]
+                        layoutposContsOTmp[p]={
+                            
+                        }
+                    }
+                    nst.view.layoutposContsO=layoutposContsOTmp
+
+                    return nst;
+                })
+            }
+
+                
+            
+
+            return {
+                layoutposContsO : nst01 
+            } 
 
             //updateStateForce()
         }
@@ -1167,145 +1115,91 @@ export const Views=(props)=>{
 
         })()
 
-        let buildLayoutAssets
-        /*
-        if (false){
-            buildLayoutAssets=(()=>{
-                let i=0;
-                for ( let p in layoutPrefabsList){
-                    let r={...layoutPrefabsList[p]};
-                    
-                    let e
-                    if (prefabs[layoutname]){
-                        if (prefabs[layoutname].generate){
-                            e=prefabs[layoutname].generate().e;
-                        }
-                        
-                    }
-
-                    layoutname=r.name_cmpt;
-                    layoutposContsO[layoutname]={
-                        name : layoutname,            
-                        e : (...args)=>{                            
-                                let key=""    
-                                if (args[0]){
-                                    if (args[0].key){
-                                        key=args[0].key
-                                    }
-                                    if (args[0].name){
-                                        key=args[0].name
-                                    }
-                                }
-
-                                if (key===""){
-                                    key=uuidv4()
-                                }
-
-                                return (             
-                                    <div
-                                        key={key}
-                                        style={{
-                                            background : "white",
-                                            position : "relative",
-                                            display : "inline-block",
-                                            width : 400,
-                                            height : 300,
-                                            borderRadius : 8,
-                                            margin : 5,
-                                            padding : 5,
-                                            overflow : "hidden",
-                                        }}
-                                    >
-                                        {e}
-                                    </div>
-                            )
-                        }
-                    };
-        
-                    i++;
-                }
-
-            })();
-        }
-        */
-        
-
         // ---- 
 
         // ---- posContsStates
         
         
         
-        let layoutposContsStatesAddInitial=()=>{
+        let layoutposContsStatesAddInitial=(paramsIn)=>{
+            let params={ updateState : true }
+            if (paramsIn){
+                params={...params,...paramsIn}
+            }
+
             let layoutposContsStates={};
             let layoutposContsO={};
             let layoutname="";
 
             let LayoutposContsStatesDynTmp0
-            setLayoutposContsStatesDyn((st)=>{
-                let nst={...st} ;
 
-                if (true){
-                    layoutname="viewMain";
-                    layoutposContsStates[layoutname]={
-                        name : layoutname,
-                        posCont : [ "title" , "linebreak1" , "menu" ,"Main" ],            
-                        eLogic : function(){
-                            let tt=this;
-                            let args=arguments;
-                            if (args.length > 0){
-                                tt=args[0]
-                            }
-                            let ret=tt.posCont
-                            if (wWidth < 700){
-                                ret=[ "menu" , "Main"  ]
-                            }
-                            return ret
-                        }
-                    }
-                    nst[layoutname]=layoutposContsStates[layoutname]
+            let nst01={...layoutposContsStatesDyn} ;
+            
 
-                    layoutname="viewSummary";
-                    layoutposContsStates[layoutname]={
-                        name : layoutname,
-                        posCont : [ "title" , "linebreak1" , "menu" , "summary"  ],            
-                        eLogic : function(){
-                            let tt=this;
-                            let args=arguments;
-                            if (args.length > 0){
-                                tt=args[0]
-                            }
-                            let ret=tt.posCont
-                            if (wWidth < 700){
-                                ret=[ "menu" , "Main"  ]
-                            }
-                            return ret
+            if (true){
+                layoutname="viewMain";
+                layoutposContsStates[layoutname]={
+                    name : layoutname,
+                    posCont : [ "title" , "linebreak1" , "menu" ,"Main" ],            
+                    eLogic : function(){
+                        let tt=this;
+                        let args=arguments;
+                        if (args.length > 0){
+                            tt=args[0]
                         }
-                    }
-                    nst[layoutname]=layoutposContsStates[layoutname]
-
-                    layoutname="editSettings";
-                    layoutposContsStates[layoutname]={
-                        name : layoutname,
-                        posCont :   [ "title" , "linebreak1" , "menu" , "Settings" ],                         
-                        eLogic : function(){
-                            let tt=this;
-                            let args=arguments;
-                            if (args.length > 0){
-                                tt=args[0]
-                            }
-                            let ret=tt.posCont
-                            if (wWidth < 700){
-                                //ret=[ "menu" , "summary"  ]
-                            }
-                            return ret
+                        let ret=tt.posCont
+                        if (wWidth < 700){
+                            ret=[ "menu" , "Main"  ]
                         }
+                        return ret
                     }
-                    nst[layoutname]=layoutposContsStates[layoutname]
                 }
+                nst01[layoutname]=layoutposContsStates[layoutname]
+
+                layoutname="viewSummary";
+                layoutposContsStates[layoutname]={
+                    name : layoutname,
+                    posCont : [ "title" , "linebreak1" , "menu" , "summary"  ],            
+                    eLogic : function(){
+                        let tt=this;
+                        let args=arguments;
+                        if (args.length > 0){
+                            tt=args[0]
+                        }
+                        let ret=tt.posCont
+                        if (wWidth < 700){
+                            ret=[ "menu" , "Main"  ]
+                        }
+                        return ret
+                    }
+                }
+                nst01[layoutname]=layoutposContsStates[layoutname]
+
+                layoutname="editSettings";
+                layoutposContsStates[layoutname]={
+                    name : layoutname,
+                    posCont :   [ "title" , "linebreak1" , "menu" , "Settings" ],                         
+                    eLogic : function(){
+                        let tt=this;
+                        let args=arguments;
+                        if (args.length > 0){
+                            tt=args[0]
+                        }
+                        let ret=tt.posCont
+                        if (wWidth < 700){
+                            //ret=[ "menu" , "summary"  ]
+                        }
+                        return ret
+                    }
+                }
+                nst01[layoutname]=layoutposContsStates[layoutname]
+            }
+            
+            LayoutposContsStatesDynTmp0=nst01
+
+            setLayoutposContsStatesDyn((st)=>{
                 
-                LayoutposContsStatesDynTmp0=nst
-                return nst
+                return nst01
             })
             setCmptMe((st)=>{
                 let nst={...st};
