@@ -151,6 +151,8 @@ export const Views=(props)=>{
             "componentEdit" : { name : "componentEdit" },
             "planning" : { name : "planning" },
             "debugData" : { name : "debugData" },
+            "src" : { name : "src" },
+            "project" : { name : "project" },
         }
     }
     let [vmodes,setVmodes]=useState({"nomode" : {}});
@@ -160,11 +162,30 @@ export const Views=(props)=>{
 
     // --------------------------------
 
-    let [fns,setFns]=useState({});
+    
+    let [appStatePrev,setAppPrev]=useState({}); // used to test app states for preview/run mode
+
+    let [appState,setAppState]=useState({});
+    let [appStateName,setAppStateName]=useState("");
+    let [appStateID,setAppStateID]=useState("");    
+    
+
+    let [appFn,setAppFn]=useState({});
+    let [appFnName,setAppFnName]=useState("");
+    let [appFnID,setAppFnID]=useState("");
+    let [appFnProps,setAppFnProps]=useState([]);
+    let [appFnPropName,setAppFnPropName]=useState("");
+    let [appFnPropID,setAppFnPropID]=useState("");
+
+    
+    let [appEvent,setAppEvent]=useState({});
     let [fnsName,setFnsName]=useState("");
+    let [fnsID,setFnsID]=useState("");
     let [fnsProps,setFnsProps]=useState("");
     
-    let [sigil,setSigil]=useState({}); // proxyText
+    let [sigil,setSigil]=useState({}); // proxyText    
+    let [sigilName,setSigilName]=useState({}); 
+    let [sigilID,setSigilID]=useState({}); 
 
 
     // --------------------------------
@@ -1342,88 +1363,7 @@ export const Views=(props)=>{
         toolsShowHideStyle.height=undefined
     }
     let toolsCmptMeE
-    if (false){
-        toolsCmptMeE=(()=>{
-            let arrE=[];
-
-            let i=0
-            for ( let p in layoutPrefabsList){
-                let r={...layoutPrefabsList[p]};
-                let toolname="tool";
-                
-                if (r.toolname){
-                    toolname=r.toolname
-                }else{
-                    toolname=r.name_cmpt
-                }
-
-                arrE.push(
-                    <div
-                        key={i}
-                        style={{
-                            poistion : "relative",
-                            display : "inline-block",
-                            width : 40,
-                            height : 40,
-                            margin : 1,
-                            padding : 2,
-                            overflow : "hidden",
-                            border : "solid lightgrey thin",
-                            borderRadius : 5,
-                            cursor : "pointer",
-
-                        }}
-                        onClick={(e)=>{
-                            let params={};
-                            params={ ...{},...r };
-
-
-                            
-                            addToLayout()
-                        }}
-                    >
-                        {toolname}
-                    </div>
-                )
-
-
-                i++;
-            }
-
-            return (
-                <div
-                    style={{
-                        position : "relative",
-                        display : "inline-block",
-                        width : toolsShowHideStyle.width,
-                        height : toolsShowHideStyle.height,
-                        margin : 5 ,
-                        padding : 5 ,
-                        border : toolsShowHideStyle.border,
-                        borderRadius : 5 , 
-                    }}
-                >   
-                    <button 
-                        onClick={()=>{
-                            setToolsShowHide(!toolsShowHide)
-                        }}
-                    >show/hide tlas</button>
-                    
-                    <div
-                        style={{
-                            display : toolsShowHideStyle.display,
-                        }}
-                    >
-                        Tools
-                        <br/>
-                        ==========
-                        <br/>
-                        {arrE}
-                    </div>
-                </div>
-            )
-        })();
-    }
+    
         
     let toolAssetsShowHideStyle={
         border : "solid thin lightgrey",
@@ -1437,7 +1377,7 @@ export const Views=(props)=>{
         toolAssetsShowHideStyle.height=undefined
     }
     let layoutAssetsE
-    if (vmodes["nomode"] ){
+    if (vmodes["nomode"] || vmodes["edit"]){
         layoutAssetsE=(()=>{
             let arrE=[];
 
@@ -1541,7 +1481,7 @@ export const Views=(props)=>{
     }
 
     let AssetPropertyE
-    if (vmodes["nomode"] ){
+    if (vmodes["nomode"] || vmodes["edit"]){
         AssetPropertyE=(()=>{
 
 
@@ -2803,7 +2743,7 @@ export const Views=(props)=>{
         layoutStatesShowHideStyle.border=undefined
     }
     let viewLayoutStatesE
-    if (vmodes["nomode"] ){
+    if (vmodes["nomode"] || vmodes["edit"]){
         viewLayoutStatesE=(()=>{
             let arrE=[];
             
@@ -3024,7 +2964,7 @@ export const Views=(props)=>{
     }
     
     let layoutStatePropertiesE
-    if (vmodes["nomode"] ){
+    if (vmodes["nomode"] || vmodes["edit"]){
         layoutStatePropertiesE=(()=>{
             let arrE=[];
 
@@ -3326,7 +3266,7 @@ export const Views=(props)=>{
         mainlayoutStatesPropertiesShowHideStyle.height=undefined
     }
     let mainLayoutPropertiesE
-    if (vmodes["nomode"] ){
+    if (vmodes["nomode"] || vmodes["edit"]){
         mainLayoutPropertiesE=(()=>{
 
             return (
@@ -3403,7 +3343,7 @@ export const Views=(props)=>{
     // --------------------------------
 
     let listCmptMeE
-    if (vmodes["nomode"] ){
+    if (vmodes["nomode"] || vmodes["project"] ){
 
         listCmptMeE=(()=>{
             let arrE=[]
@@ -3575,39 +3515,58 @@ export const Views=(props)=>{
                 <>
                     {
                         //JSON.stringify(vmodes)
-                    }
-                    <select
+                    }<label style={{ fontSize :13}} >modes</label>
+                    <div
                         style={{
-                            zIndex : 9999
-                        }}
-
-                        //defaultValue={[vmodesTypes.modes["default"]]}
-                        defaultValue={vmodesTypes["default"]}
-                        multiple={false}
-                        onChange={(e) => {
-                            setVmodes((st)=>{
-                                let nst={...st}
-                                
-                                let val=e.target.value;
-                                if (multiselectmode===true){       
-                                    if ( nst[val] ){
-                                        delete nst[val]
-                                    }else{
-                                        nst[val]=vmodesTypes.modes[val]
-                                    }                                    
-                                }else{
-                                    nst={}
-                                    nst[val]=vmodesTypes.modes[val]
-                                }                                
-
-                                return nst
-                            })
+                                position : "relative" ,
+                                display : "inline-block",
+                                width : 120,
+                                height : 20,
+                                paddingBottom : 115,                                
                         }}
                     >
-                        {arrE}
-                    </select>
+                        <select
+                            style={{
+                                position : "relative" ,
+                                zIndex : 9999,                            
+                            }}
+
+                            //defaultValue={[vmodesTypes.modes["default"]]}
+                            defaultValue={vmodesTypes["default"]}
+                            multiple={false}
+                            onChange={(e) => {
+                                setVmodes((st)=>{
+                                    let nst={...st}
+                                    
+                                    let val=e.target.value;
+                                    if (multiselectmode===true){       
+                                        if ( nst[val] ){
+                                            delete nst[val]
+                                        }else{
+                                            nst[val]=vmodesTypes.modes[val]
+                                        }                                    
+                                    }else{
+                                        nst={}
+                                        nst[val]=vmodesTypes.modes[val]
+                                    }                                
+
+                                    return nst
+                                })
+                            }}
+                        >
+                            {arrE}
+                        </select>
+                    </div>
+                    <div
+                        style={{
+                                position : "relative" ,
+                                display : "inline-block",
+                                width : 30,
+                                marginTop : 15
+                        }}
+                    >
                     <input 
-                        style={{position : "relative" ,zIndex : 9999 , width : 15, height : 15}}
+                        style={{position : "relative" ,zIndex : 9999 , width : 20, height : 20}}
                         type={"checkbox"}                         
                         key={Math.random()}
                         defaultChecked={vmodesMultiMode}
@@ -3619,8 +3578,10 @@ export const Views=(props)=>{
                                 return val;
                             })
                         }}
-                    /> <label
-                        style={{ fontSize : 11}}
+                    /> 
+                    </div>
+                    <label
+                        style={{ fontSize : 13}}
                     >multi</label>
                 </> 
                 
@@ -3707,202 +3668,216 @@ export const Views=(props)=>{
                 style={innerStyle}
 
             >
-                <div
-                    style={{
-                        position : "relative",
-                        float : "left",
-                    }}
-
-                >
-                    <div
-                        style={{
-                            position : "relative",
-                            //width : 700,
-                        }}
-                    >
-                        <div style={{ clear : "left" }} />
-
-
+                {(()=>{
+                    if (vmodes["nomode"] || vmodes["project"]  ){}else{
+                        return 
+                    }
+                    return (
                         <div
                             style={{
+                                position : "relative",
                                 float : "left",
                             }}
-                        >
-                            <button 
-                                    onClick={()=>{
-                                        setLoadShowHide(!loadShowHide)
-                                    }}
-                            >show/hide ld</button>
-                            <div
-                                style={loadShowHideStyle}
-                            >
-                            {listCmptMeE}
-                            </div>
-                        </div>
-                        <div
-                            style={{
-                                float : "left",
-                            }}
-                        >
-                            <button 
-                                    onClick={()=>{
-                                        setNewSaveShowHide(!newSaveShowHide)
-                                    }}
-                            >show/hide nw-sv</button>
-                            <div
-                                 style={newSaveShowHideStyle}
-                            >
-                                <button
-                                    style={{
 
-                                    }}
-                                    onClick={()=>{
-                                        newCmptMe()
+                        >
+                            <div
+                                style={{
+                                    position : "relative",
+                                    //width : 700,
+                                }}
+                            >
+                                <div style={{ clear : "left" }} />
+
+
+                                <div
+                                    style={{
+                                        float : "left",
                                     }}
                                 >
-                                    new
-                                </button>
-
-                                <button
+                                    <button 
+                                            onClick={()=>{
+                                                setLoadShowHide(!loadShowHide)
+                                            }}
+                                    >show/hide ld</button>
+                                    <div
+                                        style={loadShowHideStyle}
+                                    >
+                                    {listCmptMeE}
+                                    </div>
+                                </div>
+                                <div
                                     style={{
-
-                                    }}
-                                    onClick={()=>{
-                                        let nd={...cmptMe}
-                                        nd.name=cmptMeName.replace(/ / ,"");
-                                        saveCmptMeBE( { name : nd.name , data :  nd , project : project.replace(/ / ,"")  } , ()=>{
-                                            listCmptMe()
-                                        })
+                                        float : "left",
                                     }}
                                 >
-                                    save
-                                </button>
-                                
-                                
-                                <br/>
+                                    <button 
+                                            onClick={()=>{
+                                                setNewSaveShowHide(!newSaveShowHide)
+                                            }}
+                                    >show/hide nw-sv</button>
+                                    <div
+                                        style={newSaveShowHideStyle}
+                                    >
+                                        <button
+                                            style={{
 
-                                <input 
-                                    placeholder='CmptMe Name'
-                                    value={cmptMeName}
-                                    onChange={(e)=>{
-                                        let val=e.target.value;
+                                            }}
+                                            onClick={()=>{
+                                                newCmptMe()
+                                            }}
+                                        >
+                                            new
+                                        </button>
 
-                                        setCmptMeName(val)
-                                    }}
-                                />
+                                        <button
+                                            style={{
 
-                                <input 
-                                    placeholder='Project'
-                                    value={project}
-                                    onChange={(e)=>{
-                                        let val=e.target.value;
+                                            }}
+                                            onClick={()=>{
+                                                let nd={...cmptMe}
+                                                nd.name=cmptMeName.replace(/ / ,"");
+                                                saveCmptMeBE( { name : nd.name , data :  nd , project : project.replace(/ / ,"")  } , ()=>{
+                                                    listCmptMe()
+                                                })
+                                            }}
+                                        >
+                                            save
+                                        </button>
+                                        
+                                        
+                                        <br/>
 
-                                        setProject(val)
-                                    }}
-                                    onBlur={()=>{
-                                        listCmptMe({project : project})
-                                    }}
-                                />
+                                        <input 
+                                            placeholder='CmptMe Name'
+                                            value={cmptMeName}
+                                            onChange={(e)=>{
+                                                let val=e.target.value;
 
-                                <br/>
+                                                setCmptMeName(val)
+                                            }}
+                                        />
 
-                                <textarea 
-                                    placeholder='descTxt'
-                                    value={descTxt}
-                                    onChange={(e)=>{
-                                        let val=e.target.value;
+                                        <input 
+                                            placeholder='Project'
+                                            value={project}
+                                            onChange={(e)=>{
+                                                let val=e.target.value;
 
-                                        setDescTxt(val)
-                                    }}
-                                />
+                                                setProject(val)
+                                            }}
+                                            onBlur={()=>{
+                                                listCmptMe({project : project})
+                                            }}
+                                        />
 
-                                <textarea 
-                                    placeholder='notesTxt'
-                                    value={notesTxt}
-                                    onChange={(e)=>{
-                                        let val=e.target.value;
+                                        <br/>
 
-                                        setNotesTxt(val)
-                                    }}
-                                />
-                            
+                                        <textarea 
+                                            placeholder='descTxt'
+                                            value={descTxt}
+                                            onChange={(e)=>{
+                                                let val=e.target.value;
+
+                                                setDescTxt(val)
+                                            }}
+                                        />
+
+                                        <textarea 
+                                            placeholder='notesTxt'
+                                            value={notesTxt}
+                                            onChange={(e)=>{
+                                                let val=e.target.value;
+
+                                                setNotesTxt(val)
+                                            }}
+                                        />
+                                    
+                                    </div>
+                                </div>
+
+
+
+                                <div style={{ clear : "left" }} />
                             </div>
+
                         </div>
-
-
-
-                        <div style={{ clear : "left" }} />
-                    </div>
-
-                </div>
-
+                    )
+                })()}
+                                    
                 {/*<div style={{ clear : "left" }} /> */}
-
-                <div
-                    style={{
-                        position : "relative",
-                        float : "left",
-                    }}
-
-                >    
-                    <button 
-                        style={{
-                            position : "relative",
-                            float : "left",
-                        }}
-                        onClick={()=>{
-                            setTextMainShowHide(!textMainShowHide)
-                        }}
-                    >show/hide txt</button>
-                    <br/>
-                    <div
-                        style={{...{
-                            float : "left",
-                        },...textMainShowHideStyle}}
-                    >                    
-                        <label>Text Main</label>
-                        
-                        <br/>
-                        <textarea 
-                            value={cmptMeTxt}
-                            onChange={(e)=>{
-                                let val=e.target.value;
-                                setCmptMeTxt(val)
-                            }}
-                            onBlur={(e)=>{
-                                let val=e.target.value;                           
-                                
-                                let json={...cmptMe}
-                                try {
-                                    json=JSON.parse(val);
-                                    setCmptMe( json );
-                                    setErrorMain("")
-                                } catch (error) {
-                                    setErrorMain(error)
-                                }
-                                
-                            }}
+                {(()=>{
+                    if (vmodes["nomode"] || vmodes["project"]  ){}else{
+                        return 
+                    }
+                    return (
+                        <div
                             style={{
-                                width : 400,
-                                height : 100,
+                                position : "relative",
+                                float : "left",
                             }}
-                        />
 
-                        <textarea 
-                            style={{
-                                display : "inline-block",
-                                width : 400,
-                                height : 100,
-                            }}
-                            value={JSON.stringify(instances,null,2)}
-                            onChange={()=>{
+                        >    
+                            <button 
+                                style={{
+                                    position : "relative",
+                                    float : "left",
+                                }}
+                                onClick={()=>{
+                                    setTextMainShowHide(!textMainShowHide)
+                                }}
+                            >show/hide txt</button>
+                            <br/>
+                            <div
+                                style={{...{
+                                    float : "left",
+                                },...textMainShowHideStyle}}
+                            >                    
+                                <label>Text Main</label>
+                                
+                                <br/>
+                                <textarea 
+                                    value={cmptMeTxt}
+                                    onChange={(e)=>{
+                                        let val=e.target.value;
+                                        setCmptMeTxt(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value;                           
+                                        
+                                        let json={...cmptMe}
+                                        try {
+                                            json=JSON.parse(val);
+                                            setCmptMe( json );
+                                            setErrorMain("")
+                                        } catch (error) {
+                                            setErrorMain(error)
+                                        }
+                                        
+                                    }}
+                                    style={{
+                                        width : 400,
+                                        height : 100,
+                                    }}
+                                />
 
-                            }}
-                        />
-                        
-                    </div>
+                                <textarea 
+                                    style={{
+                                        display : "inline-block",
+                                        width : 400,
+                                        height : 100,
+                                    }}
+                                    value={JSON.stringify(instances,null,2)}
+                                    onChange={()=>{
 
-                </div>
+                                    }}
+                                />
+                                
+                            </div>
+
+                        </div>
+
+                    )
+                })()}
 
                 { /* <div style={{ clear : "left" }} /> */}
 
@@ -4067,51 +4042,59 @@ export const Views=(props)=>{
 
 
                 {/* preview */}
-                <div
-                    style={{
-                        position : "relative",
-                    }}
-                >    
-                    <label
+                {(()=>{
+                    if (vmodes["nomode"] || vmodes["run"]  || vmodes["design"] || vmodes["edit"]  || vmodes["profileTest"]  || vmodes["debugData"] ){}else{
+                        return 
+                    }
+                    return (
+                        <div
                         style={{
                             position : "relative",
-                        }}
-                    >preview</label>
-                    <button 
-                        onClick={()=>{
-                            setPreviewShowHide(!previewShowHide)
-                        }}
-                    >show/hide</button>
-                    <div
-                        style={{
-                            ...{
-                            position : "relative",
-                            width  : 1820,
-                            height  : 1220,
-                            overflow : "hidden",
-                            border  : "solid thin black",
-                            },
-                            ...previewStyle
-                            
                         }}
                     >    
+                        <label
+                            style={{
+                                position : "relative",
+                            }}
+                        >preview</label>
+                        <button 
+                            onClick={()=>{
+                                setPreviewShowHide(!previewShowHide)
+                            }}
+                        >show/hide</button>
                         <div
                             style={{
-                                background : "lightgrey",
+                                ...{
                                 position : "relative",
-                                width  : 1800,
-                                height  : 1200,
-                                overflow : "auto",
+                                width  : 1820,
+                                height  : 1220,
+                                overflow : "hidden",
+                                border  : "solid thin black",
+                                },
+                                ...previewStyle
                                 
                             }}
-                        >   
-                                {layoutmyLayout}
-
+                        >    
+                            <div
+                                style={{
+                                    background : "lightgrey",
+                                    position : "relative",
+                                    width  : 1800,
+                                    height  : 1200,
+                                    overflow : "auto",
+                                    
+                                }}
+                            >   
+                                    {layoutmyLayout}
+    
+                            </div>
                         </div>
-                    </div>
-
-
-                </div>            
+    
+    
+                    </div>      
+                    )
+                })()}
+                     
             
                 <div style={{ clear : "left" }} />
 
