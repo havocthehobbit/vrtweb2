@@ -121,14 +121,52 @@ export const Views=(props)=>{
     let [assetPropertyPlaceholder,setAssetPropertyPlaceholder]=useState("");
     let [assetPropertyType,setAssetPropertyType]=useState("");
 
+    let [assetPropertyEventOnClick,setAssetPropertyEventOnClick]=useState("");
+    let [assetPropertyEventOnClickProps,setAssetPropertyEventOnClickProps]=useState({});
+    let [assetPropertyEventOnClickProps1,setAssetPropertyEventOnClickProps1]=useState("");
+    let [assetPropertyEventOnClickPropsType1,setAssetPropertyEventOnClickPropsType1]=useState("");
+    let [assetPropertyEventOnClickProps2,setAssetPropertyEventOnClickProps2]=useState("");
+    let [assetPropertyEventOnClickPropsType2,setAssetPropertyEventOnClickPropsType2]=useState("");
+    let [assetPropertyEventOnClickProps3,setAssetPropertyEventOnClickProps3]=useState("");
+    let [assetPropertyEventOnClickPropsType3,setAssetPropertyEventOnClickPropsType3]=useState("");
+    let [assetPropertyEventOnClickProps4,setAssetPropertyEventOnClickProps4]=useState("");
+    let [assetPropertyEventOnClickPropsType4,setAssetPropertyEventOnClickPropsType4]=useState("");
+    let [assetPropertyEventOnClickProps5,setAssetPropertyEventOnClickProps5]=useState("");
+    let [assetPropertyEventOnClickPropsType5,setAssetPropertyEventOnClickPropsType5]=useState("");
+    let [assetPropertyEventOnClickProps6,setAssetPropertyEventOnClickProps6]=useState("");
+    let [assetPropertyEventOnClickPropsType6,setAssetPropertyEventOnClickPropsType6]=useState("");
+        
 
+
+    let [assetPropertyStyleBoxChild,setAssetPropertyStyleBoxChild]=useState({
+        prop : {
+            events : { show : true , css : {}, cssHide : {display : "none"} , cssShow : { display : "block"} },
+            css : { show : true , css : {}, cssHide : {display : "none"} , cssShow : { display : "block"} },
+            props : { show : true , css : {}, cssHide : {display : "none"} , cssShow : { display : "block"} },
+        }
+    });
 
 
     let [assetPropertyCurrSel,setAssetPropertyCurrSel]=useState("");
     
     let instancesPropertiesDef={
         style : {},
+        
     }
+    let instanceEachDef={
+        id : "",
+        uuid : "",
+        name : "",
+        type : "",
+        subtype : [],
+        dateCreate : "",
+        style : {},
+        states : {},
+        events : {},
+        Fn : {},
+        FnProps : {},
+        properties : {...instancesPropertiesDef}
+    };
     let instancesDef={
         all : {},
         counts : {},
@@ -1377,17 +1415,12 @@ export const Views=(props)=>{
     let AssetPropertyE
     if (vmodes["nomode"] || vmodes["edit"]){
         AssetPropertyE=(()=>{
-
-
-
             let newInstanceFn=()=>{
                 if (instances.current.all[assetPropertyCurrSel]){}else{
                     let newInstanceID=assetPropertyCurrSel
-                    instances.current.all[newInstanceID]={
-                        style : {},
-                    }
+                    instances.current.all[newInstanceID]={...instanceEachDef}
                     instances.current.all[newInstanceID].id=newInstanceID
-                    instances.current.all[newInstanceID].properties={...instancesPropertiesDef};
+                    //instances.current.all[newInstanceID].properties={...instancesPropertiesDef};
                     instances.current.all[newInstanceID].assetSource=assetPropertyCurrSel
                     if (layoutposContsODyn[newInstanceID]){
                         if (layoutposContsODyn[newInstanceID].assetSource){
@@ -1396,15 +1429,166 @@ export const Views=(props)=>{
                     }
                 };                                   
 
-                if (instances.current.all[assetPropertyCurrSel].properties){}else{
-                    instances.current.all[assetPropertyCurrSel].properties={...instancesPropertiesDef}
-                }
-
-                if (instances.current.all[assetPropertyCurrSel].properties.style){}else{
-                    instances.current.all[assetPropertyCurrSel].properties.style={}
-                }
+                //if (instances.current.all[assetPropertyCurrSel].properties){}else{
+                //    instances.current.all[assetPropertyCurrSel].properties={...instancesPropertiesDef}
+                //}
+                
+                //if (instances.current.all[assetPropertyCurrSel].properties.style){}else{
+                //    instances.current.all[assetPropertyCurrSel].properties.style={}
+                //}
             }
 
+            let Events=()=>{
+                let arrE=[];
+
+                let iG=0;
+
+                if (true){                
+                    arrE.push(
+                        <div
+                            style={{}}
+                            key={iG}
+                        >
+                            <label
+                                style={{
+                                    fontSize  : 11,
+                                }}
+                            >onClick Fn : </label>
+                            <input
+                                value={assetPropertyEventOnClick}
+                                style={{
+                                    width : 80,
+                                }}
+                                onChange={(e)=>{
+                                    let val=e.target.value
+                                    setAssetPropertyEventOnClick(val)
+                                }}
+                                onBlur={(e)=>{
+                                    let val=e.target.value
+                                    
+                                    newInstanceFn();
+                                    
+                                    let tmp="onClick"
+                                    let insrec=instances.current.all[assetPropertyCurrSel].Fn
+                                    if (val!==""){
+                                        insrec[tmp]=val;                                        
+                                    }else{
+                                        if ( insrec[tmp]){
+                                            delete insrec[tmp];
+                                        }
+                                    }
+
+                                    setCmptMe((st)=>{
+                                        let nst={...st};
+                                        nst.view.instances=instances.current
+                                        return nst;
+                                    })
+                                    
+                                
+                                }}
+                            />     
+                        </div>
+                    )
+                    iG++;
+                }
+
+                if (true){                
+                    arrE.push(
+                        <div
+                            style={{}}
+                            key={iG}
+                        >
+                            <label
+                                style={{
+                                    fontSize  : 11,
+                                }}
+                            >onClick Props 1: </label>
+                            <input
+                                value={assetPropertyEventOnClickProps1}
+                                style={{
+                                    width : 80,
+                                }}
+                                onChange={(e)=>{
+                                    let val=e.target.value
+                                    setAssetPropertyEventOnClickProps1(val)
+                                }}
+                                onBlur={(e)=>{
+                                    let val=e.target.value
+                                    
+                                    newInstanceFn();
+                                    
+                                    let tmp="onClick"
+                                    let tmp2=1
+                                    let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                    if (val!==""){
+                                        insrec[tmp]={};
+                                        if (insrec[tmp]===undefined){
+                                            insrec[tmp]={};
+                                        }
+                                        if (insrec[tmp][tmp2]===undefined){
+                                            insrec[tmp][tmp2]={ val : val , type : "string"};
+                                        }
+
+                                        insrec[tmp][tmp2].val=val;
+
+                                                                                                                        
+                                    }else{
+                                        if ( insrec[tmp]){
+                                            delete insrec[tmp];
+                                        }
+                                    }
+
+                                    setCmptMe((st)=>{
+                                        let nst={...st};
+                                        nst.view.instances=instances.current
+                                        return nst;
+                                    })
+                                    
+                                
+                                }}
+                            />     
+                        </div>
+                    )
+                    iG++;
+                }
+
+                return (
+                    <div
+                        style={{
+                            position : "relative",
+                            margin : 1,
+                            padding : 1,
+                            background : "lightgreen",
+                            borderRadius : 6,
+                        }}
+                    >
+                        <u
+                             style={{
+                                cursor : "pointer"
+                            }}
+                            onClick={()=>{
+                                let tmp="events";
+                                let nst0={...assetPropertyStyleBoxChild };//JSON.parse(JSON.stringify(assetPropertyStyleBoxChild))
+                                nst0.prop[tmp].show=!nst0.prop[tmp].show
+                                if (nst0.prop[tmp].show){
+                                    nst0.prop[tmp].css={...nst0.prop[tmp].cssHide}
+                                }else{
+                                    nst0.prop[tmp].css={...nst0.prop[tmp].cssShow}
+                                }
+                                setAssetPropertyStyleBoxChild(nst0)
+                            }}
+                        >events</u>
+                        <div
+                            style={
+                                assetPropertyStyleBoxChild.prop["events"].css
+                            }
+                        >
+                            {arrE}
+                        </div>
+                    </div>
+                )
+            }
+            let EventsE=Events();
 
             return (
                 <div
@@ -1427,1199 +1611,1259 @@ export const Views=(props)=>{
                             height : 145,
                             overflow : "auto",
                             //background : "lightgrey",
-
                         }}
                     >
                         <u>{assetPropertyCurrSel}</u> 
                         <div
                                 style={{}}
                         >
+                            {EventsE}
+
                             <div>
-                                <label
+                                <div
                                     style={{
-                                        fontSize  : 11,
+                                        position : "relative",
+                                        margin : 1,
+                                        padding : 1,
+                                        background : "lightblue",
+                                        borderRadius : 6,
                                     }}
-                                >Background : </label>
-                                <input
-                                    value={assetPropertyStyleBackground}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleBackground(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="background"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                >
+                                    <u
+                                        style={{
+                                            cursor : "pointer"
+                                        }}
+                                        onClick={()=>{
+                                            let tmp="css";
+                                            let nst0={...assetPropertyStyleBoxChild };//JSON.parse(JSON.stringify(assetPropertyStyleBoxChild))
+                                            nst0.prop[tmp].show=!nst0.prop[tmp].show
+                                            if (nst0.prop[tmp].show){
+                                                nst0.prop[tmp].css={...nst0.prop[tmp].cssHide}
+                                            }else{
+                                                nst0.prop[tmp].css={...nst0.prop[tmp].cssShow}
                                             }
+                                            setAssetPropertyStyleBoxChild(nst0)
+                                        }}
+                                    >css</u>
+                                    <div
+                                        style={
+                                            assetPropertyStyleBoxChild.prop["css"].css
                                         }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Text Color : </label>
-                                <input
-                                    value={assetPropertyStyleColor}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleColor(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="color"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >z-Index : </label>
-                                <input
-                                    value={assetPropertyStyleZindex}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleZindex(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-
-                                        newInstanceFn();
-                                        
-                                        let tmp="zIndex"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                                    
-                                            let type="number";
-                                            if (type==="number"){
-                                                try {
-                                                    val=parseInt(val)
-                                                } catch (error) {
-                                                    alert("not a number")
-                                                    return
-                                                }
-                                            }
-
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Border : </label>
-                                <input
-                                    value={assetPropertyStyleBorder}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleBorder(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="border"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Border Radius : </label>
-                                <input
-                                    value={assetPropertyStyleBorderRadius}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleBorderRadius(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="borderRadius"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                                    
-                                            let type="number";
-                                            if (type==="number"){
-                                                try {
-                                                    val=parseInt(val)
-                                                } catch (error) {
-                                                    alert("not a number")
-                                                    return
-                                                }
-                                            }
-
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Float : </label>
-                                <input
-                                    value={assetPropertyStyleFloat}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleFloat(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="float"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Clear : </label>
-                                <input
-                                    value={assetPropertyStyleClear}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleClear(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="clear"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >FontFamily : </label>
-                                <input
-                                    value={assetPropertyStyleFontFamily}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleFontFamily(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="fontFamily"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >FontSize : </label>
-                                <input
-                                    value={assetPropertyStyleFontSize}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleFontSize(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="fontSize"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                                    
-                                            let type="number";
-                                            if (type==="number"){
-                                                try {
-                                                    val=parseInt(val)
-                                                } catch (error) {
-                                                    alert("not a number")
-                                                    return
-                                                }
-                                            }
-
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >FontWeight : </label>
-                                <input
-                                    value={assetPropertyStyleFontWeight}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleFontWeight(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="fontWeight"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >TextAlign : </label>
-                                <input
-                                    value={assetPropertyStyleTextAlign}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleTextAlign(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="textAlign"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Cursor : </label>
-                                <input
-                                    value={assetPropertyStyleCursor}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleCursor(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="cursor"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Left : </label>
-                                <input
-                                    value={assetPropertyStyleLeft}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleLeft(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="left"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                                    
-                                            let type="number";
-                                            if (type==="number"){
-                                                try {
-                                                    val=parseInt(val)
-                                                } catch (error) {
-                                                    alert("not a number")
-                                                    return
-                                                }
-                                            }
-
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Right : </label>
-                                <input
-                                    value={assetPropertyStyleRight}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleRight(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="right"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
+                                    >
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Background : </label>
+                                        <input
+                                            value={assetPropertyStyleBackground}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleBackground(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
                                                 
-                                            let type="number";
-                                            if (type==="number"){
-                                                try {
-                                                    val=parseInt(val)
-                                                } catch (error) {
-                                                    alert("not a number")
-                                                    return
+                                                newInstanceFn();
+                                                
+                                                let tmp="background"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
                                                 }
-                                            }
 
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />
-                                
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Top : </label>
-                                <input
-                                    value={assetPropertyStyleTop}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleTop(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="top"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
                                             
-                                            let type="number";
-                                            if (type==="number"){
-                                                try {
-                                                    val=parseInt(val)
-                                                } catch (error) {
-                                                    alert("not a number")
-                                                    return
+                                            }}
+                                        />
+
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Text Color : </label>
+                                        <input
+                                            value={assetPropertyStyleColor}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleColor(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="color"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
                                                 }
-                                            }
 
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
 
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >z-Index : </label>
+                                        <input
+                                            value={assetPropertyStyleZindex}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleZindex(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+
+                                                newInstanceFn();
+                                                
+                                                let tmp="zIndex"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                            
+                                                    let type="number";
+                                                    if (type==="number"){
+                                                        try {
+                                                            val=parseInt(val)
+                                                        } catch (error) {
+                                                            alert("not a number")
+                                                            return
+                                                        }
+                                                    }
+
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
+
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Border : </label>
+                                        <input
+                                            value={assetPropertyStyleBorder}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleBorder(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="border"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
+
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Border Radius : </label>
+                                        <input
+                                            value={assetPropertyStyleBorderRadius}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleBorderRadius(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="borderRadius"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                            
+                                                    let type="number";
+                                                    if (type==="number"){
+                                                        try {
+                                                            val=parseInt(val)
+                                                        } catch (error) {
+                                                            alert("not a number")
+                                                            return
+                                                        }
+                                                    }
+
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
+
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Float : </label>
+                                        <input
+                                            value={assetPropertyStyleFloat}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleFloat(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="float"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
+
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Clear : </label>
+                                        <input
+                                            value={assetPropertyStyleClear}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleClear(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="clear"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
                                         
-                                    
-                                    }}
-                                />
-                                
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Bottom : </label>
-                                <input
-                                    value={assetPropertyStyleBottom}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleBottom(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >FontFamily : </label>
+                                        <input
+                                            value={assetPropertyStyleFontFamily}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleFontFamily(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="fontFamily"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
+
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >FontSize : </label>
+                                        <input
+                                            value={assetPropertyStyleFontSize}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleFontSize(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="fontSize"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                            
+                                                    let type="number";
+                                                    if (type==="number"){
+                                                        try {
+                                                            val=parseInt(val)
+                                                        } catch (error) {
+                                                            alert("not a number")
+                                                            return
+                                                        }
+                                                    }
+
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
+
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >FontWeight : </label>
+                                        <input
+                                            value={assetPropertyStyleFontWeight}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleFontWeight(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="fontWeight"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
+
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >TextAlign : </label>
+                                        <input
+                                            value={assetPropertyStyleTextAlign}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleTextAlign(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="textAlign"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
                                         
-                                        newInstanceFn();
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Cursor : </label>
+                                        <input
+                                            value={assetPropertyStyleCursor}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleCursor(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="cursor"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
                                         
-                                        let tmp="bottom"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Left : </label>
+                                        <input
+                                            value={assetPropertyStyleLeft}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleLeft(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="left"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                            
+                                                    let type="number";
+                                                    if (type==="number"){
+                                                        try {
+                                                            val=parseInt(val)
+                                                        } catch (error) {
+                                                            alert("not a number")
+                                                            return
+                                                        }
+                                                    }
+
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
+
+                                        
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Right : </label>
+                                        <input
+                                            value={assetPropertyStyleRight}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleRight(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="right"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                        
+                                                    let type="number";
+                                                    if (type==="number"){
+                                                        try {
+                                                            val=parseInt(val)
+                                                        } catch (error) {
+                                                            alert("not a number")
+                                                            return
+                                                        }
+                                                    }
+
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
+                                        
+                                        
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Top : </label>
+                                        <input
+                                            value={assetPropertyStyleTop}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleTop(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="top"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
                                                     
-                                            let type="number";
-                                            if (type==="number"){
-                                                try {
-                                                    val=parseInt(val)
-                                                } catch (error) {
-                                                    alert("not a number")
-                                                    return
+                                                    let type="number";
+                                                    if (type==="number"){
+                                                        try {
+                                                            val=parseInt(val)
+                                                        } catch (error) {
+                                                            alert("not a number")
+                                                            return
+                                                        }
+                                                    }
+
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
                                                 }
-                                            }
 
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
+                                        
+                                        
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Bottom : </label>
+                                        <input
+                                            value={assetPropertyStyleBottom}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleBottom(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="bottom"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                            
+                                                    let type="number";
+                                                    if (type==="number"){
+                                                        try {
+                                                            val=parseInt(val)
+                                                        } catch (error) {
+                                                            alert("not a number")
+                                                            return
+                                                        }
+                                                    }
 
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />                            
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Margin : </label>
-                                <input
-                                    value={assetPropertyStyleMargin}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleMargin(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="margin"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                                    
-                                            let type="number";
-                                            if (type==="number"){
-                                                try {
-                                                    val=parseInt(val)
-                                                } catch (error) {
-                                                    alert("not a number")
-                                                    return
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
                                                 }
-                                            }
 
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />                            
+                                        
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Margin : </label>
+                                        <input
+                                            value={assetPropertyStyleMargin}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleMargin(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="margin"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                            
+                                                    let type="number";
+                                                    if (type==="number"){
+                                                        try {
+                                                            val=parseInt(val)
+                                                        } catch (error) {
+                                                            alert("not a number")
+                                                            return
+                                                        }
+                                                    }
 
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />                            
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Padding : </label>
-                                <input
-                                    value={assetPropertyStylePadding}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStylePadding(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="padding"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                                    
-                                            let type="number";
-                                            if (type==="number"){
-                                                try {
-                                                    val=parseInt(val)
-                                                } catch (error) {
-                                                    alert("not a number")
-                                                    return
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
                                                 }
-                                            }
 
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />                            
+                                        
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Padding : </label>
+                                        <input
+                                            value={assetPropertyStylePadding}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStylePadding(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="padding"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                            
+                                                    let type="number";
+                                                    if (type==="number"){
+                                                        try {
+                                                            val=parseInt(val)
+                                                        } catch (error) {
+                                                            alert("not a number")
+                                                            return
+                                                        }
+                                                    }
+
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />                            
+                                        
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Postion : </label>
+                                        <input
+                                            value={assetPropertyStylePostion}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStylePostion(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="postion"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />                            
+                                        
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Display : </label>
+                                        <input
+                                            value={assetPropertyStyleDisplay}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyStyleDisplay(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="display"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />                            
+                                    </div>
+                                </div>
+                                <div
+                                    style={{
+                                        
+                                        position : "relative",
+                                        margin : 1,
+                                        padding : 1,
+                                        background : "lightblue",
+                                        borderRadius : 6,
+                                    }}
+                                >
+                                    <u
+                                        style={{
+                                            cursor : "pointer"
+                                        }}
+                                        onClick={()=>{
+                                            let tmp="props";
+                                            let nst0={...assetPropertyStyleBoxChild };//JSON.parse(JSON.stringify(assetPropertyStyleBoxChild))
+                                            nst0.prop[tmp].show=!nst0.prop[tmp].show
+                                            if (nst0.prop[tmp].show){
+                                                nst0.prop[tmp].css={...nst0.prop[tmp].cssHide}
+                                            }else{
+                                                nst0.prop[tmp].css={...nst0.prop[tmp].cssShow}
                                             }
+                                            setAssetPropertyStyleBoxChild(nst0)
+                                        }}
+                                    >...</u>
+
+                                    <div                                        
+                                        style={
+                                            assetPropertyStyleBoxChild.prop["props"].css
                                         }
+                                    >                                    
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Class : </label>
+                                        <input
+                                            value={assetPropertyClass}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyClass(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="className"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
 
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />                           
                                         
-                                    
-                                    }}
-                                />                            
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Postion : </label>
-                                <input
-                                    value={assetPropertyStylePostion}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStylePostion(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="postion"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >ID : </label>
+                                        <input
+                                            value={assetPropertyID}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyID(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="id"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
 
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />                            
                                         
-                                    
-                                    }}
-                                />                            
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Display : </label>
-                                <input
-                                    value={assetPropertyStyleDisplay}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyStyleDisplay(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="display"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties.style
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Src : </label>
+                                        <input
+                                            value={assetPropertySrc}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertySrc(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="src"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
 
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />                            
                                         
-                                    
-                                    }}
-                                />                            
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Class : </label>
-                                <input
-                                    value={assetPropertyClass}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyClass(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="className"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Href : </label>
+                                        <input
+                                            value={assetPropertyHref}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyHref(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="href"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
 
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />                           
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >ID : </label>
-                                <input
-                                    value={assetPropertyID}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyID(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="id"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />        
 
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />                            
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Src : </label>
-                                <input
-                                    value={assetPropertySrc}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertySrc(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="src"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Value : </label>
+                                        <input
+                                            value={assetPropertyValue}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyValue(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="value"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
 
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />                            
-                                
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Href : </label>
-                                <input
-                                    value={assetPropertyHref}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyHref(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="href"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />        
 
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />        
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Placeholder : </label>
+                                        <input
+                                            value={assetPropertyPlaceholder}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyPlaceholder(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="placeholder"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
 
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Value : </label>
-                                <input
-                                    value={assetPropertyValue}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyValue(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="value"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />        
 
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />        
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Input Type : </label>
+                                        <input
+                                            value={assetPropertyType}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                setAssetPropertyType(val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="type"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties
+                                                if (val!==""){
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
 
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Placeholder : </label>
-                                <input
-                                    value={assetPropertyPlaceholder}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyPlaceholder(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="placeholder"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />        
-
-                                <br/>
-                                <label
-                                    style={{
-                                        fontSize  : 11,
-                                    }}
-                                >Input Type : </label>
-                                <input
-                                    value={assetPropertyType}
-                                    style={{
-                                        width : 80,
-                                    }}
-                                    onChange={(e)=>{
-                                        let val=e.target.value
-                                        setAssetPropertyType(val)
-                                    }}
-                                    onBlur={(e)=>{
-                                        let val=e.target.value
-                                        
-                                        newInstanceFn();
-                                        
-                                        let tmp="type"
-                                        let insrec=instances.current.all[assetPropertyCurrSel].properties
-                                        if (val!==""){
-                                            insrec[tmp]=val;                                        
-                                        }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
-                                            }
-                                        }
-
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-                                            nst.view.instances=instances.current
-                                            return nst;
-                                        })
-                                        
-                                    
-                                    }}
-                                />                        
-                                
-                                
-
-
-
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />                                 
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
@@ -2975,24 +3219,18 @@ export const Views=(props)=>{
                                         
                                         newInstanceID=assetName + "__inst" + countIdx  ;
                                         
-                                        instances.current.all[newInstanceID]={};          
+                                        instances.current.all[newInstanceID]={...instanceEachDef};          
                                         instances.current.all[newInstanceID].id=newInstanceID;
                                         instances.current.all[newInstanceID].uuid=uuidv4();
                                         instances.current.all[newInstanceID].dateCreate=new Date();
-                                        instances.current.all[newInstanceID].properties={};
+                                        // instances.current.all[newInstanceID].properties={...instancesPropertiesDef};
 
                                         if (layoutposContsODyn[assetName].assetSource){
                                             instances.current.all[newInstanceID].assetSource=layoutposContsODyn[assetName].assetSource
                                         }else{
                                             instances.current.all[newInstanceID].assetSource=assetName;
                                         }
-                                        
-                                        
-                                        
-                                        // nst0[layoutcurrStateSel].posCont.push(assetName);
-
-
-                                        // nst0[layoutcurrStateSel].posCont.push(instances.current.all[newInstanceID].id);
+                                                                                
                                         let currIdx=(()=>{
                                             let foundI=false
                                             let idx=0

@@ -250,10 +250,14 @@ export const parseAssetsParamsFn=(params,args)=>{
                 }
                 if (params.insts.current.all[params.name].FnProps){
                     if (true){ // auto_handle functions per ele   
-                        let useAssetSource=false;
-                        
-                        let r=params.insts.current.all[params.name].FnProps;
-                        params.FnProps=r;
+                        let useAssetSource=false;                        
+                  
+                        for (let p in params.insts.current.all[params.name].FnProps){
+                            //if (ignore_special_props[p]){}else{
+                                let r=params.insts.current.all[params.name].FnProps;
+                                params.FnProps[p]=r[p]
+                            //}
+                        }
                 
                         
                     }
@@ -792,21 +796,118 @@ export const genCommonAssets=()=>{
                             //params.Fn[tmp];
                         }
                     }
+                    let fnLocalAssign=(tmp,event,paramsIn)=>{
+                        let fnLocalGlob="FnLocal";
+
+                        let lParams={}
+                        if (paramsIn){
+                            lParams={...lParams,...paramsIn}
+                        }
+
+
+                        let fnExists=false;
+                        let useGlobalFn=false;
+                        if (fnLocalGlob==="FnLocal"){
+                            if (params[fnLocalGlob][tmp]!==undefined){
+                                fnExists=true
+                            }else{
+                                if (params["Fn"][tmp]!==undefined){
+                                    useGlobalFn=true
+                                    fnLocalGlob="Fn"
+                                    fnExists=true
+                                }
+                            }
+                        }else{
+                            useGlobalFn=true
+                            if (params[fnLocalGlob][tmp]!==undefined){ 
+                                fnExists=true
+                            }
+                        }
+
+                        if (fnExists){ // global functions
+                            let fn=()=>{}
+                            
+                            if ( params[fnLocalGlob][tmp].type==="fn" ){
+                                //if (useGlobalFn){
+                                    fn=params[fnLocalGlob][tmp].fn
+                                //}else{
+
+                                //}
+                            }
+                            if ( params[fnLocalGlob][tmp].type==="ref" ){
+                                fn=params[fnLocalGlob][tmp].fn.current
+                            }
+                            if(true){
+                                if (params.FnProps){
+                                    
+
+                                    if (params.FnProps[event]){
+                                        let nprops=[undefined,undefined,undefined,undefined,undefined,undefined]
+                                        if (params.FnProps[event][1]){
+                                                nprops[0]=params.FnProps[event][1].val
+                                            if (params.FnProps[event][2]){
+                                                nprops[1]=params.FnProps[event][2].val
+
+                                                if (params.FnProps[event][3]){
+                                                    nprops[2]=params.FnProps[event][3].val
+
+                                                    if (params.FnProps[event][4]){
+                                                        nprops[3]=params.FnProps[event][4].val
+
+                                                        if (params.FnProps[event][5]){
+                                                            nprops[4]=params.FnProps[event][5].val
+
+                                                            if (params.FnProps[event][6]){
+                                                                nprops[5]=params.FnProps[event][6].val
+                                                                
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        tmpO[tmp]=(e)=>{ 
+                                            fn.apply(this,nprops ) 
+                                        }
+                                    }else{
+                                        tmpO[tmp]=(e)=>{ 
+                                            fn() 
+                                        }
+                                    }
+                                }else{
+                                    tmpO[tmp]=(e)=>{ 
+                                        fn() 
+                                    }
+                                }
+                                
+                            }
+
+                            prps[event]=tmpO[tmp];
+
+                            //params.Fn[tmp];
+                        }
+                    }
 
                     tmp="changeLayout";                    
                     //fnAssign(tmp);
 
                     tmp="alert";                    
-                    fnAssign(tmp,"onClick");
+                    //fnAssign(tmp,"onClick");
                     
+                    if (params.FnLocal){
+
+                        if (params.FnLocal["onClick"]){
+                            tmp="onClick";    
+                            fnLocalAssign(params.FnLocal["onClick"],"onClick");
+                        }
 
                     
-                    tmp="changeLayout";                    
-                    if (params.FnLocal[tmp]!==undefined){ // for dynamicly assigning functions via inputs 
-                        //params.FnProps[tmp]
-                        //params.FnProps[tmp];
+                        tmp="changeLayout";                    
+                        if (params.FnLocal[tmp]!==undefined){ // for dynamicly assigning functions via inputs <-- .Fn parsed from individual instanced item
+                            //params.FnProps[tmp]
+                            //params.FnProps[tmp];
+                        }
                     }
-                    
                     //tmp="name";                    
                     
                     
