@@ -458,6 +458,8 @@ export const Views=(props)=>{
                 if (data.view.instances){
                     instances.current=data.view.instances
                 }
+
+                appFnInitial(); 
                
             }
         };
@@ -1492,65 +1494,706 @@ export const Views=(props)=>{
                     iG++;
                 }
 
-                if (true){                
-                    arrE.push(
-                        <div
-                            style={{}}
-                            key={iG}
-                        >
-                            <label
-                                style={{
-                                    fontSize  : 11,
-                                }}
-                            >onClick Props 1: </label>
-                            <input
-                                value={assetPropertyEventOnClickProps1}
-                                style={{
-                                    width : 80,
-                                }}
-                                onChange={(e)=>{
-                                    let val=e.target.value
-                                    setAssetPropertyEventOnClickProps1(val)
-                                }}
-                                onBlur={(e)=>{
-                                    let val=e.target.value
-                                    
-                                    newInstanceFn();
-                                    
-                                    let tmp="onClick"
-                                    let tmp2=1
-                                    let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                    if (val!==""){
-                                        insrec[tmp]={};
-                                        if (insrec[tmp]===undefined){
+                if (true){ // onclick function props
+                    if (true){ // onclick function props 1      
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props 1: </label>
+                                <input
+                                    value={assetPropertyEventOnClickProps1}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickProps1(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="1"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
                                             insrec[tmp]={};
-                                        }
-                                        if (insrec[tmp][tmp2]===undefined){
-                                            insrec[tmp][tmp2]={ val : val , type : "string"};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : val , type : "string"};
+                                            }
+
+                                            insrec[tmp][tmp2].val=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
                                         }
 
-                                        insrec[tmp][tmp2].val=val;
-
-                                                                                                                        
-                                    }else{
-                                        if ( insrec[tmp]){
-                                            delete insrec[tmp];
-                                        }
-                                    }
-
-                                    setCmptMe((st)=>{
-                                        let nst={...st};
-                                        nst.view.instances=instances.current
-                                        return nst;
-                                    })
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
                                     
-                                
-                                }}
-                            />     
-                        </div>
-                    )
-                    iG++;
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props Type 1: </label>
+                                <input
+                                    value={assetPropertyEventOnClickPropsType1}
+                                    style={{
+                                        width : 40,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickPropsType1(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="1"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
+                                            insrec[tmp]={};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : "" , type : val};
+                                            }
+
+                                            insrec[tmp][tmp2].type=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                    }
+                    if (true){ // onclick function props 2      
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props 2: </label>
+                                <input
+                                    value={assetPropertyEventOnClickProps2}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickProps2(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="2"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
+                                            insrec[tmp]={};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : val , type : "string"};
+                                            }
+
+                                            insrec[tmp][tmp2].val=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props Type 2: </label>
+                                <input
+                                    value={assetPropertyEventOnClickPropsType2}
+                                    style={{
+                                        width : 40,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickPropsType2(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="2"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
+                                            insrec[tmp]={};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : "" , type : val};
+                                            }
+
+                                            insrec[tmp][tmp2].type=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                    }
+                    if (true){ // onclick function props 3      
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props 3: </label>
+                                <input
+                                    value={assetPropertyEventOnClickProps3}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickProps3(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="3"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
+                                            insrec[tmp]={};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : val , type : "string"};
+                                            }
+
+                                            insrec[tmp][tmp2].val=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props Type 3: </label>
+                                <input
+                                    value={assetPropertyEventOnClickPropsType3}
+                                    style={{
+                                        width : 40,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickPropsType3(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="3"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
+                                            insrec[tmp]={};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : "" , type : val};
+                                            }
+
+                                            insrec[tmp][tmp2].type=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                    }
+                    if (true){ // onclick function props 4      
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props 4: </label>
+                                <input
+                                    value={assetPropertyEventOnClickProps4}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickProps4(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="4"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
+                                            insrec[tmp]={};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : val , type : "string"};
+                                            }
+
+                                            insrec[tmp][tmp2].val=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props Type 4: </label>
+                                <input
+                                    value={assetPropertyEventOnClickPropsType4}
+                                    style={{
+                                        width : 40,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickPropsType4(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="4"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
+                                            insrec[tmp]={};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : "" , type : val};
+                                            }
+
+                                            insrec[tmp][tmp2].type=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                    }
+                    if (true){ // onclick function props 5      
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props 5: </label>
+                                <input
+                                    value={assetPropertyEventOnClickProps5}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickProps5(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="5"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
+                                            insrec[tmp]={};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : val , type : "string"};
+                                            }
+
+                                            insrec[tmp][tmp2].val=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props Type 5: </label>
+                                <input
+                                    value={assetPropertyEventOnClickPropsType5}
+                                    style={{
+                                        width : 40,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickPropsType5(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="5"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
+                                            insrec[tmp]={};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : "" , type : val};
+                                            }
+
+                                            insrec[tmp][tmp2].type=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                    }
+                    if (true){ // onclick function props 6      
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props 6: </label>
+                                <input
+                                    value={assetPropertyEventOnClickProps6}
+                                    style={{
+                                        width : 80,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickProps6(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="6"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
+                                            insrec[tmp]={};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : val , type : "string"};
+                                            }
+
+                                            insrec[tmp][tmp2].val=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                        arrE.push(
+                            <div
+                                style={{}}
+                                key={iG}
+                            >
+                                <label
+                                    style={{
+                                        fontSize  : 11,
+                                    }}
+                                >onClick Props Type 6: </label>
+                                <input
+                                    value={assetPropertyEventOnClickPropsType6}
+                                    style={{
+                                        width : 40,
+                                    }}
+                                    onChange={(e)=>{
+                                        let val=e.target.value
+                                        setAssetPropertyEventOnClickPropsType6(val)
+                                    }}
+                                    onBlur={(e)=>{
+                                        let val=e.target.value
+                                        
+                                        newInstanceFn();
+                                        
+                                        let tmp="onClick"
+                                        let tmp2="6"
+                                        let insrec=instances.current.all[assetPropertyCurrSel].FnProps
+                                        if (val!==""){
+                                            insrec[tmp]={};
+                                            if (insrec[tmp]===undefined){
+                                                insrec[tmp]={};
+                                            }
+                                            if (insrec[tmp][tmp2]===undefined){
+                                                insrec[tmp][tmp2]={ val : "" , type : val};
+                                            }
+
+                                            insrec[tmp][tmp2].type=val;
+
+                                                                                                                            
+                                        }else{
+                                            if ( insrec[tmp]){
+                                                delete insrec[tmp];
+                                            }
+                                        }
+
+                                        setCmptMe((st)=>{
+                                            let nst={...st};
+                                            nst.view.instances=instances.current
+                                            return nst;
+                                        })
+                                        
+                                    
+                                    }}
+                                />     
+                            </div>
+                        )
+                        iG++;
+                    }
                 }
+
+
 
                 return (
                     <div
@@ -3100,6 +3743,65 @@ export const Views=(props)=>{
         layoutStatesPropertiesShowHideStyle.width=undefined
         layoutStatesPropertiesShowHideStyle.height=undefined
     }
+
+    let assetPropertyValueToInputs=(inst)=>{
+        if ( instances.current.all[inst]  ){
+            if ( instances.current.all[inst].Fn  ){
+                let eventtmp=""
+
+                eventtmp="onClick"
+                if (instances.current.all[inst].Fn[eventtmp]){
+                    
+                    setAssetPropertyEventOnClick(instances.current.all[inst].Fn[eventtmp])
+
+
+                    if (instances.current.all[inst].FnProps){                                       
+                        if (instances.current.all[inst].FnProps[eventtmp]){                                                     
+                            if (instances.current.all[inst].FnProps[eventtmp]["1"]){
+                                if (instances.current.all[inst].FnProps[eventtmp]["1"].val){
+                                    setAssetPropertyEventOnClickProps1(instances.current.all[inst].FnProps[eventtmp]["1"].val)
+                                    setAssetPropertyEventOnClickPropsType1(instances.current.all[inst].FnProps[eventtmp]["1"].type)
+                                }                                    
+                            }                
+                            if (instances.current.all[inst].FnProps[eventtmp]["2"]){
+                                if (instances.current.all[inst].FnProps[eventtmp]["2"].val){
+                                    setAssetPropertyEventOnClickProps2(instances.current.all[inst].FnProps[eventtmp]["2"].val)
+                                    setAssetPropertyEventOnClickPropsType2(instances.current.all[inst].FnProps[eventtmp]["2"].type)
+                                }                                    
+                            }
+                            if (instances.current.all[inst].FnProps[eventtmp]["3"]){
+                                if (instances.current.all[inst].FnProps[eventtmp]["3"].val){
+                                    setAssetPropertyEventOnClickProps3(instances.current.all[inst].FnProps[eventtmp]["3"].val)
+                                    setAssetPropertyEventOnClickPropsType3(instances.current.all[inst].FnProps[eventtmp]["3"].type)
+                                }                                    
+                            }
+                            if (instances.current.all[inst].FnProps[eventtmp]["4"]){
+                                if (instances.current.all[inst].FnProps[eventtmp]["4"].val){
+                                    setAssetPropertyEventOnClickProps4(instances.current.all[inst].FnProps[eventtmp]["4"].val)
+                                    setAssetPropertyEventOnClickPropsType4(instances.current.all[inst].FnProps[eventtmp]["4"].type)
+                                }                                    
+                            }
+                            if (instances.current.all[inst].FnProps[eventtmp]["5"]){
+                                if (instances.current.all[inst].FnProps[eventtmp]["5"].val){
+                                    setAssetPropertyEventOnClickProps5(instances.current.all[inst].FnProps[eventtmp]["5"].val)
+                                    setAssetPropertyEventOnClickPropsType5(instances.current.all[inst].FnProps[eventtmp]["5"].type)
+                                }                                    
+                            }
+                            if (instances.current.all[inst].FnProps[eventtmp]["6"]){
+                                if (instances.current.all[inst].FnProps[eventtmp]["6"].val){
+                                    setAssetPropertyEventOnClickProps6(instances.current.all[inst].FnProps[eventtmp]["6"].val)
+                                    setAssetPropertyEventOnClickPropsType6(instances.current.all[inst].FnProps[eventtmp]["6"].type)
+                                }                                    
+                            }
+                            
+                        }
+                       
+                    }
+                }
+
+            }   
+        }
+    }
     
     let layoutStatePropertiesE
     if (vmodes["nomode"] || vmodes["edit"]){
@@ -3117,6 +3819,8 @@ export const Views=(props)=>{
                 color : "white",
                 background : "orange",
             }
+
+            
 
             let curr={}
             let currStr="{}"
@@ -3141,6 +3845,8 @@ export const Views=(props)=>{
                                     //#region click state state 
                                     setLayoutStatePropertiesPosContCurrSel(r)
                                     setAssetPropertyCurrSel(r)
+
+                                    assetPropertyValueToInputs(r)
                                 }}
                             >
                                 {r}
@@ -3313,6 +4019,7 @@ export const Views=(props)=>{
                             onChange={(e)=>{
                                 let val=e.target.value
                                 setLayoutStatePropertiesPosContAddName(val)
+                                
                             }}
                         
                         />
