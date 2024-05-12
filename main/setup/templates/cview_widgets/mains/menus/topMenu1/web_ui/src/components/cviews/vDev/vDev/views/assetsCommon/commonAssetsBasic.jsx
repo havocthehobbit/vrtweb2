@@ -334,8 +334,36 @@ export const fnLocalAssign=(tmp,event,paramsIn,params,prps,tmpO)=>{
                 if (params.FnProps[event]){ 
                     let nprops=[undefined,undefined,undefined,undefined,undefined,undefined]
                     if (params.FnProps[event]["1"]){
+                            let val1
                             
-                            nprops[0]=params.FnProps[event]["1"].val
+                            if (params.FnProps[event]["1"].type==="object"){
+                                if (typeof(nprops[0]=params.FnProps[event]["1"].val)==="object"){                                    
+                                    val1=nprops[0]=params.FnProps[event]["1"].val                                    
+                                    
+                                }                                    
+                            
+                                if (typeof(nprops[0]=params.FnProps[event]["1"].val)==="string"){
+                                    try {
+                                        val1=JSON.parse(params.FnProps[event]["1"].val)    
+                                    } catch (error) {
+                                        val1={}
+                                        console.log("commonAssetsBasic : ", "not a object function param" )
+                                
+                                    }                                    
+                                }
+                                    
+                            }else{
+                                if (params.FnProps[event]["1"].type==="number"){
+                                    val1=Number(params.FnProps[event]["1"].val)
+                                }else{
+                                    val1=params.FnProps[event]["1"].val
+                                }
+                                
+                            }
+
+
+                            nprops[0]=val1;
+
                         if (params.FnProps[event]["2"]){
                             nprops[1]=params.FnProps[event]["2"].val
 

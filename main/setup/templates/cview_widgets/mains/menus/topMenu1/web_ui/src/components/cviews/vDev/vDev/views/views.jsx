@@ -90,6 +90,8 @@ export const Views=(props)=>{
     let [layoutStatePropertiesPosContCurrSel,setLayoutStatePropertiesPosContCurrSel]=useState("");
 
     //let [assetProperty,setAssetProperty]=useState({});
+    let assetPropertyStyle=useRef({})
+    let assetPropertyStyleSet=useRef({})
     let [assetPropertyStyleBackground,setAssetPropertyStyleBackground]=useState("");
     let [assetPropertyStyleColor,setAssetPropertyStyleColor]=useState("");
     let [assetPropertyStyleZindex,setAssetPropertyStyleZindex]=useState(0);
@@ -102,6 +104,8 @@ export const Views=(props)=>{
     let [assetPropertyStyleFontWeight,setAssetPropertyStyleFontWeight]=useState("");
     let [assetPropertyStyleTextAlign,setAssetPropertyStyleTextAlign]=useState("");
     let [assetPropertyStyleCursor,setAssetPropertyStyleCursor]=useState("");
+    [assetPropertyStyle.current["width"],assetPropertyStyleSet.current["width"]]=useState(0); 
+    [assetPropertyStyle.current["height"],assetPropertyStyleSet.current["height"]]=useState(0); 
     let [assetPropertyStyleLeft,setAssetPropertyStyleLeft]=useState(0);
     let [assetPropertyStyleRight,setAssetPropertyStyleRight]=useState(0);
     let [assetPropertyStyleTop,setAssetPropertyStyleTop]=useState(0);
@@ -540,6 +544,67 @@ export const Views=(props)=>{
             };
             instances.current.Fn[name]=nst0[name]
 
+            name="console";
+            nst0[name]={
+                "fn" : console,                    
+                "type" : "fn", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
+                "props" : [
+                    { "name" : "name"  , type : "string" , "optional" : false , "subtype" : [/* if prop is like a object and it has subtypes that need validation */]},
+                ],
+                 
+            };
+            instances.current.Fn[name]=nst0[name]
+
+            name="date";
+            nst0[name]={
+                "fn" : (...args1)=>{ return new Date.apply(this,args1)},                    
+                "type" : "fn", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
+                "props" : [
+                    { "name" : "name"  , type : "string" , "optional" : false , "subtype" : [/* if prop is like a object and it has subtypes that need validation */]},
+                ],
+                 
+            };
+            instances.current.Fn[name]=nst0[name]
+
+            name="openLink";
+            nst0[name]={
+                "fn" : (url,...args1)=>{ window.open(url, '_blank').focus(); },                    
+                "type" : "fn", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
+                "props" : [
+                    { "name" : "name"  , type : "string" , "optional" : false , "subtype" : [/* if prop is like a object and it has subtypes that need validation */]},
+                ],
+                 
+            };
+            instances.current.Fn[name]=nst0[name]
+
+
+            name="fetch";
+            nst0[name]={
+                "fn" : fetch,
+                "type" : "fn", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
+                "props" : [
+                    { "name" : "name"  , type : "string" , "optional" : false , "subtype" : [/* if prop is like a object and it has subtypes that need validation */]},
+                ],
+                 
+            };
+            instances.current.Fn[name]=nst0[name]
+
+            name="testobj";
+            nst0[name]={
+                "fn" : (...args)=>{
+                    alert(JSON.stringify(args[0]))
+                },
+                "type" : "fn", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
+                "props" : [
+                    { "name" : "name"  , type : "string" , "optional" : false , "subtype" : [/* if prop is like a object and it has subtypes that need validation */]},
+                ],
+                 
+            };
+            instances.current.Fn[name]=nst0[name]
+
+
+            
+
            
             name="changeLayout";
             nst0[name]={
@@ -549,6 +614,11 @@ export const Views=(props)=>{
                     { "name" : "name"  , type : "string" , "optional" : false },
                 ],
                 "subtype" : [] // { optional }
+                ,"deps" : { // used to generate text code
+                    "imports" : {},
+                    "defs" : {}, // definitions
+                    "calls" : {},
+                } // dependencies 
             };
             instances.current.Fn[name]=nst0[name]
 
@@ -1523,8 +1593,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="1"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -1536,8 +1605,8 @@ export const Views=(props)=>{
 
                                                                                                                             
                                         }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                            if ( insrec[tmp][tmp2]){                                                
+                                                delete insrec[tmp][tmp2];
                                             }
                                         }
 
@@ -1580,8 +1649,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="1"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -1594,7 +1662,7 @@ export const Views=(props)=>{
                                                                                                                             
                                         }else{
                                             if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                                
                                             }
                                         }
 
@@ -1639,8 +1707,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="2"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -1653,7 +1720,9 @@ export const Views=(props)=>{
                                                                                                                             
                                         }else{
                                             if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                                if ( insrec[tmp][tmp2]){                                                
+                                                    delete insrec[tmp][tmp2];
+                                                }
                                             }
                                         }
 
@@ -1696,8 +1765,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="2"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -1710,7 +1778,7 @@ export const Views=(props)=>{
                                                                                                                             
                                         }else{
                                             if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                               
                                             }
                                         }
 
@@ -1755,8 +1823,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="3"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -1768,8 +1835,8 @@ export const Views=(props)=>{
 
                                                                                                                             
                                         }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                            if ( insrec[tmp][tmp2]){                                                
+                                                delete insrec[tmp][tmp2];
                                             }
                                         }
 
@@ -1812,8 +1879,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="3"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -1826,7 +1892,7 @@ export const Views=(props)=>{
                                                                                                                             
                                         }else{
                                             if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                                
                                             }
                                         }
 
@@ -1871,8 +1937,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="4"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -1884,8 +1949,8 @@ export const Views=(props)=>{
 
                                                                                                                             
                                         }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                            if ( insrec[tmp][tmp2]){                                                
+                                                delete insrec[tmp][tmp2];
                                             }
                                         }
 
@@ -1928,8 +1993,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="4"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -1942,7 +2006,7 @@ export const Views=(props)=>{
                                                                                                                             
                                         }else{
                                             if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                                
                                             }
                                         }
 
@@ -1987,8 +2051,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="5"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -2000,8 +2063,8 @@ export const Views=(props)=>{
 
                                                                                                                             
                                         }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                            if ( insrec[tmp][tmp2]){                                                
+                                                delete insrec[tmp][tmp2];
                                             }
                                         }
 
@@ -2044,8 +2107,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="5"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -2058,7 +2120,7 @@ export const Views=(props)=>{
                                                                                                                             
                                         }else{
                                             if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                               
                                             }
                                         }
 
@@ -2103,8 +2165,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="6"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -2116,8 +2177,8 @@ export const Views=(props)=>{
 
                                                                                                                             
                                         }else{
-                                            if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                            if ( insrec[tmp][tmp2]){                                                
+                                                delete insrec[tmp][tmp2];
                                             }
                                         }
 
@@ -2160,8 +2221,7 @@ export const Views=(props)=>{
                                         let tmp="onClick"
                                         let tmp2="6"
                                         let insrec=instances.current.all[assetPropertyCurrSel].FnProps
-                                        if (val!==""){
-                                            insrec[tmp]={};
+                                        if (val!==""){                                            
                                             if (insrec[tmp]===undefined){
                                                 insrec[tmp]={};
                                             }
@@ -2174,7 +2234,7 @@ export const Views=(props)=>{
                                                                                                                             
                                         }else{
                                             if ( insrec[tmp]){
-                                                delete insrec[tmp];
+                                                
                                             }
                                         }
 
@@ -2804,6 +2864,120 @@ export const Views=(props)=>{
                                             
                                             }}
                                         />
+
+                                        
+                                        <br/>
+                                        <label
+                                            style={{
+                                                fontSize  : 11,
+                                            }}
+                                        >Width : </label>
+                                        <input
+                                            value={assetPropertyStyle.current["width"]}
+                                            style={{
+                                                width : 80,
+                                            }}
+                                            onChange={(e)=>{
+                                                let val=e.target.value
+                                                assetPropertyStyleSet.current["width"](val)
+                                            }}
+                                            onBlur={(e)=>{
+                                                let val=e.target.value
+                                                
+                                                newInstanceFn();
+                                                
+                                                let tmp="width"
+                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                if (val!==""){
+                                                            
+                                                    let type="number";
+                                                    if (type==="number"){
+                                                        try {
+                                                            val=parseInt(val)
+                                                        } catch (error) {
+                                                            alert("not a number")
+                                                            return
+                                                        }
+                                                    }
+
+                                                    insrec[tmp]=val;                                        
+                                                }else{
+                                                    if ( insrec[tmp]){
+                                                        delete insrec[tmp];
+                                                    }
+                                                }
+
+                                                setCmptMe((st)=>{
+                                                    let nst={...st};
+                                                    nst.view.instances=instances.current
+                                                    return nst;
+                                                })
+                                                
+                                            
+                                            }}
+                                        />
+                                        {
+                                            (()=>{
+                                                let propName="height";
+                                                let propsDesc="Height";
+                                                return (
+                                                    <div
+                                                        style={{}}
+                                                    >
+                                                        <label
+                                                            style={{
+                                                                fontSize  : 11,
+                                                            }}
+                                                        >{propsDesc} : </label>
+                                                        <input
+                                                            value={assetPropertyStyle.current[propName]}
+                                                            style={{
+                                                                width : 80,
+                                                            }}
+                                                            onChange={(e)=>{
+                                                                let val=e.target.value
+                                                                assetPropertyStyleSet.current[propName](val)
+                                                            }}
+                                                            onBlur={(e)=>{
+                                                                let val=e.target.value
+                                                                
+                                                                newInstanceFn();
+                                                                
+                                                                let tmp=propName
+                                                                let insrec=instances.current.all[assetPropertyCurrSel].properties.style
+                                                                if (val!==""){
+                                                                            
+                                                                    let type="number";
+                                                                    if (type==="number"){
+                                                                        try {
+                                                                            val=parseInt(val)
+                                                                        } catch (error) {
+                                                                            alert("not a number")
+                                                                            return
+                                                                        }
+                                                                    }
+
+                                                                    insrec[tmp]=val;                                        
+                                                                }else{
+                                                                    if ( insrec[tmp]){
+                                                                        delete insrec[tmp];
+                                                                    }
+                                                                }
+
+                                                                setCmptMe((st)=>{
+                                                                    let nst={...st};
+                                                                    nst.view.instances=instances.current
+                                                                    return nst;
+                                                                })
+                                                                
+                                                            
+                                                            }}
+                                                        />
+                                                    </div>
+                                                )
+                                            })()
+                                        }
+                                        
                                         
                                         <br/>
                                         <label
