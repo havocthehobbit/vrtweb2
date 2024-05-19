@@ -212,8 +212,12 @@ export const Views=(props)=>{
     let [appStatePrev,setAppPrev]=useState({}); // used to test app states for preview/run mode
 
     let [appState,setAppState]=useState({});
-    let [appStateName,setAppStateName]=useState("");
     let [appStateID,setAppStateID]=useState("");    
+    let [appStateName,setAppStateName]=useState("");
+    let [appStateType,setAppStateType]=useState("");
+    let [appStateValue,setAppStateValue]=useState("");
+    let [appStateOnChange,setAppStateOnChange]=useState("");
+    
     
 
     let [appFn,setAppFn]=useState({});
@@ -4351,7 +4355,276 @@ export const Views=(props)=>{
         })()
 
     }
-        
+    
+    
+    let functionsE
+    if (vmodes["nomode"] || vmodes["edit"]){
+        functionsE=(()=>{
+
+            return (
+                <div
+                    style={{
+                        position : "relative",
+                        display : "inline-block",
+                        width : 200,
+                        height : 200,
+                    }}
+                >
+                    <div
+                        style={{
+
+                        }}
+                    >
+                        <h2>functions</h2>
+                        <h2>functions</h2>
+                        <h2>functions</h2>
+                    </div>
+
+                </div>
+            )
+        })()
+    }
+
+
+    let statesCmptE
+    if (vmodes["nomode"] || vmodes["edit"]){
+        statesCmptE=(()=>{
+
+            let states=[];
+            for ( let p in appStatePrev){
+                states.push(
+                    <div
+                        style={{
+                            border : "solid thin lightgrey"
+                        }}
+                    >
+                        {p}
+                    </div>
+                )
+            }
+
+            return (
+                <div
+                    style={{
+                        position : "relative",
+                        display : "inline-block",
+                        width : 200,
+                        height : 200,
+                    }}
+                >
+                    <div
+                        style={{
+
+                        }}
+                    >   
+                        <u><label>states</label></u>
+                        <div>
+                            <input 
+                                placeholder="name"
+                                value={appStateName}
+                                onChange={(e)=>{
+                                    let val=e.target.value
+                                    setAppStateName(val)
+
+                                }}
+                            />
+                             <input 
+                                placeholder="type"
+                                value={appStateType}
+                                onChange={(e)=>{
+                                    let val=e.target.value
+                                    setAppStateType(val)
+
+                                }}
+                            />
+                            <input 
+                                placeholder="value"
+                                value={appStateValue}
+                                onChange={(e)=>{
+                                    let val=e.target.value
+                                    setAppStateValue(val)
+
+                                }}
+                            />
+                            <input 
+                                placeholder="onChange useEffect"
+                                value={appStateOnChange}
+                                onChange={(e)=>{
+                                    let val=e.target.value
+                                    setAppStateOnChange(val)
+
+                                }}
+                            />
+                        </div>
+                        <button
+                            onClick={()=>{
+                                setAppStateName("");
+                                setAppStateID("");
+                                setAppStateType("");
+                                setAppStateValue("");
+                                setAppStateOnChange("");
+                            }}
+                        >new</button>
+                        <button
+                            onClick={()=>{
+                                let hasErr=false
+                                let err=""
+                                if (appStatePrev[appStateName]){
+                                    hasErr=true;
+                                    err="state exists"
+                                }
+                                if (appStateName !=="" && appStateName.includes(" ")===false){
+                                    let newRec={
+                                        name : appStateName,
+                                        type : appStateType,
+                                        value : appStateValue,
+                                        value : appStateOnChange,
+                                    }
+
+                                    instances.current.states[appStateName]=newRec
+                                    setAppPrev((st)=>{
+                                        let nst={...st}
+
+                                        nst[appStateName]=newRec
+
+                                        return nst;
+                                    })
+                                }else{
+                                    hasErr=true;
+                                    err="contains blanks or invalid characters"
+                                }
+
+
+                                if (hasErr){
+                                    alert(err)
+                                }
+                            }}
+                        >add</button>
+                        
+                        <div>
+                            {states}
+                        </div>
+
+                    </div>
+
+                </div>
+            )
+        })()    
+    }
+
+
+    let recSchemasE
+    if (vmodes["nomode"] || vmodes["edit"]){
+        recSchemasE=(()=>{
+
+            return (
+                <div
+                    style={{
+                        position : "relative",
+                        display : "inline-block",
+                        width : 200,
+                        height : 200,
+                    }}
+                >
+                    <div
+                        style={{
+
+                        }}
+                    >
+                        <h2>record schemas</h2>
+                        <h2>record schemas</h2>
+                        <h2>record schemas</h2>
+                    </div>
+
+                </div>
+            )
+        })()
+    }
+
+    let importsE
+    if (vmodes["nomode"] || vmodes["edit"]){
+        importsE=(()=>{
+
+            return (
+                <div
+                    style={{
+                        position : "relative",
+                        display : "inline-block",
+                        width : 200,
+                        height : 200,
+                    }}
+                >
+                    <div
+                        style={{
+
+                        }}
+                    >
+                        <h2>imports</h2>
+                        <h2>imports</h2>
+                        <h2>imports</h2>                        
+                    </div>
+
+                </div>
+            )
+        })()
+    }
+
+    let eventsE
+    if (vmodes["nomode"] || vmodes["edit"]){
+        eventsE=(()=>{
+
+            return (
+                <div
+                    style={{
+                        position : "relative",
+                        display : "inline-block",
+                        width : 200,
+                        height : 200,
+                    }}
+                >
+                    <div
+                        style={{
+
+                        }}
+                    >
+                        <h2>events</h2>
+                        <h2>events</h2>
+                        <h2>events</h2>                        
+                    </div>
+
+                </div>
+            )
+        })()
+    }
+
+
+    let sequencesE
+    if (vmodes["nomode"] || vmodes["edit"]){
+        sequencesE=(()=>{
+
+            return (
+                <div
+                    style={{
+                        position : "relative",
+                        display : "inline-block",
+                        width : 200,
+                        height : 200,
+                    }}
+                >
+                    <div
+                        style={{
+
+                        }}
+                    >
+                        <h2>sequences</h2>
+                        <h2>sequences</h2>
+                        <h2>sequences</h2>                        
+                    </div>
+
+                </div>
+            )
+        })()
+    }
 
     // --------------------------------
 
@@ -4907,7 +5180,12 @@ export const Views=(props)=>{
                     {toolsCmptMeE}
                     {layoutAssetsE}
                     {AssetPropertyE}
-                    
+                    {functionsE}
+                    {statesCmptE}            
+                    {recSchemasE}  
+                    {importsE}    
+                    {eventsE}    
+                      
                 </div>
 
                
@@ -4936,6 +5214,7 @@ export const Views=(props)=>{
                   
                     {layoutStatePropertiesE}
                     {mainLayoutPropertiesE}
+                    
                 </div>
                 
                 <div style={{ clear : "left" }} />
@@ -4978,7 +5257,7 @@ export const Views=(props)=>{
                         }}
                     >
                         {propCmptMeE}
-                    </div>
+                    </div>                    
                     
                     <div style={{ clear : "left" }} />
 
