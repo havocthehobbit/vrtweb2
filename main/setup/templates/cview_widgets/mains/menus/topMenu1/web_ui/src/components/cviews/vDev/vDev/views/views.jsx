@@ -539,6 +539,9 @@ export const Views=(props)=>{
 
             name="alert";
             nst0[name]={
+                "name" : name,
+                "desc" : "",
+                "code" : "",
                 "fn" : alert,                    
                 "type" : "fn", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
                 "props" : [
@@ -550,6 +553,9 @@ export const Views=(props)=>{
 
             name="console";
             nst0[name]={
+                "name" : name,
+                "desc" : "",
+                "code" : "",
                 "fn" : console,                    
                 "type" : "fn", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
                 "props" : [
@@ -561,6 +567,9 @@ export const Views=(props)=>{
 
             name="date";
             nst0[name]={
+                "name" : name,
+                "desc" : "",
+                "code" : "",
                 "fn" : (...args1)=>{ return new Date.apply(this,args1)},                    
                 "type" : "fn", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
                 "props" : [
@@ -572,6 +581,9 @@ export const Views=(props)=>{
 
             name="openLink";
             nst0[name]={
+                "name" : name,
+                "desc" : "",
+                "code" : "",
                 "fn" : (url,...args1)=>{ window.open(url, '_blank').focus(); },                    
                 "type" : "fn", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
                 "props" : [
@@ -584,6 +596,9 @@ export const Views=(props)=>{
 
             name="fetch";
             nst0[name]={
+                "name" : name,
+                "desc" : "",
+                "code" : "",
                 "fn" : fetch,
                 "type" : "fn", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
                 "props" : [
@@ -595,6 +610,9 @@ export const Views=(props)=>{
 
             name="testobj";
             nst0[name]={
+                "name" : name,
+                "desc" : "",
+                "code" : "",
                 "fn" : (...args)=>{
                     alert(JSON.stringify(args[0]))
                 },
@@ -612,6 +630,9 @@ export const Views=(props)=>{
            
             name="changeLayout";
             nst0[name]={
+                "name" : name,
+                "desc" : "",
+                "code" : "",
                 "fn" : layoutsetCurrStateRef,                    
                 "type" : "ref", // ref : reactRef , ruleSeq , fn : ()=>{} , fnStr : string reference to global string registry
                 "props" : [
@@ -4359,25 +4380,54 @@ export const Views=(props)=>{
     
     let functionsE
     if (vmodes["nomode"] || vmodes["edit"]){
+
+        let arrE=[]
+
+        for ( let p in appFn){
+            let r=appFn[p]
+
+            arrE.push(
+                <div
+                    style={{
+
+                    }}
+                >
+                    {r.name} - {r.type}
+                </div>
+            )
+        }
+
         functionsE=(()=>{
 
             return (
                 <div
-                    style={{
+                    style={{                        
                         position : "relative",
                         display : "inline-block",
                         width : 200,
-                        height : 200,
+                        height : 165,
+                        overflow : "hidden",
+
+                        border : "solid thin lightgrey",
+                        borderRadius : 5,
                     }}
                 >
+                    <h4
+                        style={{
+                            margin : 0,
+                            padding : 0,
+                        }}
+                    >functions</h4>
                     <div
                         style={{
-
+                            position : "relative",
+                            width : 185,
+                            height : 140,
+                            overflow : "auto"
                         }}
                     >
-                        <h2>functions</h2>
-                        <h2>functions</h2>
-                        <h2>functions</h2>
+                        
+                        {arrE}
                     </div>
 
                 </div>
