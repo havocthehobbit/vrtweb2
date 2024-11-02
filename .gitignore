@@ -95,6 +95,8 @@
 /main/data/usershome
 /main/data/public
 
+#packages
+/main/setup/packages/all_custom/*
 
 #
 /main/temp
