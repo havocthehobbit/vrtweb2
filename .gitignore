@@ -98,6 +98,7 @@
 #packages
 /main/setup/packages/plugins.json
 /main/setup/packages/all_custom/*
+/main/node_serv/modules/vrtweb_packages/*
 
 #
 /main/temp
