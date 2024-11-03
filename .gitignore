@@ -96,6 +96,7 @@
 /main/data/public
 
 #packages
+/main/setup/packages/plugins.json
 /main/setup/packages/all_custom/*
 
 #

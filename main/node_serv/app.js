@@ -11,6 +11,7 @@ let settings=new settingsMod({}).settings
 console.log("starting : ", settings.name , " ," , new Date())
 
 let ApiInst=require('./l_node_modules/apiInit.js').ApiInst
+let plugins=require('./l_node_modules/plugins.js')
 
 let gdb=require("./modules/generalDbFns.js").generalDbFns
 let lgsO=require("./l_node_modules/logs.js").logs
@@ -88,7 +89,7 @@ setTimeout(()=>{
     if (httpAppParams.useHttpServer===true){ // prevent starting https server if a prog parameter requires something , like prompt input
         // initlise http server       
 
-        ApiInst.init({ db : gdb.db, dbA : gdb.dbA, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs }, ()=>{
+        ApiInst.init({ db : gdb.db, dbA : gdb.dbA, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs ,plugins }, ()=>{
             // initialisation of listener complete        
         })
         app=ApiInst.app

@@ -1,5 +1,6 @@
 {
     "name" : "vDev",
+    "code" : "vDev",
     "version" : 0.049,
     "desc" : "vrtweb development plugin",
     "package_type" : "plugin",
