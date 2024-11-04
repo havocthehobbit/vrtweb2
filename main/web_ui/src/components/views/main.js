@@ -5,6 +5,7 @@ import { Homepage } from './homepage';
 import { GeneralView } from './general';
 import { isAuth } from '../login/login';
 import $gl from '../common/globallib'
+//import {Public} from "../cviews/PublicMain/PublicMain"
 
 
 export const stylec={
@@ -47,7 +48,17 @@ var Background=lazy(() =>{
 })
 
 
+let DefPublic=()=>{
+    return (<div/>)
+} ;
+let Public=lazy(() =>{    
+    //let file='cviews/PublicMain/PublicMain.jsx';
+    let file='cviews/PublicMain.jsx';
+     return import(`../${ file}`)   
 
+    .catch(() => ({ default: DefPublic }) )
+    
+})
 
 
 
@@ -58,6 +69,7 @@ export class Main extends Component {
      
         this.state={ 
             isLoggedIn : false, background : "white", testStuff : "dfdf",
+            isAuthHasRun : false, background : "white", testStuff : "dfdf",
             about : {},
             themes : {
                 name : "",
@@ -79,7 +91,8 @@ export class Main extends Component {
                 isAuth( { userid : userid} , function(dt){                
                     if (dt.data.auth===true || dt.data.loggedin===true){
                     tt.isLoggedInSet(true)
-                    }
+                    };
+                    //tt.setState({ isAuthHasRun : true})
                 })
         }
         window.addEventListener('resize', this.handleResize)
@@ -134,18 +147,100 @@ export class Main extends Component {
         let wd=tt.state.windowDimensions.width
         let hd=tt.state.windowDimensions.height
 
+        let pathnames=[];
+        let urlparams="";
+        let addr={                
+            pathname : window.location.pathname,
+            params :$gl.addrParamsToObject()
+        }  
+        if (typeof(addr.pathname)==="string"){
+            pathnames=addr.pathname.replace(/^\/|\/$/g, '').split('/');  // .split(/\// ) ; the normal split doesnt work as it includes a leading blank , "" , ...
+        }
+
+        urlparams=addr.params;
+
+        let usePublic=true;
+
+        if (usePublic){
+            usePublic=false;
         
+            console.log("urlpathname : ",pathnames);
+            console.log("urlparams : " ,urlparams);
+            
+            if (pathnames.length){
+                if (pathnames[0]==="public"){
+                    usePublic=true;
+                };
+            }
+
+
+        }
+        
+        let PublicPage=()=>{     
+            return (
+                <ContextStore.Provider 
+                    value={{
+                        isLoggedIn,
+                        isLoggedInSet,                            
+                        tt : tt,
+                        windowSize : {width : wd ,height : hd },
+                        pathnames : pathnames,
+                    }}
+                >    
+                    {/* <header className='App-header'> */}
+                    <div
+                        style={{
+                            minHeight: "100vh",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            //fontSize: "calc(10px + 2vmin)",                                
+                            color: "black",
+                        }}
+                    >                        
+                        
+                        <React.Suspense fallback={<div></div>}>
+                            <ContextStore.Provider
+                                value={{                                        
+                                    isLoggedIn,
+                                    isLoggedInSet,                            
+                                    tt : tt,
+                                    windowSize : {width : wd ,height : hd },
+                                    urlPaths : pathnames,
+                                    urlParams : urlparams,
+                                }}
+                            >
+                                <Public/>   
+                            </ContextStore.Provider>
+                            
+                        </React.Suspense>    
+                                
+                    </div>
+                    
+                </ContextStore.Provider> 
+            );            
+        }
 
         let homepageE
         homepageE=(()=>{
             if (isLoggedIn!==true){
+                //let params = new URLSearchParams(window.location.search);
+                
+                if (usePublic){
+                    
+                    return PublicPage();
+                }
+
                 return (
                     <ContextStore.Provider 
                         value={{
                             isLoggedIn,
                             isLoggedInSet,                            
                             tt : tt,
-                            windowSize : {width : wd ,height : hd }
+                            windowSize : {width : wd ,height : hd },
+                            urlPaths : pathnames,
+                            urlParams : urlparams,
                         }}
                     >    
                         {/* <header className='App-header'> */}
@@ -160,7 +255,8 @@ export class Main extends Component {
                                 color: "black",
                             }}
                         >                        
-                            <Homepage/>                   
+                            <Homepage/>                        
+                                      
                         </div>
                         
                     </ContextStore.Provider>   
@@ -171,6 +267,10 @@ export class Main extends Component {
         let generalViewE
         generalViewE=(()=>{
             if (isLoggedIn===true){
+                if (usePublic){
+                    return PublicPage();
+                }
+
                 return (
                 <ContextStore.Provider 
                         value={{
@@ -178,7 +278,9 @@ export class Main extends Component {
                             isLoggedInSet,
                             tt : tt,
                             testStuff,
-                            windowSize : {width : wd ,height : hd }
+                            windowSize : {width : wd ,height : hd },
+                            urlPaths : pathnames,
+                            urlParams : urlparams,
                         }}
                     >                       
                         <GeneralView/>                   
@@ -204,6 +306,8 @@ export class Main extends Component {
                         <ContextStore.Provider
                             value={{                                        
                                         tt : tt,
+                                        urlPaths : pathnames,
+                                        urlParams : urlparams,
                             }}
                         >
                             <Background themes={tt.state.themes} />
