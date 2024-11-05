@@ -39,18 +39,18 @@ let background=(()=>{
             }}
         />  
     )
-})()
+})();
 
 var Background=lazy(() =>{    
     let file='cviews/Background.jsx';
      return import(`../${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
     .catch(() => ({ default: () => background }))
-})
+});
 
 
 let DefPublic=()=>{
     return (<div/>)
-} ;
+};
 let Public=lazy(() =>{    
     //let file='cviews/PublicMain/PublicMain.jsx';
     let file='cviews/PublicMain.jsx';
@@ -58,7 +58,7 @@ let Public=lazy(() =>{
 
     .catch(() => ({ default: DefPublic }) )
     
-})
+});
 
 
 
@@ -162,11 +162,7 @@ export class Main extends Component {
         let usePublic=true;
 
         if (usePublic){
-            usePublic=false;
-        
-            console.log("urlpathname : ",pathnames);
-            console.log("urlparams : " ,urlparams);
-            
+            usePublic=false;            
             if (pathnames.length){
                 if (pathnames[0]==="public"){
                     usePublic=true;
