@@ -235,6 +235,23 @@ $gl.cookie=cookie;
 
 
 
+export const addrParamsToObject=()=>{
+    var pairs = window.location.search.substring(1).split("&"),
+      obj = {},
+      pair,
+      i;
+  
+    for ( i in pairs ) {
+      if ( pairs[i] === "" ) continue;
+  
+      pair = pairs[i].split("=");
+      obj[ decodeURIComponent( pair[0] ) ] = decodeURIComponent( pair[1] );
+    }
+  
+    return obj;
+  }
+  $gl.addrParamsToObject=addrParamsToObject
+
 var getHost=()=>{
     let url= window.document.createElement('a');
     url.setAttribute('href', window.location.href)
@@ -267,6 +284,26 @@ var getProtocall=()=>{
 }
 $gl.fn.getProtocall=getProtocall;
 
+let urladdr=()=>{
+
+    let pathnames=[];    
+    let addr={                
+        pathname : window.location.pathname,
+        params : addrParamsToObject(),
+        pathnames : []
+    }  
+    if (typeof(addr.pathname)==="string"){
+        pathnames=addr.pathname.replace(/^\/|\/$/g, '').split('/');  // .split(/\// ) ; the normal split doesnt work as it includes a leading blank , "" , ...
+    }
+
+    addr.pathnames=pathnames
+
+    return addr
+}
+
+
+
+
 // node port during development // create a global variable
 if (process.env.NODE_ENV !== 'production') { 
     window["node_port"]=process.env["REACT_APP_DEV_NODE_PORT"]; // #BE # export REACT_APP_DEV_NODE_PORT=30?? npm start    
@@ -278,7 +315,16 @@ if (process.env.NODE_ENV !== 'production') {
 $gl.host=getHost();
 $gl.port=getPort()
 $gl.protocall=getProtocall();
-$gl.url=$gl.protocall + "//" + $gl.host + ":" + $gl.port ;
+$gl.urladdr=urladdr();
+
+let url=$gl.protocall + "//" + $gl.host + ":" + $gl.port ;
+$gl.url=url; 
+
+
+$gl.urladdr.host=$gl.host;
+$gl.urladdr.port=$gl.port;
+$gl.urladdr.protocall=$gl.protocall;
+$gl.urladdr.url=$gl.url;
 
 
 $gl.fetchPostCors=fetchPostCors;
@@ -299,22 +345,9 @@ export const download=(filename, text)=>{
 }
 $gl.download=download
 
-export const addrParamsToObject=()=>{
-  var pairs = window.location.search.substring(1).split("&"),
-    obj = {},
-    pair,
-    i;
 
-  for ( i in pairs ) {
-    if ( pairs[i] === "" ) continue;
 
-    pair = pairs[i].split("=");
-    obj[ decodeURIComponent( pair[0] ) ] = decodeURIComponent( pair[1] );
-  }
 
-  return obj;
-}
-$gl.addrParamsToObject=addrParamsToObject
 
 
 

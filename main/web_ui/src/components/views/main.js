@@ -1,4 +1,4 @@
-import React,{ Component,lazy,Suspense } from 'react';
+import React,{ useState,useEffect,useRef, Component,lazy,Suspense } from 'react';
 import "../../App.css";
 import { ContextStore } from '../common/contextStore';
 import { Homepage } from './homepage';
@@ -60,9 +60,250 @@ let Public=lazy(() =>{
     
 });
 
+let getWindowDimensions=()=>{
+    let width =  window.innerWidth 
+    let  height = window.innerHeight 
+    return {
+      width,
+      height,
+    };
+}
+
+// purpose of Main2 is to eventually replace Main , class component with current standard use and maintained function components 
+export const Main=(props)=>{
+    let initC=useRef(true);
+
+    let [isLoggedIn, setIsLoggedIn]=useState(false);
+    let [background, setBackground]=useState("white");
+    let [testStuff, setTestStuff]=useState("dfdf");
+    let [isAuthHasRun , setIsAuthHasRun]=useState(false);
+    let [about, setAbout]=useState({});
+    let [themes, setThemes]=useState({
+        name : "",
+        themes : [],
+    });
+    let [windowDimensions, setWindowDimensions ]=useState( getWindowDimensions() );
+    
+    let tt={
+        state : {
+            isLoggedIn, setIsLoggedIn,
+            background, setBackground,        
+            isAuthHasRun , setIsAuthHasRun,
+            about, setAbout,
+            themes, setThemes,
+            windowDimensions , setWindowDimensions ,
+        }
+    }
+
+    let userid="";
+
+    // init
+    useEffect(()=>{
+        if (initC.current){
+            initC.current=false;
+
+            let userid=$gl.getCookie("userid")
+            
+            if (typeof(userid)==="undefined" || userid===""){}else{
+                    isAuth( { userid : userid} , function(dt){                
+                        if (dt.data.auth===true || dt.data.loggedin===true){
+                            isLoggedInSet(true)                            
+                        };
+                        
+                    })
+            }
+
+            window.addEventListener('resize', handleResize)
+
+        }
+
+        return ()=>{
+            window.removeEventListener('resize', handleResize);
+        }
+
+   },[]);
 
 
-export class Main extends Component {
+    let handleResize=()=>{                
+        setWindowDimensions( getWindowDimensions() );
+    }
+    
+    
+
+    let isLoggedInSet=(isLoggedIn, cb)=>{        
+        setIsLoggedIn(isLoggedIn);
+        if (typeof(cb)==="function"){
+            cb()
+        }
+    }
+
+        
+    let wd=tt.state.windowDimensions.width
+    let hd=tt.state.windowDimensions.height
+
+    
+    let addr=$gl.urladdr;    
+    let pathnames=Array.isArray(addr.pathnames)===true? addr.pathnames : [];
+    let urlparams=addr.params;   
+
+    let usePublic=true;
+
+    if (usePublic){
+        usePublic=false;            
+        if (pathnames.length){
+            if (pathnames[0]==="public"){
+                usePublic=true;
+            };
+        }
+    }
+
+    let PublicPage=()=>{     
+        return (
+            <ContextStore.Provider 
+                value={{
+                    isLoggedIn,
+                    isLoggedInSet,                            
+                    tt : tt,
+                    windowSize : {width : wd ,height : hd },
+                    pathnames : pathnames,
+                }}
+            >    
+                {/* <header className='App-header'> */}
+                <div
+                    style={{
+                        minHeight: "100vh",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        //fontSize: "calc(10px + 2vmin)",                                
+                        color: "black",
+                    }}
+                >                        
+                    
+                    <React.Suspense fallback={<div></div>}>
+                        <ContextStore.Provider
+                            value={{                                        
+                                isLoggedIn,
+                                isLoggedInSet,                            
+                                tt : tt,
+                                windowSize : {width : wd ,height : hd },
+                                urlPaths : pathnames,
+                                urlParams : urlparams,
+                            }}
+                        >
+                            <Public/>   
+                        </ContextStore.Provider>
+                        
+                    </React.Suspense>    
+                            
+                </div>
+                
+            </ContextStore.Provider> 
+        );            
+    }
+
+    let homepageE
+    homepageE=(()=>{
+        if (isLoggedIn!==true){
+            //let params = new URLSearchParams(window.location.search);
+            
+            if (usePublic){
+                
+                return PublicPage();
+            }
+
+            return (
+                <ContextStore.Provider 
+                    value={{
+                        isLoggedIn,
+                        isLoggedInSet,                            
+                        tt : tt,
+                        windowSize : {width : wd ,height : hd },
+                        addr : addr,
+                    }}
+                >    
+                    {/* <header className='App-header'> */}
+                    <div
+                        style={{
+                            minHeight: "100vh",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            //fontSize: "calc(10px + 2vmin)",                                
+                            color: "black",
+                        }}
+                    >                        
+                        <Homepage/>                        
+                                  
+                    </div>
+                    
+                </ContextStore.Provider>   
+            )
+        }
+    })();
+
+    let generalViewE
+    generalViewE=(()=>{
+        if (isLoggedIn===true){
+            if (usePublic){
+                return PublicPage();
+            }
+
+            return (
+            <ContextStore.Provider 
+                    value={{
+                        isLoggedIn,
+                        isLoggedInSet,
+                        tt : tt,
+                        testStuff,
+                        windowSize : {width : wd ,height : hd },
+                        addr : addr,                        
+                    }}
+                >                       
+                    <GeneralView/>                   
+            </ContextStore.Provider>   
+            )
+        }
+    })();
+    
+    return (
+        <div
+            style={{  
+                    position : "absolute",
+                    height : "100%", width : "100%" , 
+                    top : 0 , left : 0, margin : 0,
+                    //overflow : "scroll"
+                    //overflow : "hidden"
+            }}
+        >   
+            <React.Suspense fallback={<div></div>}>
+                <ContextStore.Provider
+                    value={{                                        
+                        tt : tt,
+                        addr : addr,
+                    }}
+                >
+                    <Background themes={themes} />
+                </ContextStore.Provider>
+                
+            </React.Suspense>
+                                
+            {homepageE}
+            
+            {generalViewE}     
+            
+        </div> 
+    );
+
+}
+
+
+// ================= old #todo remove
+
+
+export class Main_old extends Component {
     constructor(props){
         super(props)
 
@@ -113,22 +354,7 @@ export class Main extends Component {
           width,
           height,
         };
-    }
-
-    setBackground_old=(bck)=>{
-        this.setState({ background : bck },()=>{
-            window.document.body.style.background = bck;
-            let app=window.document.querySelector('.App')
-            app.style.background=bck
-            let appheader=window.document.querySelector('.App-header')
-            if (appheader){
-                appheader.style.background=bck
-            }else{
-
-            }
-    
-        })
-    }
+    }   
 
     isLoggedInSet=(isLoggedIn, cb)=>{
         this.setState({ isLoggedIn : isLoggedIn})
@@ -168,8 +394,6 @@ export class Main extends Component {
                     usePublic=true;
                 };
             }
-
-
         }
         
         let PublicPage=()=>{     
@@ -258,7 +482,7 @@ export class Main extends Component {
                     </ContextStore.Provider>   
                 )
             }
-        })()
+        })();
 
         let generalViewE
         generalViewE=(()=>{
@@ -283,7 +507,7 @@ export class Main extends Component {
                 </ContextStore.Provider>   
                 )
             }
-        })()
+        })();
 
         
 
