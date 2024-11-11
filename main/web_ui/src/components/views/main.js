@@ -92,7 +92,7 @@ export const Main=(props)=>{
             about, setAbout,
             themes, setThemes,
             windowDimensions , setWindowDimensions ,
-        }
+        }        
     }
 
     let userid="";
@@ -221,6 +221,9 @@ export const Main=(props)=>{
                         tt : tt,
                         windowSize : {width : wd ,height : hd },
                         addr : addr,
+                        about, setAbout,
+                        themes, setThemes,
+                        background, setBackground, 
                     }}
                 >    
                     {/* <header className='App-header'> */}
@@ -259,7 +262,10 @@ export const Main=(props)=>{
                         tt : tt,
                         testStuff,
                         windowSize : {width : wd ,height : hd },
-                        addr : addr,                        
+                        addr : addr,      
+                        about, setAbout,
+                        themes, setThemes,
+                        background, setBackground,                   
                     }}
                 >                       
                     <GeneralView/>                   
@@ -283,6 +289,9 @@ export const Main=(props)=>{
                     value={{                                        
                         tt : tt,
                         addr : addr,
+                        about, setAbout,
+                        themes, setThemes,
+                        background, setBackground, 
                     }}
                 >
                     <Background themes={themes} />
