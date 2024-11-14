@@ -16,7 +16,8 @@ export const stylec={
     buttons : {},
     unputs : {},
     labels : {},
-}
+};
+
 
 let background=(()=>{
     return (
@@ -113,7 +114,28 @@ export const Main=(props)=>{
                     })
             }
 
-            window.addEventListener('resize', handleResize)
+            window.addEventListener('resize', handleResize);
+
+
+
+            (async ()=>{
+                // appNameMain
+                //let file='cviews/appNameMain.json';
+                //return import(`../${ file}`)
+                window["vwAppConfigMain"]={};
+                try {
+                    let file='cviews/appConfigMain.json';
+                     //return import(`../${ file}`)
+                    const appConfigMain = await import(`../${ file}`);
+                       
+                        console.log('Config loaded: cviews/appConfigMain.json', appConfigMain.default);
+                        window["vwAppConfigMain"]=appConfigMain.main;
+                        
+                    } catch (error) {
+                        console.log('Config file not found : cviews/appConfigMain.json'); // , error
+                        // You can set default config or handle the missing file here
+                  }
+            })();
 
         }
 

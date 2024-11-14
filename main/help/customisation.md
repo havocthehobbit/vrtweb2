@@ -17,6 +17,11 @@
         * menus/main.jsx
             * replace menu witho your own
 
+* public folders
+    * create a jsx in cview called mainPublic.jsx
+        * then customise that however you want
+        * that is accessible through the ...myurl/public , "public" route  . 
+
 
 
 ### backend end ( nodejs)
@@ -25,7 +30,7 @@
         * note that you can also find template examples to copy from into the modules folder ( main/node_serv/templates/custom_testmod )
     * the custom_??? folder should contain at least one javascript file , for example "myNewModule.js". However it is not limited to one , you can create as many as you want .
         * these javascript files will auto run, however while it is not needed , inorder to use alot of built in functionalit y you will need to create and export an object .
-        * example , "myNewModule.js" :
+        * example , "myNewModule.js" : 
             * ...
             ```js
                 let mod_name="testmod"
@@ -46,3 +51,14 @@
                 }
                 module.exports[mod_name]=main;
             ```
+
+
+* plugins 
+    * plugins can be , additional web components that add front end or backend functionality to your web app or assets like icons , images , fonts 
+    * there are some standard plugins that come with vrtweb , are installable from remote repositories or designers and admins can create shareable or reusable plugins ,     
+        * vDev , a plugin of its own , can help manage and assist to install and create plugins 
+        * notible folders 
+            * where plugins packages are generally stored ( pre install )
+                * main/setup/packages/...    ...all_custom &  ...all 
+                    * all_custom can be created and your custom plugin folder can be dropped in , then instaled once they are there 
+                    * all plugins must be stored as folders , that contain at minimal a plugins.json file , which is what tells the system the version of the plugin and destination paths that plugins must be installed in as well as other addional useful data regarding the plugin 
