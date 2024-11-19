@@ -876,7 +876,8 @@ let autoLoadModules=function (fpath) {
 }
 
 // need to do a auto fetch maindb object *vdb and add function/vars to  schema and generalDbFns
-let auto_mod_folders=[]        
+let auto_mod_folders=[];
+let auto_mod_foldersTypePropDB=[]        ;
 let filespath=path.join(__dirname, "../modules");        
 
 // todo
@@ -888,10 +889,126 @@ feach( files  , function(f,i){
     var stat=fs.lstatSync(filespath + "/" + f) 
     if (stat.isDirectory()) {
         if (f.startsWith("customdb_") ){
+
             auto_mod_folders.push(f)          
         }
     }
 })
+
+// needs to look if it has type dbJS inside it
+let autoLoadModulesTypePropDB=function (fpath) {    
+    var mds={};
+    var skip_exp_name=false;
+    var params={}
+
+    let mustConstainProp="type";
+    let mustConstainPropVal="dbJS";
+    let mustRunFn="auto_run";
+
+    if ( !isUn(arguments[1]) ){
+        if (isOb(arguments[1])){
+            params=arguments[1]
+        }else{
+            skip_exp_name=arguments[1]
+        }
+        
+    }
+
+    if ( !isUn(arguments[2]) ){
+        if (isOb(arguments[2])){
+            params=arguments[2]
+        }
+        
+    }
+
+    
+
+    var stat=fs.lstatSync(fpath);
+    if (stat.isDirectory()) {
+        // we have a directory: do a tree walk
+        var files=fs.readdirSync(fpath);
+        var f, l = files.length;
+        for (var i = 0; i < l; i++) {
+            f = path.join(fpath, files[i]);
+            if (f.endsWith(".js")){ 
+                //console.log("require( " , f , " )")
+                var temp=require(f)
+                //mds[f.replace("\.js", "")]=
+                if (skip_exp_name ){ // dont use export name , just use export library values id object has been exported 
+                    if ( isOb(temp)){
+                        feach(temp, function(val,prop){                
+                            feach(val, function(val2,prop2){
+                                mds[prop2]=val2
+                            })
+                        })
+                        
+                    }else{
+                        feach(temp, function(val,prop){                
+                            mds[prop]=val                    
+                        })
+                    }
+                    
+                }else{
+                    let containsAutoRun=false;
+                    let containsAutoRunProp="";
+                    let containsType=false;
+                    let containsTypeProp="";
+                    feach(temp, function(val,prop){                
+                        //mds[prop]=val
+                        //console.log(prop)
+                        if (params.mustRunFn){
+                            if (mds[prop]){
+                                console.log("mds[prop]" , mds[prop]);
+                                if (!isUn(mds[prop][params.mustRunFn] )){
+                                    containsAutoRun=true;
+                                    containsAutoRunProp=prop;
+                                    //mds[prop]["auto_run"](params)
+                                };
+                            };
+                        }
+                        if (params.mustConstainProp){
+                            if (mds[prop]){
+                                if (!isUn(mds[prop][params.mustConstainProp] )){
+                                    if (mds[prop][mustConstainProp] === params.mustConstainPropVal ){
+                                        containsType=true;
+                                        containsTypeProp=prop;
+                                        //mds[prop]["auto_run"](params)
+                                    }
+                                };
+                            };
+                        };
+                    })
+
+                    if (containsType){
+                        feach(temp, function(val,prop){   
+                            mds[prop]=val
+                        })
+
+                        if (containsAutoRun){
+                            mds[containsAutoRunProp][mustRunFn](params)
+                        }
+                    }
+                }
+            
+            
+    
+            }
+        }
+    }
+    return mds;
+}
+
+// TypePropDB
+feach( files  , function(f,i){                    
+    var stat=fs.lstatSync(filespath + "/" + f) 
+    if (stat.isDirectory()) {
+        if (f.startsWith("custom_") ){
+            auto_mod_foldersTypePropDB.push(f)          
+        }
+    }
+})
+
+// ===============================================================================
 
 // runs js code in custom_ and run initial main.auto_run if it exists
 let mds={}
@@ -904,6 +1021,32 @@ feach(auto_mod_folders , function(file,i){ // if starts with  l_node_modules_aut
             mds[modname]=mdsTmp[modname]
         }    
 })
+
+
+
+let mdsTypePropDB={}
+feach(auto_mod_foldersTypePropDB , function(file,i){ // if starts with  l_node_modules_auto_ then auto load file in                               
+        var temp_DIR = path.join(filespath, file);        
+        
+        let mdsTmp=autoLoadModulesTypePropDB(temp_DIR,{
+            mustConstainProp : "type",
+            mustConstainPropVal : "dbJS",
+            mustRunFn : "auto_run"
+        });
+        
+        
+        for ( let modname in mdsTmp){
+            if (mdsTmp[modname].type==="dbJS"){
+                //mdsTypePropDB[modname]=mdsTmp[modname]
+                mds[modname]=mdsTmp[modname]
+            }    
+        }    
+        
+})
+
+// ==============================================================
+
+
 feach( mds, (r,p)=>{    
     
     if (r.db){
