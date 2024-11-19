@@ -364,7 +364,7 @@ export const useMyLayout=(props)=>{
                                     margin : 0, padding : 0,
                                     display : "inline-block",
                                 }}
-                            >KCS Daily Checks</h3>                     
+                            >title</h3>                     
 
                             {wWidth + " x " + wHeight}
 
