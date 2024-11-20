@@ -953,23 +953,25 @@ let autoLoadModulesTypePropDB=function (fpath) {
                     let containsAutoRunProp="";
                     let containsType=false;
                     let containsTypeProp="";
+
                     feach(temp, function(val,prop){                
                         //mds[prop]=val
                         //console.log(prop)
                         if (params.mustRunFn){
-                            if (mds[prop]){
-                                console.log("mds[prop]" , mds[prop]);
-                                if (!isUn(mds[prop][params.mustRunFn] )){
+                            if (temp[prop]){
+                                //console.log("mds[prop]" , mds[prop]);
+                                if (!isUn(temp[prop][params.mustRunFn] )){
                                     containsAutoRun=true;
                                     containsAutoRunProp=prop;
                                     //mds[prop]["auto_run"](params)
                                 };
                             };
                         }
+
                         if (params.mustConstainProp){
-                            if (mds[prop]){
-                                if (!isUn(mds[prop][params.mustConstainProp] )){
-                                    if (mds[prop][mustConstainProp] === params.mustConstainPropVal ){
+                            if (temp[prop]){
+                                if (!isUn(temp[prop][params.mustConstainProp] )){
+                                    if (temp[prop][params.mustConstainProp] === params.mustConstainPropVal ){                                        
                                         containsType=true;
                                         containsTypeProp=prop;
                                         //mds[prop]["auto_run"](params)
@@ -977,7 +979,7 @@ let autoLoadModulesTypePropDB=function (fpath) {
                                 };
                             };
                         };
-                    })
+                    });
 
                     if (containsType){
                         feach(temp, function(val,prop){   
@@ -985,7 +987,7 @@ let autoLoadModulesTypePropDB=function (fpath) {
                         })
 
                         if (containsAutoRun){
-                            mds[containsAutoRunProp][mustRunFn](params)
+                            mds[containsAutoRunProp][params.mustRunFn](params)
                         }
                     }
                 }
@@ -1002,7 +1004,7 @@ let autoLoadModulesTypePropDB=function (fpath) {
 feach( files  , function(f,i){                    
     var stat=fs.lstatSync(filespath + "/" + f) 
     if (stat.isDirectory()) {
-        if (f.startsWith("custom_") ){
+        if (f.startsWith("custom_") ){            
             auto_mod_foldersTypePropDB.push(f)          
         }
     }
@@ -1028,15 +1030,17 @@ let mdsTypePropDB={}
 feach(auto_mod_foldersTypePropDB , function(file,i){ // if starts with  l_node_modules_auto_ then auto load file in                               
         var temp_DIR = path.join(filespath, file);        
         
+        let mustConatinProp="type";
+        let mustConatinType="dbJS";        
         let mdsTmp=autoLoadModulesTypePropDB(temp_DIR,{
-            mustConstainProp : "type",
-            mustConstainPropVal : "dbJS",
+            mustConstainProp : mustConatinProp,
+            mustConstainPropVal : mustConatinType,
             mustRunFn : "auto_run"
         });
         
-        
-        for ( let modname in mdsTmp){
-            if (mdsTmp[modname].type==="dbJS"){
+                
+        for ( let modname in mdsTmp){            
+            if (mdsTmp[modname][mustConatinProp]===mustConatinType){
                 //mdsTypePropDB[modname]=mdsTmp[modname]
                 mds[modname]=mdsTmp[modname]
             }    
