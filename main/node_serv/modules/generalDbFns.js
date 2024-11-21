@@ -987,7 +987,7 @@ let autoLoadModulesTypePropDB=function (fpath) {
                         })
 
                         if (containsAutoRun){
-                            mds[containsAutoRunProp][params.mustRunFn](params)
+                            //mds[containsAutoRunProp][params.mustRunFn](params)
                         }
                     }
                 }

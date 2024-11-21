@@ -24,72 +24,78 @@ let isUn=$cn.isUn
 
 lgs.add(`start ${settings.name} ${settings.host}`)
 
-let DnMain={ db : undefined , dbA : undefined }
-// init DB and set global db client 
-if (settings.dbtype==="mongodb" ){
-    let MongoInst=require('./l_node_modules/mongodb.js').MongoInst
-    MongoInst.initAdmin({ "host" : settings.dbHost, "dbname" : settings.dbName , consolelogdebug : false},()=>{
-        let dbName=settings.dbName
-        if (MongoInst.statusAdmin===true ){ 
-            let dbA=MongoInst.dbAdmin;
-            gdb.dbA=dbA;
-            DnMain.dbA=dbA;
+let mainAppFn=async ()=>{
+    let DnMain={ db : undefined , dbA : undefined }
+    
+    // init DB and set global db client 
+    if (settings.dbtype==="mongodb" ){
+            let MongoInst=require('./l_node_modules/mongodb.js').MongoInst
+            await MongoInst.initAdmin({ "host" : settings.dbHost, "dbname" : settings.dbName , consolelogdebug : false},async (dt)=>{
+            let dbName=settings.dbName;
+            
+            if (MongoInst.statusAdmin===true ){ 
+                let dbA=MongoInst.dbAdmin;
+                gdb.dbA=dbA;
+                gdb.dbAdmin=dbA;
+                
+                DnMain.dbA=dbA;
+                DnMain.dbAdmin=dbA;
+                
+                await dbA.listDatabases()
+                .then(async (dbrs)=>{
+                    let dbExists=false;
+                    dbrs.databases.forEach((r,i) => {
+                        if (r.name===dbName){
+                            dbExists=true;
+                        }
+                    });                    
                     
-            dbA.listDatabases()
-            .then((dbrs)=>{
-                let dbExists=false;
-                dbrs.databases.forEach((r,i) => {
-                    if (r.name===dbName){
-                        dbExists=true;
-                    }
+                    //MongoInst.client.close();
+                    //MongoInst.clientAdmin.close();
+                    
+                }).catch((err)=>{
+                    console.log( "list db error", err);
                 });
                 
-                MongoInst.init({ "host" : settings.dbHost, "dbname" : settings.dbName , consolelogdebug : true},()=>{
-                    if (MongoInst.status===true){
-                        let db=MongoInst.db                       
-                        gdb.db=db
-                        DnMain.db=db
+            }
+        });
+        await MongoInst.init({ "host" : settings.dbHost, "dbname" : settings.dbName , consolelogdebug : true}, async (dt1)=>{
 
-                        var users = db.collection('users')
+            if (MongoInst.status===true){
+                let db=MongoInst.db ;                      
+                gdb.db=MongoInst.db;
+                DnMain.db=db;                
 
-                        users.find({ userid : "admin"}).toArray()
-                        .then((dt)=>{ 
-                            if (dt.length===0){ 
-                                users.updateOne( { "userid" : "admin" , "group" : "admin" , "password" : "admin123"} ,{ "$set" : { "email" : "...@....com"}}, {upsert : true })
-                                .then((dt)=>{
-                                    console.log("\n\admin user inserted") 
-                                })
-                                .catch((err)=>{ cl("err : ", dt) })
-                                }
+                
+                var users = await db.collection('users');
+
+                users.find({ userid : "admin"}).toArray()
+                .then((dt)=>{ 
+                    if (dt.length===0){ 
+                        users.updateOne( { "userid" : "admin" , "group" : "admin" , "password" : "admin123"} ,{ "$set" : { "email" : "...@....com"}}, {upsert : true })
+                        .then((dt)=>{
+                            console.log("\n\admin user inserted") 
                         })
-                        .catch((err)=>{ cl("err : ", dt) })
+                        .catch((err)=>{ cl("err : ", dt) });
                     }
                 })
-                
-                //MongoInst.client.close();
-                //MongoInst.clientAdmin.close();
-                
-            }).catch((err)=>{
-                console.log( "list db error", err)
-            });
-        }
-    })
-}
+                .catch((err)=>{ cl("err : ", dt) });
+            }
+        });
+    }
 
-let httpAppParams= { useHttpServer : true}
+    let httpAppParams= { useHttpServer : true}
 
-gdb.progParams.adminProgParamResetPass( httpAppParams , ()=>{})
-gdb.progParams.adminProgParamListUsers( httpAppParams , ()=>{})
-gdb.progParams.addUsersProgParamResetPass( httpAppParams , ()=>{})
-gdb.progParams.setUserPassProgParamResetPass( httpAppParams , ()=>{})
+    gdb.progParams.adminProgParamResetPass( httpAppParams , ()=>{});
+    gdb.progParams.adminProgParamListUsers( httpAppParams , ()=>{});
+    gdb.progParams.addUsersProgParamResetPass( httpAppParams , ()=>{});
+    gdb.progParams.setUserPassProgParamResetPass( httpAppParams , ()=>{});
 
-let app
-
-setTimeout(()=>{
+    let app=undefined;
+    
     if (httpAppParams.useHttpServer===true){ // prevent starting https server if a prog parameter requires something , like prompt input
-        // initlise http server       
-
-        ApiInst.init({ db : gdb.db, dbA : gdb.dbA, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs ,plugins }, ()=>{
+        // initlise http server               
+        ApiInst.init({ db : gdb.db, dbA : gdb.dbA, dbAdmin : gdb.dbA, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs ,plugins }, ()=>{
             // initialisation of listener complete        
         })
         app=ApiInst.app
@@ -97,7 +103,7 @@ setTimeout(()=>{
         app={
                 get:()=>{},
                 post:()=>{}
-            }
+        }
     }
 
     //==============================================================================================================
@@ -310,6 +316,9 @@ setTimeout(()=>{
 
     })
 
-},2000)
 
+
+}
+
+mainAppFn();
 
