@@ -140,7 +140,9 @@ export const Main=(props)=>{
         }
 
         return ()=>{
-            window.removeEventListener('resize', handleResize);
+            //console.log("unmount")
+            // this is suppose to be called when umounting component but it seems to being called unexpectantly
+            //  window.removeEventListener('resize', handleResize);            
         }
 
    },[]);
@@ -160,8 +162,9 @@ export const Main=(props)=>{
     }
 
         
-    let wd=tt.state.windowDimensions.width
-    let hd=tt.state.windowDimensions.height
+    let wd=windowDimensions.width;
+    let hd=windowDimensions.height;
+    //console.log("main.js wd,hd : ",wd,hd);
 
     
     let addr=$gl.urladdr;    
