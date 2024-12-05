@@ -50,25 +50,25 @@ export class Mermaid extends React.Component {
         if (props.cmpt){
             this.cmpt=props.cmpt
         }
+        if (props.width){
+            this.width=props.width
+        }
+        if (props.height){
+            this.height=props.height
+        }
+        if (props.position){
+            this.position=props.position
+        }
+        if (props.display){
+            this.display=props.display
+        }
         mermaid.initialize({startOnLoad:false});
         mermaid.mermaidAPI.initialize();
     }
 
     componentDidMount() { 
         let tt=this
-       /*
-        mermaid.initialize({
-            mermaid : {
-                startOnLoad: true,
-                useMaxWidth : true,
-            },
-            startOnLoad: true,
-            useMaxWidth : false,
-            
-        })   
-        mermaid.contentLoaded();
-        */
-
+       
         mermaid.contentLoaded();
         
 
@@ -76,46 +76,18 @@ export class Mermaid extends React.Component {
         let mermaidObserverOpts = {
             attributes: true
         };
-        if (false){
-            document.querySelectorAll('.mermaid').forEach(function(el) {
-                let observer = new MutationObserver((entries) => {
-                    let target = entries[0].target;
-                    
-                    // Act only when the element becomes visible
-                    if(target.classList.contains('visible')) {
-                        // Get the contents of the Mermaid element
-                        let html = el.textContent;
-        
-                        // Generate a unique-ish ID so we don't clobber existing graphs
-                        // This is definitely quick and dirty and could be improved to 
-                        // avoid collisions when many charts are used
-                        //let id = 'graph-' + Math.floor(Math.random() * Math.floor(1000));
-                        let id="mermaid-chart" + "_" + tt.id
-                        // Actually render the chart
-                        mermaid.mermaidAPI.render(id, html, content => {
-                            el.innerHTML = content;
-                        });
-        
-                        // Disconnect the observer, since the chart is now on the page. 
-                        // There's no point in continuing to watch it
-                        observer.disconnect();
-                    }
-                });
-        
-                observer.observe(el, mermaidObserverOpts);
-            });
-        }
-
-
-       // mermaid.mermaidAPI.render()
-        //mermaid.contentLoaded();
 
     }
 
     id=uuidv4()
+
+    width=600
+    height=600  
+    position="relative"
+    display="block"  
     
 
-    render() {
+    render(){
         let tt=this
         //console.log("mermaid-chart" + "_" + tt.id)
         
@@ -129,11 +101,8 @@ export class Mermaid extends React.Component {
 
         return (
             <div
-                style={{ position : "relative",width : 600,height : 600  }}
-            >   
-                
-                
-                
+                style={{ position : tt.position, display : tt.display ,width : tt.width,height : tt.height  }}
+            >                   
                 {E}
               
             </div>
@@ -169,13 +138,31 @@ export const MermaidCmpt=(props)=>{
     if (props.src){
         mermadeTxtDef=props.src;
     }
+
+    let width=600;
+    if (props.width){
+        width=props.width;
+    }
+    let height=600;
+    if (props.height){
+        height=props.height;
+    }
+    let position="relative";
+    if (props.position){
+        position=props.position;
+    }
+    let display="block"  ;
+    if (props.display){
+        display=props.display;
+    }
+
     
     let [mermadeTxt, setMermadeTxt]=useState(mermadeTxtDef);
 
     useEffect(()=>{
         if (initC.current){
             initC.current=false;
-            
+
         }
     },[]);
 
@@ -194,6 +181,58 @@ export const MermaidCmpt=(props)=>{
 
 
     },[props.src,props.text]);
+
+    useEffect(()=>{
+        if (props.onChange){  
+            if (props.src || props.text){
+                if (mermadeTxt!==props.src){          
+                    if (mermadeTxt!==props.src){                
+                        props.onChange({value : mermadeTxt, downloadFn : ()=>{downloadFn} });
+                    }
+                }
+                if (mermadeTxt!==props.text){          
+                    if (mermadeTxt!==props.text){                
+                        props.onChange({value : mermadeTxt, downloadFn : ()=>{downloadFn} });
+                    }
+                }
+            }else{
+                props.onChange({value : mermadeTxt, downloadFn : ()=>{downloadFn} });
+            }
+        }       
+       
+    },[mermadeTxt]);
+
+    /*
+        useEffect(()=>{
+            if (props.src){    
+                
+                
+            }
+        },[props.src]);
+
+        useEffect(()=>{
+            if (props.src){    
+                
+                
+            }
+        },[props.src]);
+
+
+        useEffect(()=>{
+            if (props.src){    
+                
+                
+            }
+        },[props.src]);
+
+
+        useEffect(()=>{
+            if (props.src){    
+                
+                
+            }
+        },[props.src]);
+    */
 
 
 
@@ -390,46 +429,48 @@ export const MermaidCmpt=(props)=>{
         })();
     }
 
+    let downloadFn=()=>{
+
+        let svg=document.querySelector(".mermaid").firstChild;
+        if (!svg) return;
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+
+        // Set dimensions
+        canvas.width = svg.clientWidth;
+        canvas.height = svg.clientHeight;
+
+        img.onload = () => {
+
+            /// background white
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ///
+            ctx.drawImage(img, 0, 0);
+            const pngData = canvas.toDataURL("image/png");
+
+            // Download image
+            const link = document.createElement("a");
+            link.href = pngData;
+            link.download = "diagram.png";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+
+    };
+
     let downloadE
     if (hasDownload){
         downloadE=(()=>{
 
             return (
                 <button
-                    onClick={()=>{
-
-                        let svg=document.querySelector(".mermaid").firstChild;
-                        if (!svg) return;
-                        const svgData = new XMLSerializer().serializeToString(svg);
-                        const canvas = document.createElement("canvas");
-                        const ctx = canvas.getContext("2d");
-                        const img = new Image();
-
-                        // Set dimensions
-                        canvas.width = svg.clientWidth;
-                        canvas.height = svg.clientHeight;
-
-                        img.onload = () => {
-
-                            /// background white
-                                ctx.fillStyle = "white";
-                                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                            ///
-                            ctx.drawImage(img, 0, 0);
-                            const pngData = canvas.toDataURL("image/png");
-
-                            // Download image
-                            const link = document.createElement("a");
-                            link.href = pngData;
-                            link.download = "diagram.png";
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                        };
-
-                        img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
-
-                    }}                
+                    onClick={downloadFn}                
                 >download</button>
 
             )
@@ -460,6 +501,16 @@ export const MermaidCmpt=(props)=>{
                                 let val=e.target.value;
                                 setMermadeTxt(val);
 
+                            }}
+                            onBlur={(e)=>{
+                                let val=e.target.value;
+
+                                if (props.onChange){
+                                    props.onChange({value : val, e : e });
+                                }
+
+                                //setMermadeTxt(val);
+                                 
                             }}
                         />    
 
@@ -496,6 +547,10 @@ export const MermaidCmpt=(props)=>{
                     <Mermaid 
                         key={Math.random()}
                         chart={mermadeTxt} 
+                        width={width}
+                        height={height}
+                        position={position}
+                        display={display}
                     />  
                 }
             </div>
