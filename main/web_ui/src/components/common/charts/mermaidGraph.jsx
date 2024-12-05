@@ -144,19 +144,77 @@ export class Mermaid extends React.Component {
 
 
 
-export const MermaidCmpt=()=>{
+export const MermaidCmpt=(props)=>{
     let initC=useRef(true);
-    let [mermadeTxt, setMermadeTxt]=useState(mchart1);
+    
+    let hasExamples=false;
+    if (props.hasExamples){
+        hasExamples=props.hasExamples;
+    }
+
+    let hasTextBox=false;
+    if (props.hasTextBox){
+        hasTextBox=props.hasTextBox;
+    }
+
+    let hasDownload=false;
+    if (props.hasDownload){
+        hasDownload=props.hasDownload;
+    }
+    
+    let mermadeTxtDef=mchart1;
+    if (props.text){
+        mermadeTxtDef=props.text;
+    }
+    if (props.src){
+        mermadeTxtDef=props.src;
+    }
+    
+    let [mermadeTxt, setMermadeTxt]=useState(mermadeTxtDef);
 
     useEffect(()=>{
         if (initC.current){
             initC.current=false;
-
+            
         }
     },[]);
 
+
+    useEffect(()=>{
+        if (props.src){            
+            if (mermadeTxt!==props.src){
+                setMermadeTxt(props.src)
+            }
+        }
+        if (props.text){
+            if (mermadeTxt!==props.text){
+                setMermadeTxt(props.text)
+            }            
+        }
+
+
+    },[props.src,props.text]);
+
+
+
+    // -------------------------------------------
+
+        let style={}
+
+        if (props.style){
+            style={...style,...props.style}
+
+        }
+
+        if (props.styleOverride){
+            style=props.style;
+        }
+
+    // -------------------------------------------
+
+
     let examplesE
-    if (true){
+    if (hasExamples){
         examplesE=(()=>{
 
             return (
@@ -332,36 +390,11 @@ export const MermaidCmpt=()=>{
         })();
     }
 
-    return (
-            <div
-                style={{
+    let downloadE
+    if (hasDownload){
+        downloadE=(()=>{
 
-                }}
-            >
-                <div>
-                    {examplesE}
-                    
-                    <textarea   
-                        style={{
-                            position : "absolute",
-                            right : 0,
-                            top : 50,
-                            display : "inline-block",
-
-                            width : 600,height : 300
-                        }}
-                        value={mermadeTxt}
-                        onChange={(e)=>{
-                            let val=e.target.value;
-                            setMermadeTxt(val);
-
-                        }}
-                    />    
-                </div>      
-
-                <a href="https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNpVUV1vgjAU_StNn1xiE0Bk4tui2UeWKBHNsoWXSq_QAC0rRbMY__vaDpbt8dxzzj09t1ecSwZ4iQkhmdBc17BEGd6vEpTQvAKd4Uw4rnWQHEHTTCDkEX9ulansVQ4okcpJEfIjMvMts4ZOc0E1l-IPPQtINHNG-OxBGOumb46gftgoJLFb-5BXQl5qYEUDQv_TxBGJYxdANUXb06mDMdozr_KcfwcdqDOwkYjs8LB7GvG9C1m9jnhhcZI-j9gF7NL9gH3PPfl9M2LX8PHlFwfED9zONy6YvAzjYEH80LVdlZBXXd8MRBia87mMgypswURyoceGfmR6xC5ism3tATtEBTM_whgXxd2gigMSzOe_l5icqeL0WAOqQRS6dDI8xQ2ohnJm_vhqbRnWJTSQYWtkVFVWdjM62muZfokcL7XqYYqV7IsSL0-07gzqW0Y1rDktFG1GSUvFh5TNILp9A99qr5A">help</a>                         
-
-
+            return (
                 <button
                     onClick={()=>{
 
@@ -398,6 +431,65 @@ export const MermaidCmpt=()=>{
 
                     }}                
                 >download</button>
+
+            )
+
+        })();
+    }
+
+
+    let textBoxE;
+
+    if (hasTextBox){
+        
+        textBoxE=(()=>{
+
+            return (
+
+                        <textarea   
+                            style={{
+                                position : "absolute",
+                                right : 0,
+                                top : 50,
+                                display : "inline-block",
+
+                                width : 600,height : 300
+                            }}
+                            value={mermadeTxt}
+                            onChange={(e)=>{
+                                let val=e.target.value;
+                                setMermadeTxt(val);
+
+                            }}
+                        />    
+
+            )
+
+        })()
+    }
+
+
+
+    return (
+            <div
+                style={style}
+            >
+                <div>
+                    {examplesE}                    
+                    {textBoxE}
+                </div>      
+
+                {(()=>{
+                    if (hasExamples){
+                        return (
+                            <a href="https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNpVUV1vgjAU_StNn1xiE0Bk4tui2UeWKBHNsoWXSq_QAC0rRbMY__vaDpbt8dxzzj09t1ecSwZ4iQkhmdBc17BEGd6vEpTQvAKd4Uw4rnWQHEHTTCDkEX9ulansVQ4okcpJEfIjMvMts4ZOc0E1l-IPPQtINHNG-OxBGOumb46gftgoJLFb-5BXQl5qYEUDQv_TxBGJYxdANUXb06mDMdozr_KcfwcdqDOwkYjs8LB7GvG9C1m9jnhhcZI-j9gF7NL9gH3PPfl9M2LX8PHlFwfED9zONy6YvAzjYEH80LVdlZBXXd8MRBia87mMgypswURyoceGfmR6xC5ism3tATtEBTM_whgXxd2gigMSzOe_l5icqeL0WAOqQRS6dDI8xQ2ohnJm_vhqbRnWJTSQYWtkVFVWdjM62muZfokcL7XqYYqV7IsSL0-07gzqW0Y1rDktFG1GSUvFh5TNILp9A99qr5A">help</a>                         
+                        )
+                    }
+                })()}
+                
+
+
+                
 
 
                 { 
