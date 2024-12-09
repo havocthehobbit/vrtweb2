@@ -470,6 +470,12 @@ export const MermaidCmpt=(props)=>{
 
             return (
                 <button
+                    style={{
+                        background : "lightgrey",
+                        border : "none",
+                        borderRadius : 3,
+                        fontSize : 10,
+                    }}
                     onClick={downloadFn}                
                 >download</button>
 
@@ -528,6 +534,7 @@ export const MermaidCmpt=(props)=>{
                 <div>
                     {examplesE}                    
                     {textBoxE}
+                    {downloadE}
                 </div>      
 
                 {(()=>{
