@@ -62,3 +62,52 @@
                 * main/setup/packages/...    ...all_custom &  ...all 
                     * all_custom can be created and your custom plugin folder can be dropped in , then instaled once they are there 
                     * all plugins must be stored as folders , that contain at minimal a plugins.json file , which is what tells the system the version of the plugin and destination paths that plugins must be installed in as well as other addional useful data regarding the plugin 
+
+
+
+### data/settings
+
+* "extraJson" : 
+    * express json data handling middleware parameters for the express backend
+    * defaults : extraJson : { limit : '100mb' };
+* "extraJUrlEncode" : 
+    * express URL ecoding middleware parameters for the express backend
+    * extraJUrlEncode : {extended: true};
+
+
+
+* "name"
+    * name of the project web server
+    * ...
+* "desc"
+    * descriptions , can be any text you wish to include.
+    * ...
+* "env":
+    * enviroment of this server , can be named anything , like Production , Test , Development ...
+    
+* "host"
+    * local server host or ip, that requests will be forwarded or proxied to.
+    * ...
+* "port"
+    * ...
+* "pathFrontEndPublic
+    * path that html entry files will be served from.
+    * ...
+* 
+* "dbName
+    * database name, can be anything , recommended to be named the same as your environment.
+    * ...
+* "dbHost"
+    * hostname or ip of the database server, most small to medium web servers are usually hosted on the same server as the web server , so default is 127.0.0.1 .
+    * ...
+* "dbtype"
+    * database vender type , mongodb, mysql , oracledb, surrealdb. jsonlocalfiledb , etc... , 
+    * ...
+* 
+* "jwtSecret
+    * ...
+* "cookieSecret"
+    * ...
+* "cookieExpires"
+    * expiration of cookies , for auto login expirery 
+    * ...
