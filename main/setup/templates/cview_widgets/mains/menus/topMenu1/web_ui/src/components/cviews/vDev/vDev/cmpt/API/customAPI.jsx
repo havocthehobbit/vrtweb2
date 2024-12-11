@@ -7,19 +7,98 @@ import { useState,useEffect,useRef,useContext ,Context , useMemo, useCallback} f
 //import { v4 as uuidv4 } from 'uuid';
 import { customAPIdata } from "./customAPIdata"
 // custom API
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+//import { githubDark } from '@uiw/codemirror-theme-github';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 
 export const CustomAPI=(props)=>{
        
-    let [nameSpaceAPI, setNameSpaceAPI]=useState("nameSpaceAPI")
-    let [nameSpaceAPITxt, setNameSpaceAPITxt]=useState("nameSpaceAPI")
+    let nameSpaceAPIDef="nameSpaceAPI";
+    if (props.nameSpaceAPI){
+        nameSpaceAPIDef=props.nameSpaceAPI;
+    }
+    let nameAPIDef="nameAPI";
+    if (props.nameAPI){
+        nameAPIDef=props.nameAPI;
+    }
+
+    let [nameSpaceAPI, setNameSpaceAPI]=useState(nameSpaceAPIDef);
+    let [nameSpaceAPITxt, setNameSpaceAPITxt]=useState(nameSpaceAPIDef);
     
-    let [nameAPI, setNameAPI]=useState("nameAPI")
-    let [nameAPITxt, setNameAPITxt]=useState("nameAPI")
+    let [nameAPI, setNameAPI]=useState(nameAPIDef)
+    let [nameAPITxt, setNameAPITxt]=useState(nameAPIDef)
     
 
     let customObj=customAPIdata.Obj({ name : nameAPI , nameSpace : nameSpaceAPI})
     //
     let chookDefFile=customObj.customAPI;
+    let customAPIboilerplate=customObj.customAPIboilerplate;
+
+    // --------------------------------------------------------------------------------
+
+
+    useEffect(()=>{
+        onChange({ value : chookDefFile})        
+    },[chookDefFile]);
+
+    useEffect(()=>{
+        onChangeBoilerplate({ value : customAPIboilerplate})        
+    },[customAPIboilerplate]);
+    
+
+    useEffect(()=>{
+
+    },[customAPIboilerplate]);
+
+    useEffect(()=>{
+        if (nameSpaceAPI!==props.nameSpaceAPI){
+            setNameSpaceAPI(props.nameSpaceAPI);
+            setNameSpaceAPITxt(props.nameSpaceAPI);
+          
+        }
+    },[props.nameSpaceAPI]);
+
+    useEffect(()=>{
+        if (nameAPI!==props.nameAPI){
+            setNameAPI(props.nameAPI);
+            setNameAPITxt(props.nameAPI);
+        }
+    },[props.nameAPI]);
+
+    // --------------------------------------------------------------------------------
+
+    let onChange=()=>{};
+    if (props.onChange){
+        if (typeof(props.onChange)==="function"){
+            onChange=props.onChange;
+        }
+    }
+
+    let onChangeBoilerplate=()=>{};
+    if (props.onChangeBoilerplate){
+        if (typeof(props.onChangeBoilerplate)==="function"){
+            onChangeBoilerplate=props.onChangeBoilerplate;
+        }
+    }
+
+    let onNameSpaceChange=()=>{};
+    if (props.onNameSpaceChange){
+        if (typeof(props.onNameSpaceChange)==="function"){
+            onNameSpaceChange=props.onNameSpaceChange;
+        }
+    }
+
+    let onNameChange=()=>{};
+    if (props.onNameChange){
+        if (typeof(props.onNameChange)==="function"){
+            onNameChange=props.onNameChange;
+        }
+    }
+
+
+
+    // --------------------------------------------------------------------------------
 
     let style={
         position  : "relative",
@@ -87,6 +166,30 @@ export const CustomAPI=(props)=>{
             >
                 <label>custom API</label>                
                 <br/>
+                <CodeMirror 
+                    style={{
+                        textAlign : "left",
+                        width : 1000,
+                        height : 300,
+                        fontSize : 12,
+                    }}
+                    
+                    value={chookDefFile} 
+                    //height="200px"
+                    extensions={[javascript({ jsx: true })]} 
+                    //theme={githubDark}
+                    theme={vscodeDark}
+                    
+                    onChange={(val)=>{
+                        //let val=e.target.value;
+                        //setCmptNameTxt(val)
+                    }} 
+                    onBlur={(val)=>{
+                        //let val=e.target.value;
+                        //setCmptName(val)
+                    }}
+                />
+                {/*
                 <textarea 
                     style={{
                         width : 800,
@@ -97,6 +200,7 @@ export const CustomAPI=(props)=>{
 
                     }}
                 />
+                */}
             </div>
 
            

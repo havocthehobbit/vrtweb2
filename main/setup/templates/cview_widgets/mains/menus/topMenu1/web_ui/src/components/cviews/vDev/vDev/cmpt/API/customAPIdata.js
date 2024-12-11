@@ -98,6 +98,45 @@ exData.Obj=(...args)=>{
 
     }
 
+ret.customAPIboilerplateSub1Name=``;
+ret.customAPIboilerplateSub1=``;
+
+ret.customAPIboilerplate=`
+let fs=require('fs')
+let path = require('path'); // this contanes some extra modules and standard library function that can be made to make life easier , please see help under nodejsVRTwebStdLib
+let ssh2 = require('ssh2');
+let csvparse = require('csv-parse') // csv-parser promisses offspin
+//import fastXML from "fast-xml-parser";
+let fastXML=require('fast-xml-parser')
+let multer=require('multer')
+
+let modName="${ret.customAPIboilerplateSub1Name}"
+
+let $cn=require("../../l_node_modules/libNative").$cn
+let cl=$cn.l
+let feach=$cn.each
+let isOb=$cn.isOb
+let isUn=$cn.isUn 
+
+let main={
+    type  : "apiJS",
+    auto_run : function(){ 
+        console.log("auto_running " + modName)
+    },
+    run_after_init : function(params){
+        console.log("run_after_init " + modName)
+    },
+    __app : [ // must be named __app to create a route
+        ${ret.customAPIboilerplateSub1}
+    ]
+}
+
+
+
+ 
+module.exports[modName]=main;
+`
+
 ret.customAPI=`{   // ${nameAPI}
     name  : "${nameSpace}",
     route : "/${nameAPI}", // if route not included it will defualt to to name
@@ -124,10 +163,10 @@ ret.customAPI=`{   // ${nameAPI}
                             res.jsonp({ data : nd ,
                                         status : "list" + "${nameAPI}" ,bStatus : true
                             })
-                            return
+                            return true;
                         });
                         
-                        return;
+                        return true;;
                     }
                     break;                            
                 case "new":
@@ -139,10 +178,10 @@ ret.customAPI=`{   // ${nameAPI}
                             ret[apiName + "ID"]=dt[apiName + "ID"]
                             
                             res.jsonp(ret)
-                            return
+                            return true;
                         });
                                                                                     
-                        return;
+                        return true;;
                     }
                     break;
                 case "save":
@@ -155,12 +194,12 @@ ret.customAPI=`{   // ${nameAPI}
                             let ret={ status : "save" + apiName, bStatus : true}
                             ret[apiName + "ID"]=dt[apiName + "ID"]                                    
                             res.jsonp(ret)                                        
-                            return
+                            return true;
                         });                  
                                                         
-                        return;
+                        return true;;
                     }
-                    break;
+                    break ;
                 case "get":
                     if (true){
                         if (bd[apiName + "ID"] ){
@@ -177,7 +216,7 @@ ret.customAPI=`{   // ${nameAPI}
                                 res.jsonp({ data : nd ,
                                     status : "get" + apiName ,bStatus : true
                                 })
-                                return
+                                return true;
                                 
                             });
                         }else{
@@ -185,11 +224,72 @@ ret.customAPI=`{   // ${nameAPI}
                                 data : [],
                                 status : "get" + apiName + ": no " + apiName + "ID" ,bStatus : false
                             })
+                            return true;
                         }
                                                             
-                        return;
+                        
                     }
-                    break;            
+                    break;        
+                case "delete":
+                    if (true){
+                        if (bd[apiName + "ID"] ){
+                            let nr={} 
+                            nr[apiName + "ID"]=bd[apiName + "ID"] 
+
+                            gdb[apiName].delete(nr, (dt)=>{                            
+                                let nd={}
+
+                                if (dt.length > 0){
+                                    nd=dt[0]
+                                }
+                                
+                                res.jsonp({ data : nd ,
+                                    status : "get" + apiName ,bStatus : true
+                                })
+                                return true;
+                                
+                            });
+                        }else{
+                            res.jsonp({ 
+                                data : [],
+                                status : "delete" + apiName + ": no " + apiName + "ID" ,bStatus : false
+                            })
+                            return true;
+                        }
+                                                            
+                        
+                    }
+                    break;        
+                case "archive":
+                    if (true){
+                        if (bd[apiName + "ID"] ){
+                            let nr={} 
+                            nr[apiName + "ID"]=bd[apiName + "ID"] 
+
+                            gdb[apiName].archive(nr, (dt)=>{                            
+                                let nd={}
+
+                                if (dt.length > 0){
+                                    nd=dt[0]
+                                }
+                                
+                                res.jsonp({ data : nd ,
+                                    status : "get" + apiName ,bStatus : true
+                                })
+                                return true;
+                                
+                            });
+                        }else{
+                            res.jsonp({ 
+                                data : [],
+                                status : "archive" + apiName + ": no " + apiName + "ID" ,bStatus : false
+                            })
+                            return true;
+                        }
+                                                            
+                        
+                    }
+                    break;                
             }
 
             res.jsonp({ status : "notype" + apiName,bStatus : false})

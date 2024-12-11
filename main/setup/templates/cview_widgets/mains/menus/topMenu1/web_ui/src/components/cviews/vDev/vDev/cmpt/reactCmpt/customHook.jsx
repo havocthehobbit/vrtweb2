@@ -8,15 +8,77 @@ import { useState,useEffect,useRef,useContext ,Context , useMemo, useCallback} f
 import { customHookdata } from "./customHookdata"
 // useHook : ret- hook;string ,cmpt;string 
 
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+//import { githubDark } from '@uiw/codemirror-theme-github';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+
+
+
 export const CustomHook=(props)=>{
     
-    let [cmptName, setCmptName]=useState("ComponentName")
-    let [cmptNameTxt, setCmptNameTxt]=useState("ComponentName")
+    let cmptNameDef="";
+    if (props.componentName){
+        cmptNameDef=props.componentName;
+    }
+
+    let [cmptName, setCmptName]=useState(cmptNameDef)
+    let [cmptNameTxt, setCmptNameTxt]=useState(cmptNameDef)
     
 
     let customHookObj=customHookdata.useHook({ name : cmptName })
     let chookUseHook=customHookObj.hook;
     let chookDefFile=customHookObj.cmpt;
+
+    // --------------------------------------------------------------------------------
+
+    useEffect(()=>{
+        if (props.componentName!==cmptName){
+            setCmptName(props.componentName);
+            setCmptNameTxt(props.componentName)
+        }
+    },[props.componentName]);
+
+
+    useEffect(()=>{
+        if (props.componentName!==cmptName){
+            onChangeName(cmptName);
+            // cmptNameTxt
+        }
+    },[cmptName]);
+
+    
+    useEffect(()=>{
+        if (typeof(props.onChangeHook)==="function"){
+            props.onChangeHook({ value : chookUseHook});
+        }        
+    },[chookUseHook]);
+
+
+    useEffect(()=>{
+        if (typeof(props.onChange)==="function"){
+            props.onChange({ value : chookDefFile})  
+        }       
+    },[chookDefFile]);
+
+    // --------------------------------------------------------------------------------
+
+
+    let onChangeName=()=>{};
+    if (props.onChangeName){
+        if (typeof(props.onChangeName)==="function"){
+            onChangeName=props.onChangeName;
+        }
+    }
+
+
+
+    // --------------------------------------------------------------------------------
+
+
+
+
+    // --------------------------------------------------------------------------------
 
     let style={
         position  : "relative",
@@ -43,9 +105,10 @@ export const CustomHook=(props)=>{
                 }}
             >
                 <label>component name</label>                
-                <br/>
+                <br/>                
                 <input 
                     value={cmptNameTxt}
+                    placeholder="ComponentName"
                     onChange={(e)=>{
                         let val=e.target.value;
                         setCmptNameTxt(val)
@@ -64,6 +127,28 @@ export const CustomHook=(props)=>{
             >
                 <label>Custom Compent File API Access from FE React</label>                
                 <br/>
+                <CodeMirror 
+                    style={{
+                        textAlign : "left",
+                        fontSize : 12,
+
+                    }}
+                    value={chookDefFile} 
+                    height="200px"
+                    extensions={[javascript({ jsx: true })]} 
+                    //theme={githubDark}
+                    theme={vscodeDark}
+                    
+                    onChange={(val)=>{
+                        //let val=e.target.value;
+                        //setCmptNameTxt(val)
+                    }} 
+                    onBlur={(val)=>{
+                        //let val=e.target.value;
+                        //setCmptName(val)
+                    }}
+                />
+                {/*
                 <textarea 
                     style={{
                         width : 800,
@@ -74,6 +159,7 @@ export const CustomHook=(props)=>{
 
                     }}
                 />
+                */}
             </div>
 
             <div
@@ -83,6 +169,30 @@ export const CustomHook=(props)=>{
             >
                 <label>use Custom Component</label>                
                 <br/>
+                <CodeMirror 
+                    style={{
+                        textAlign : "left",
+                        width : 800,
+                        height : 50,
+                        fontSize : 12,
+                    
+                    }}
+                    value={chookUseHook} 
+                    //height="200px"
+                    extensions={[javascript({ jsx: true })]} 
+                    //theme={githubDark}
+                    theme={vscodeDark}
+                    
+                    onChange={(val)=>{
+                        //let val=e.target.value;
+                        //setCmptNameTxt(val)
+                    }} 
+                    onBlur={(val)=>{
+                        //let val=e.target.value;
+                        //setCmptName(val)
+                    }}
+                />
+                {/*
                 <textarea 
                     style={{
                         width : 800,
@@ -92,7 +202,7 @@ export const CustomHook=(props)=>{
                     onChange={(e)=>{
 
                     }}
-                />
+                /> */}
             </div>
         </div>
     )

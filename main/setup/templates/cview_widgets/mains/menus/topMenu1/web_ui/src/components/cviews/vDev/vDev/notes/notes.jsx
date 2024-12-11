@@ -6,6 +6,7 @@ import { useState,useEffect,useRef,useContext ,Context , useMemo, useCallback} f
 //import { $cn } from "../../../../common/libNative"
 //import { v4 as uuidv4 } from 'uuid';
 
+import { ScratchPad  } from './scratchpad/scratchPad';
 
 
 export const Notes=(props)=>{
@@ -31,17 +32,16 @@ export const Notes=(props)=>{
         >
             Notes
             <br/>
-            <textarea 
-                value={mainNoteText}
+            <ScratchPad
+                namespace="vDevNotes"
                 style={{
+                    display :"inline-block",
                     position : "relative",
-                    width : "80%",
-                    height : "50%",
-                }}
-                onChange={(e)=>{
-                    let val=e.target.value;
-                    setMainNoteText(val)
-                }}
+                    //background : "",
+                    //width : widthScratchPatch,
+                    //height  : 800,
+                    margin : 5,
+                }}                
             />
         </div>
     )

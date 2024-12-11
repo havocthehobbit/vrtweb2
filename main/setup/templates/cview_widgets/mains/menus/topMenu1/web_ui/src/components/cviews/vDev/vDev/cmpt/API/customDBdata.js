@@ -831,6 +831,33 @@ exData.Obj=(...args)=>{
         })()
 }
 
+let boilerplateSub1=``;
+let boilerplateSub2modname=``;
+ret.boilerplate=`
+let mod_name="${boilerplateSub2modname}"
+let $cn=require("../../l_node_modules/libNative").$cn
+let cl=$cn.l
+let tof=$cn.tof
+let feach=$cn.each
+let isUn=$cn.isUn
+let isOb=$cn.isOb
+let crypto = require('crypto');
+
+var main={
+    type  : "dbJS",
+    "auto_run" : ()=>{
+        console.log("db lib : " , mod_name)
+    },
+    db : {
+        ${ boilerplateSub1 }
+    },
+    schemas : { // TODO
+        
+    }
+}
+
+module.exports[mod_name]=main;
+`;
 
 ret.customDB=`${nameAPI} : {
     apiName : "${nameAPI}",
@@ -852,7 +879,7 @@ ret.customDB=`${nameAPI} : {
         
         ${dbCalls["newRecStr"]}                      
             
-        let coll=db.collection(apiName)
+        let coll=db.collection(table1)
         
         coll.insertOne( newRec)
         .then((dt)=>{
@@ -883,8 +910,7 @@ ret.customDB=`${nameAPI} : {
 
         ${dbCalls["saveRecStr"]}
             
-        let coll=db.collection(apiName)
-        //coll.updateOne(searchBy, {$set: newRec})
+        let coll=db.collection(table1)        
         coll.updateOne(searchBy, {$set: newRec}, { upsert: true })
         .then((dt)=>{
             dt[apiName + "ID"]=newRec[apiName + "ID"]
@@ -902,6 +928,7 @@ ret.customDB=`${nameAPI} : {
         let temp=""
         let details=undefined
         let view=undefined
+        let newRec={}
 
         let cb=()=>{}
         if (typeof(cbp)==="function"){
@@ -913,8 +940,8 @@ ret.customDB=`${nameAPI} : {
 
         ${dbCalls["getRecStr"]}
     
-        let users=db.collection(apiName)
-        users.find(searchBy).toArray()
+        let coll=db.collection(table1)
+        coll.find(searchBy).toArray()
         .then((dt)=>{
             cb(dt)
         })
@@ -939,8 +966,8 @@ ret.customDB=`${nameAPI} : {
 
         ${dbCalls["listRecsStr"]}
         
-        let users=db.collection(apiName)
-        users.find(searchBy).toArray()
+        let coll=db.collection(table1)
+        coll.find(searchBy).toArray()
         .then((dt)=>{
             
             cb(dt)
@@ -950,11 +977,78 @@ ret.customDB=`${nameAPI} : {
             cb([], err)
         })
     },
+    delete : (frameworkdata ,params, cbp)=>{
+
+        let db=frameworkdata.generalDbFns.db
+        let temp=""
+        let details=undefined
+        let view=undefined
+        let newRec={}
+
+        let cb=()=>{}
+        if (typeof(cbp)==="function"){
+            cb=cbp
+        }
+
+        let apiName=main.db.${nameAPI}.apiName
+        let table1=main.db.${nameAPI}.tableName1
+
+        ${dbCalls["getRecStr"]}
+    
+        let coll=db.collection(table1)
+        coll.deleteOne(searchBy)
+        .then((dt)=>{
+            cb(dt)
+        })
+        .catch((err)=>{
+            cb([], err)
+        })
+    }, 
+    archive : (frameworkdata ,params, cbp)=>{
+
+        let db=frameworkdata.generalDbFns.db
+        let temp=""
+        let details=undefined
+        let view=undefined
+        let newRec={}
+
+        let cb=()=>{}
+        if (typeof(cbp)==="function"){
+            cb=cbp
+        }
+
+        let apiName=main.db.${nameAPI}.apiName
+        let table1=main.db.${nameAPI}.tableName1
+
+        ${dbCalls["getRecStr"]}
+    
+        let coll=db.collection(table1)
+        coll.find(searchBy).toArray()
+        .then((dt)=>{
+            let coll2=db.collection(table1 + "__Archive")
+            coll2.insertOne( dt[0])
+            .then((dt)=>{
+                dt[apiName + "ID"]=newRec[apiName + "ID"]
+                
+                cb(dt)
+            })
+            .catch((err)=>{
+                //console.log("3 err ", err)
+                cb([], err)
+            })
+        })
+        .catch((err)=>{
+            cb([], err)
+        })
+    }, 
  },
 `;
 
     return ret
 }
+
+
+
 
 
 

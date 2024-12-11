@@ -8,18 +8,20 @@ import { $cn } from "../../../../common/libNative"
 let tof=$cn.tof
 
 export const Db=(props)=>{
+    let initC=useRef(true);
     let [mainNoteText, setMainNoteText]=useState("");
 
-    let [databases,setDatabase]=useState([])
-    let [tables,setTables]=useState([])
-    let [createTableName,setCreateTableName]=useState("")
-    let [currentGetRecsName,setCurrentGetRecsName]=useState("")
-    let [currentGetRecs,setCurrentGetRecs]=useState([])
+    let [databases,setDatabase]=useState([]);
+    let [databasesDetails,setDatabaseDetails]=useState({});
+    let [tables,setTables]=useState([]);
+    let [createTableName,setCreateTableName]=useState("");
+    let [currentGetRecsName,setCurrentGetRecsName]=useState("");
+    let [currentGetRecs,setCurrentGetRecs]=useState([]);
 
-    let [insertRecsData,setInsertRecsData]=useState([])    
-    let insertRecsTemplateRef=useRef({})
+    let [insertRecsData,setInsertRecsData]=useState([]);
+    let insertRecsTemplateRef=useRef({});
 
-    let initC=useRef(true);
+    
 
     useEffect(()=>{
         if (initC.current){
@@ -33,8 +35,8 @@ export const Db=(props)=>{
     // ----------------------------------
 
     let listDbBE=(...args)=>{
-        let cb=()=>{}
-        let params={}
+        let cb=()=>{};
+        let params={};
 
         
         if (args.length === 1){
@@ -44,10 +46,10 @@ export const Db=(props)=>{
         
         if (args.length > 1){
             if (args[0]!==undefined){
-                params=args[0]    
+                params=args[0];
             }
             
-            cb=args[1]
+            cb=args[1];
         }
 
         let api="vDev"
@@ -573,6 +575,7 @@ export const Db=(props)=>{
             //let dtStr=JSON.stringify(dt,null,2); // alert(dtStr);
             
             setDatabase(data.all)
+            setDatabaseDetails(data)
         })
     }
 
@@ -612,6 +615,7 @@ export const Db=(props)=>{
             
         })
     }
+
     let deleteRec=(...args)=>{
 
         deleteRecBE(args[0],(dt)=>{
@@ -644,43 +648,75 @@ export const Db=(props)=>{
 
 
     let listDbE=(()=>{
-        let arrE=[]
+        let arrE=[];
+
+
+        let style={
+            position : "relative",
+            border : "solid thin grey",
+            width : 140,
+            height : 200,
+            overflow : "hidden",
+            margin : 4,
+            padding : 4,
+
+        };
+
+        let styleInner={
+            position : "relative",
+            
+            width : 130,
+            height : 190,
+            overflow : "auto",
+            textAlign : "left"
+        };
+
+        let styleEach={
+            position : "relative",
+            width : 200,
+            overflow : "hidden",
+
+        };
+
+        if (props.params){
+            if (props.params.allActive){
+                style.height=500;
+                styleInner.height=500;
+            }
+        }
+
 
         databases.forEach((r,i)=>{
+            let styleEachInst={...styleEach};
+            
+            if (databasesDetails.current===r.name){
+                styleEachInst.background="yellow";
+            }
+            
+            let sizeBytes=0;
+            if (typeof r.sizeBytes=== 'number'){
+                sizeBytes=r.sizeBytes/1000000;
+                sizeBytes=sizeBytes.toFixed(3);
+            }
+
             arrE.push(
                 <div
                     key={i}
-                    style={{
-                        
-                    }}
+                    style={styleEachInst}
                 >
-                    {r.name}
+                   <label style={{ fontSize : 15}} > {r.name}</label> 
+                   <label style={{ fontSize : 15}} > </label>
+                   <label style={{ fontSize : 12}} >( {sizeBytes}Mb ) </label>
                 </div>
             )
         })
 
         return (
             <div
-                style={{
-                    position : "relative",
-                    border : "solid thin grey",
-                    width : 140,
-                    height : 200,
-                    overflow : "hidden",
-                    margin : 4,
-                    padding : 4,
-
-                }}
+                style={style}
             >
                 <div
-                    style={{
-                        position : "relative",
-                        
-                        width : 130,
-                        height : 190,
-                        overflow : "auto",
-                        textAlign : "left"
-                    }}
+                    style={styleInner}
                 >   
                     Databases<br/>
                     ------------
@@ -693,22 +729,52 @@ export const Db=(props)=>{
 
 
     let listTablesE=(()=>{
-        let arrE=[]
+        let arrE=[];
+
+        let style={
+            position : "relative",
+            border : "solid thin grey",
+            width : 180,
+            height : 200,
+            overflow : "hidden",
+            margin : 4,
+            padding : 4,
+
+        };
+
+        let styleInner={
+            position : "relative",
+            
+            width : 170,
+            height : 190,
+            overflow : "auto",
+            textAlign : "left"
+        };
+
+        let styleEach={
+            cursor : "pointer",
+            padding  :2 ,
+            margin  : 1,
+            borderRadius : 4,
+            border : "solid thin black",
+            background  : "lightblue",
+            overflow : "hidden"
+
+        };
+
+        if (props.params){
+            if (props.params.allActive){
+                style.height=500;
+                styleInner.height=500;
+            }
+        }
 
         tables.forEach((r,i)=>{
             arrE.push(
                 <div
                     key={i}
                     tablename={r.name}
-                    style={{
-                        cursor : "pointer",
-                        padding  :2 ,
-                        margin  : 1,
-                        borderRadius : 4,
-                        border : "solid thin black",
-                        background  : "lightblue",
-
-                    }}
+                    style={styleEach}
                     onClick={(e)=>{
                         let val=e.target.getAttribute("tablename")
                         getRecs({name : val},(dt)=>{
@@ -725,26 +791,10 @@ export const Db=(props)=>{
 
         return (
             <div
-                style={{
-                    position : "relative",
-                    border : "solid thin grey",
-                    width : 140,
-                    height : 200,
-                    overflow : "hidden",
-                    margin : 4,
-                    padding : 4,
-
-                }}
+                style={style}
             >
                 <div
-                    style={{
-                        position : "relative",
-                        
-                        width : 130,
-                        height : 190,
-                        overflow : "auto",
-                        textAlign : "left"
-                    }}
+                    style={styleInner}
                 >   
                     Tables<br/>
                     ------------
@@ -806,11 +856,39 @@ export const Db=(props)=>{
 
 
     let getRecsE=(()=>{
-        let arrE=[]
+        let arrE=[];
 
-        let theaderArrE=[]
+        let theaderArrE=[];
+
+        let style={
+            position : "relative",
+            border : "solid thin grey",
+            width : 800,
+            height : 200,
+            overflow : "hidden",
+            margin : 4,
+            padding : 4,
+
+        };
+        let styleInner={
+            position : "relative",
+            
+            width : 790,
+            height : 190,
+            overflow : "auto",
+            textAlign : "left"
+        };
+        let styleEach={};
+
+
+        if (props.params){
+            if (props.params.allActive){
+                style.height=382;
+                styleInner.height=400;
+            }
+        }
         
-        let cMax=0
+        let cMax=0;
         currentGetRecs.forEach((r,i)=>{
             let arrTmpE=[]
             let arrTmpArr=[]
@@ -877,33 +955,41 @@ export const Db=(props)=>{
                         fontSize : 11,
                     }}
                 >
+                    
                     {arrTmpE}
                     
-                    <button 
+                    <td
                         recmongoid={r._id}
-                        onClick={(e)=>{
-                            let val=e.target.getAttribute("recmongoid")
-                            
-                            deleteRec({ name : currentGetRecsName ,  "_id" : val})
+                        style={{
+                            fontSize : 11,
                         }}
-                    >del</button>
+                    >
+                        <button     
+                            recmongoid={r._id}
+                            onClick={(e)=>{
+                                let val=e.target.getAttribute("recmongoid")
+                                
+                                deleteRec({ name : currentGetRecsName ,  "_id" : val})
+                            }}
+                        >del</button>
 
-                    <button 
-                        recmongoid={r._id}
-                        onClick={(e)=>{
-                            let val=e.target.getAttribute("recmongoid")
+                        <button 
+                            recmongoid={r._id}
+                            onClick={(e)=>{
+                                let val=e.target.getAttribute("recmongoid")
 
-                            let data={}
-                            try {
-                                data=JSON.parse(insertRecsData)
-                            } catch (error) {
-                                alert("parse Error",error)
-                                return 
-                            }
-                            
-                            updateRec({ name : currentGetRecsName ,  "_id" : val , data : data})
-                        }}
-                    >update</button>
+                                let data={}
+                                try {
+                                    data=JSON.parse(insertRecsData)
+                                } catch (error) {
+                                    alert("parse Error",error)
+                                    return 
+                                }
+                                
+                                updateRec({ name : currentGetRecsName ,  "_id" : val , data : data})
+                            }}
+                        >update</button>
+                    </td>
                 </tr>
             )
 
@@ -976,26 +1062,10 @@ export const Db=(props)=>{
 
         return (
             <div
-                style={{
-                    position : "relative",
-                    border : "solid thin grey",
-                    width : 800,
-                    height : 200,
-                    overflow : "hidden",
-                    margin : 4,
-                    padding : 4,
-
-                }}
+                style={style}
             >
                 <div
-                    style={{
-                        position : "relative",
-                        
-                        width : 790,
-                        height : 190,
-                        overflow : "auto",
-                        textAlign : "left"
-                    }}
+                    style={styleInner}
                 >   
                     Records - {currentGetRecsName}<br/>
                     ------------
@@ -1021,6 +1091,34 @@ export const Db=(props)=>{
     if (props.style){
         style={...style,...props.style}
     }
+
+    let styleSubMain={
+    }
+
+    let styleSubMainFrame={
+
+    }
+
+    if (props.params){
+        if (props.params.allActive){
+            style.height=800;
+            style.width=1200;            
+
+            styleSubMain.height=780;
+            styleSubMain.overflow="auto";
+
+            styleSubMainFrame.width="99%";
+            styleSubMainFrame.height=785;
+            styleSubMainFrame.borderRadius=5;
+            styleSubMainFrame.overflow="hidden";
+            styleSubMainFrame.border="solid thin lightgrey";
+            styleSubMainFrame.margin=6;
+
+        }
+    }
+
+
+
 
     return (
         <div
@@ -1055,7 +1153,37 @@ export const Db=(props)=>{
                         float : "left",
                     }}
                 >
-                    {createTableE}
+                    <div
+                        style={{
+                            display : "inline-block",
+                            // position : "relative",
+                            // width : 200,
+                        }}
+                    >
+                        {createTableE}
+                    </div>                    
+                    <div
+                        style={{
+                            display : "inline-block",
+                            // position : "relative",
+                            // width : 200,
+                        }}
+                    >
+                        {
+                           // createTableE
+                        }
+                    </div>                    
+                    <div
+                        style={{
+                            display : "inline-block",
+                            // position : "relative",
+                            // width : 200,
+                        }}
+                    >
+                        {
+                            // createTableE
+                        }
+                    </div>
                 </div>
                 <div
                     style={{

@@ -9,7 +9,7 @@ let crypto = require('crypto');
 
 var main={
     "auto_run" : ()=>{
-        console.log("db lib : vDev customDB")
+        console.log("db lib : ", mod_name)
     },
     db : {         
         projectsVdev : {
@@ -56,7 +56,31 @@ var main={
                     if (tof(params[temp])!=="undefined"){
                         newRec[temp]=params[temp]
                     }
-                                            
+                    temp="owner"
+                    if (tof(params[temp])!=="undefined"){
+                        newRec[temp]=params[temp]
+                    }
+
+                    temp="groups"
+                    if (tof(params[temp])!=="undefined"){
+                        newRec[temp]=params[temp]
+                    }
+
+                    temp="filepaths"
+                    if (tof(params[temp])!=="undefined"){
+                        newRec[temp]=params[temp]
+                    }else{
+                        newRec[ temp]=[]
+                    }
+
+                    temp="notes"
+                    if (tof(params[temp])!=="undefined"){
+                        newRec[temp]=params[temp]
+                    }
+                            
+                    
+                    newRec[ "dateCreated"]=new Date();
+                    newRec[ "datUpdated"]=new Date();
                 }       
                                               
                     
@@ -114,7 +138,30 @@ var main={
                             if (tof(params[temp])!=="undefined"){
                                 newRec[temp]=params[temp]
                             }
-                                                  
+
+                            temp="owner"
+                            if (tof(params[temp])!=="undefined"){
+                                newRec[temp]=params[temp]
+                            }
+
+                            temp="groups"
+                            if (tof(params[temp])!=="undefined"){
+                                newRec[temp]=params[temp]
+                            }
+
+                            temp="filepaths"
+                            if (tof(params[temp])!=="undefined"){
+                                newRec[temp]=params[temp]
+                            }
+
+                            temp="notes"
+                            if (tof(params[temp])!=="undefined"){
+                                newRec[temp]=params[temp]
+                            }
+
+                            newRec[ "datUpdated"]=new Date();
+                            
+                                                                            
                         }       
                         
                     
@@ -137,6 +184,7 @@ var main={
                 let temp=""
                 let details=undefined
                 let view=undefined
+                let newRec={}
         
                 let cb=()=>{}
                 if (typeof(cbp)==="function"){
@@ -201,6 +249,98 @@ var main={
                     cb([], err)
                 })
             },
+            delete : (frameworkdata ,params, cbp)=>{
+        
+                let db=frameworkdata.generalDbFns.db
+                let temp=""
+                let details=undefined
+                let view=undefined
+                let newRec={}
+        
+                let cb=()=>{}
+                if (typeof(cbp)==="function"){
+                    cb=cbp
+                }
+        
+                let apiName=main.db.projectsVdev.apiName
+                let table1=main.db.projectsVdev.tableName1
+        
+                                 
+                        searchBy={}
+                              
+                        newRec={...searchBy,...newRec}                     
+        
+                        if (true){        
+                                              
+                
+                            temp=apiName + "ID"
+                            if (tof(params[temp])!=="undefined"){
+                                searchBy[temp]=params[temp]
+                            } 
+                                                  
+                        }       
+                        
+            
+                let users=db.collection(apiName)
+                users.deleteOne(searchBy) // let result=await collection.deleteOne(params.data)
+                .then((dt)=>{
+                    cb(dt)
+                })
+                .catch((err)=>{
+                    cb([], err)
+                })
+            }, 
+            archive : (frameworkdata ,params, cbp)=>{
+        
+                let db=frameworkdata.generalDbFns.db
+                let temp=""
+                let details=undefined
+                let view=undefined
+                let newRec={}
+        
+                let cb=()=>{}
+                if (typeof(cbp)==="function"){
+                    cb=cbp
+                }
+        
+                let apiName=main.db.projectsVdev.apiName
+                let table1=main.db.projectsVdev.tableName1
+        
+                                 
+                searchBy={}
+                        
+                newRec={...searchBy,...newRec}                     
+
+                if (true){        
+                                        
+        
+                    temp=apiName + "ID"
+                    if (tof(params[temp])!=="undefined"){
+                        searchBy[temp]=params[temp]
+                    } 
+                                            
+                }       
+                        
+            
+                let coll=db.collection(apiName)
+                coll.find(searchBy).toArray()
+                .then((dt)=>{
+                    let coll2=db.collection(apiName + "__Archive")
+                    coll2.insertOne( dt[0])
+                    .then((dt)=>{
+                        dt[apiName + "ID"]=newRec[apiName + "ID"]
+                        
+                        cb(dt)
+                    })
+                    .catch((err)=>{
+                        //console.log("3 err ", err)
+                        cb([], err)
+                    })
+                })
+                .catch((err)=>{
+                    cb([], err)
+                })
+            }, 
          },
         
          

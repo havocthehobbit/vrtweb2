@@ -306,6 +306,91 @@ export const ExcaliDrawBase=(props ,excalidrawAPIRefIn)=>{
         }
         
     }
+
+    let propsC={
+        UIOptions : {
+            canvasActions: {
+                changeViewBackgroundColor: true,
+                clearCanvas: true,
+                //export: true,
+                loadScene: true,
+                saveScene: true,
+                theme: true,
+              },
+        },
+        user : { name: "Excalidraw User" },
+        theme : theme,
+        initialData : {
+            elements: [
+            {
+                type: "rectangle",
+                version: 141,
+                versionNonce: 361174001,
+                isDeleted: false,
+                id: "oDVXy8D6rom3H1-LLH2-f",
+                fillStyle: "hachure",
+                strokeWidth: 1,
+                strokeStyle: "solid",
+                roughness: 1,
+                opacity: 100,
+                angle: 0,
+                x: 100.50390625,
+                y: 93.67578125,
+                strokeColor: "#000000",
+                backgroundColor: "transparent",
+                width: 186.47265625,
+                height: 141.9765625,
+                seed: 1968410350,
+                groupIds: [],
+            },
+            ],
+            appState: { 
+                //zenModeEnabled: true, 
+                viewBackgroundColor: "#a5d8ff" 
+            },
+                scrollToContent: true
+        },
+        renderTopRightUI : () => {
+            return (
+            <button
+                style={{
+                    background: "#70b1ec",                                                    
+                    color: "#fff",
+                    width: "max-content",
+                    fontWeight: "bold",
+                    border: "none",
+                    borderRadius : 5
+                }}
+                onClick={() =>{ 
+                    //window.alert("This is dummy top right UI");
+                    console.log("excalidrawAPIRef" , excalidrawAPIRef)
+                    excalidrawAPIRef.current.setActiveTool({ type : "line", locked : false})
+                }}
+            >
+                line
+            </button>
+            );
+        },
+    }
+
+    let options={ zenModeEnabled: true };
+    if (props.options){
+        options={...options, ...props.options};
+    }
+    if (props.optionsOverride){
+        options={...props.optionsOverride};
+    }
+    if (props.viewModeEnabled){
+        propsC.viewModeEnabled=props.viewModeEnabled;
+    }
+    if (props.propsC){
+        propsC={...propsC,...props.propsC };
+    }
+    if (props.propsCOverride){
+        propsC=props.propsCOverride;
+    }
+
+
     //console.log("excalidrawAPI" ,excalidrawAPI)
     return (
         <div>          
@@ -328,6 +413,9 @@ export const ExcaliDrawBase=(props ,excalidrawAPIRefIn)=>{
                               
                         //#todo - take note of bellow line comment
                         //ref={(api) => setExcalidrawAPI(api)} //#todo - this ref causes a forward ref error and is not needed for the moment , so commented out 
+
+                        {...propsC}
+
                         excalidrawAPI={(...args)=>{
                             //console.log("excalidrawAPI 0 ... " , args[0]);
                             excalidrawAPIRef.current=args[0];
@@ -347,10 +435,10 @@ export const ExcaliDrawBase=(props ,excalidrawAPIRefIn)=>{
                             
                              
                         }}
-                        theme={theme}
+                        
                         //initialData={initialData}
-                        user={{ name: "Excalidraw User" }}
-                        options={{ zenModeEnabled: true }}
+                        
+                        options={options}
                         //onPointerDown={(e) => console.log("Pointer down", e)}
                         /*
                         onPointerDown={
@@ -371,6 +459,7 @@ export const ExcaliDrawBase=(props ,excalidrawAPIRefIn)=>{
 
                         //}}
 
+                        /*
                         initialData={{
                             elements: [
                             {
@@ -395,9 +484,14 @@ export const ExcaliDrawBase=(props ,excalidrawAPIRefIn)=>{
                                 groupIds: [],
                             },
                             ],
-                            appState: { zenModeEnabled: true, viewBackgroundColor: "#a5d8ff" },
-                            scrollToContent: true
+                            appState: { 
+                                //zenModeEnabled: true, 
+                                viewBackgroundColor: "#a5d8ff" 
+                            },
+                                scrollToContent: true
                         }}
+                        */
+
                         //onPointerDown={(e) => {
                         //    e.preventDefault();
                         //}} 
@@ -407,6 +501,7 @@ export const ExcaliDrawBase=(props ,excalidrawAPIRefIn)=>{
                         //Island App-toolbar App-toolbar--mobile
 
                         //works                                        
+                        /*
                         renderTopRightUI={() => {
                             return (
                             <button
@@ -427,17 +522,8 @@ export const ExcaliDrawBase=(props ,excalidrawAPIRefIn)=>{
                                 line
                             </button>
                             );
-                        }} 
-                        UIOptions={{
-                            canvasActions: {
-                                changeViewBackgroundColor: true,
-                                clearCanvas: true,
-                                //export: true,
-                                loadScene: true,
-                                saveScene: true,
-                                theme: true,
-                              },
-                        }}
+                        }} */
+                        
                     >
                        { /*
                          <MainMenu/> 

@@ -16,6 +16,7 @@ import { useWindowSize } from "../../../../common/widgets/containers/useWindowSi
 export const Views=(props)=>{
     let initC=useRef(true)
     let [updateStete,setUpdateStete]=useState(new Date());
+    
     // ---------------------------------  
     
     
@@ -3799,7 +3800,7 @@ export const Views=(props)=>{
                         
                         
                     </div>
-                )
+                );
 
 
                 i++;
@@ -4039,6 +4040,7 @@ export const Views=(props)=>{
 
                         currPosContE.push(
                             <div
+                                key={i}
                                 style={style}
                                 onClick={()=>{
                                     //#region click state state 
@@ -4102,113 +4104,115 @@ export const Views=(props)=>{
                                 // insert into from Layout Assets                             
                                 
                                 let assetName=layoutStatePropertiesPosAddName;
-                                if (layoutposContsODyn[assetName].assetSource){
-                                    assetName=layoutposContsODyn[assetName].assetSource;
-                                }
-                                if (layoutposContsODyn[assetName]){        
-                                    
-                                    if (layoutposContsStatesDyn[layoutcurrStateSel]){     
-                                        let nst0={...layoutposContsStates};   
-
-                                        let newInstanceID=""
-                                        let countIdx=0;
-                                        if (instances.current.counts[assetName]){
-                                            instances.current.counts[assetName].count++ ;
-                                        }else{
-                                            instances.current.counts[assetName]={
-                                                name : assetName,
-                                                count : 0,
-                                            }
-                                        } 
-                                        countIdx=instances.current.counts[assetName].count    
+                                if (layoutposContsODyn[assetName]){
+                                    if (layoutposContsODyn[assetName].assetSource){
+                                        assetName=layoutposContsODyn[assetName].assetSource;
+                                    }
+                                    if (layoutposContsODyn[assetName]){        
                                         
-                                        newInstanceID=assetName + "__inst" + countIdx  ;
-                                        
-                                        instances.current.all[newInstanceID]={...instanceEachDef};          
-                                        instances.current.all[newInstanceID].id=newInstanceID;
-                                        instances.current.all[newInstanceID].uuid=uuidv4();
-                                        instances.current.all[newInstanceID].dateCreate=new Date();
-                                        // instances.current.all[newInstanceID].properties={...instancesPropertiesDef};
+                                        if (layoutposContsStatesDyn[layoutcurrStateSel]){     
+                                            let nst0={...layoutposContsStates};   
 
-                                        if (layoutposContsODyn[assetName].assetSource){
-                                            instances.current.all[newInstanceID].assetSource=layoutposContsODyn[assetName].assetSource
-                                        }else{
-                                            instances.current.all[newInstanceID].assetSource=assetName;
-                                        }
-                                                                                
-                                        let currIdx=(()=>{
-                                            let foundI=false
-                                            let idx=0
-                                            nst0[layoutcurrStateSel].posCont.forEach((r1,i2)=>{
-                                                if (r1===layoutStatePropertiesPosContCurrSel ){
-                                                    foundI=true;
-                                                    idx=i2 + 1 ;
+                                            let newInstanceID=""
+                                            let countIdx=0;
+                                            if (instances.current.counts[assetName]){
+                                                instances.current.counts[assetName].count++ ;
+                                            }else{
+                                                instances.current.counts[assetName]={
+                                                    name : assetName,
+                                                    count : 0,
                                                 }
+                                            } 
+                                            countIdx=instances.current.counts[assetName].count    
+                                            
+                                            newInstanceID=assetName + "__inst" + countIdx  ;
+                                            
+                                            instances.current.all[newInstanceID]={...instanceEachDef};          
+                                            instances.current.all[newInstanceID].id=newInstanceID;
+                                            instances.current.all[newInstanceID].uuid=uuidv4();
+                                            instances.current.all[newInstanceID].dateCreate=new Date();
+                                            // instances.current.all[newInstanceID].properties={...instancesPropertiesDef};
+
+                                            if (layoutposContsODyn[assetName].assetSource){
+                                                instances.current.all[newInstanceID].assetSource=layoutposContsODyn[assetName].assetSource
+                                            }else{
+                                                instances.current.all[newInstanceID].assetSource=assetName;
+                                            }
+                                                                                    
+                                            let currIdx=(()=>{
+                                                let foundI=false
+                                                let idx=0
+                                                nst0[layoutcurrStateSel].posCont.forEach((r1,i2)=>{
+                                                    if (r1===layoutStatePropertiesPosContCurrSel ){
+                                                        foundI=true;
+                                                        idx=i2 + 1 ;
+                                                    }
+                                                })
+
+                                                if (foundI===false){
+                                                    return nst0[layoutcurrStateSel].posCont.length ; // same as push to end of last ;
+                                                }
+                                                return idx
+                                            })();
+                                            nst0[layoutcurrStateSel].posCont.splice(currIdx, 0,instances.current.all[newInstanceID].id)
+
+
+                                            let LayoutposContsODynTmp0
+                                            let  LayoutposContsStatesDynTmp0
+                                            setLayoutposContsODyn((st)=>{
+                                                let nst={...st}   
+
+                                                let layoutname=instances.current.all[newInstanceID].assetSource;
+                                                nst[newInstanceID]={...st[layoutname]};
+                                                nst[newInstanceID].name=newInstanceID;
+                                                nst[newInstanceID].assetSource=layoutname;
+                                                // #TODO generate new E  and key 
+                                                // nst[newInstanceID].generate({ key : newInstanceID});
+                                                LayoutposContsODynTmp0=nst
+                                                return nst;
+                                            })  ;                                 
+                                            setLayoutposContsStatesDyn((st)=>{
+                                                let nst={...st}   
+
+                                                nst[layoutcurrStateSel].posCont=nst0[layoutcurrStateSel].posCont;
+
+                                                LayoutposContsStatesDynTmp0=nst
+                                                return nst;
+                                            });
+                                            setCmptMe((st)=>{
+                                                let nst={...st};
+
+                                                if (nst.view.layoutposContsO){}else{
+                                                    nst.view.layoutposContsO={}
+                                                }
+                                                let layoutposContsOTmp={}
+                                                for ( let p in LayoutposContsODynTmp0){
+                                                    let r=LayoutposContsODynTmp0[p]
+                                                    layoutposContsOTmp[p]={
+                                                        assetSource : r.assetSource
+                                                    }
+                                                }
+                                                nst.view.layoutposContsO=layoutposContsOTmp
+                                                
+                                                // -------------------------------
+                                                if (nst.view.LayoutposContsStates){}else{
+                                                    nst.view.LayoutposContsStates={}
+                                                }
+                                                let LayoutposContsStatesDynTmp={}
+                                                for ( let p in LayoutposContsStatesDynTmp0){
+                                                    let r=LayoutposContsStatesDynTmp0[p]
+                                                    LayoutposContsStatesDynTmp[p]={
+                                                        name : r.name,
+                                                        posCont : r.posCont
+                                                    }
+                                                }
+                                                nst.view.LayoutposContsStates=LayoutposContsStatesDynTmp
+                                
+                                                return nst;
                                             })
 
-                                            if (foundI===false){
-                                                return nst0[layoutcurrStateSel].posCont.length ; // same as push to end of last ;
-                                            }
-                                            return idx
-                                        })();
-                                        nst0[layoutcurrStateSel].posCont.splice(currIdx, 0,instances.current.all[newInstanceID].id)
-
-
-                                        let LayoutposContsODynTmp0
-                                        let  LayoutposContsStatesDynTmp0
-                                        setLayoutposContsODyn((st)=>{
-                                            let nst={...st}   
-
-                                            let layoutname=instances.current.all[newInstanceID].assetSource;
-                                            nst[newInstanceID]={...st[layoutname]};
-                                            nst[newInstanceID].name=newInstanceID;
-                                            nst[newInstanceID].assetSource=layoutname;
-                                            // #TODO generate new E  and key 
-                                            // nst[newInstanceID].generate({ key : newInstanceID});
-                                            LayoutposContsODynTmp0=nst
-                                            return nst;
-                                        })  ;                                 
-                                        setLayoutposContsStatesDyn((st)=>{
-                                            let nst={...st}   
-
-                                            nst[layoutcurrStateSel].posCont=nst0[layoutcurrStateSel].posCont;
-
-                                            LayoutposContsStatesDynTmp0=nst
-                                            return nst;
-                                        });
-                                        setCmptMe((st)=>{
-                                            let nst={...st};
-
-                                            if (nst.view.layoutposContsO){}else{
-                                                nst.view.layoutposContsO={}
-                                            }
-                                            let layoutposContsOTmp={}
-                                            for ( let p in LayoutposContsODynTmp0){
-                                                let r=LayoutposContsODynTmp0[p]
-                                                layoutposContsOTmp[p]={
-                                                    assetSource : r.assetSource
-                                                }
-                                            }
-                                            nst.view.layoutposContsO=layoutposContsOTmp
                                             
-                                            // -------------------------------
-                                            if (nst.view.LayoutposContsStates){}else{
-                                                nst.view.LayoutposContsStates={}
-                                            }
-                                            let LayoutposContsStatesDynTmp={}
-                                            for ( let p in LayoutposContsStatesDynTmp0){
-                                                let r=LayoutposContsStatesDynTmp0[p]
-                                                LayoutposContsStatesDynTmp[p]={
-                                                    name : r.name,
-                                                    posCont : r.posCont
-                                                }
-                                            }
-                                            nst.view.LayoutposContsStates=LayoutposContsStatesDynTmp
-                            
-                                            return nst;
-                                        })
-
-                                        
+                                        }
                                     }
                                 }
                             }}
@@ -4382,19 +4386,21 @@ export const Views=(props)=>{
     if (vmodes["nomode"] || vmodes["edit"]){
 
         let arrE=[]
-
+        let iter=0;
         for ( let p in appFn){
             let r=appFn[p]
 
             arrE.push(
                 <div
+                    key={iter}
                     style={{
 
                     }}
                 >
                     {r.name} - {r.type}
                 </div>
-            )
+            );
+            iter++;
         }
 
         functionsE=(()=>{
@@ -4441,16 +4447,19 @@ export const Views=(props)=>{
         statesCmptE=(()=>{
 
             let states=[];
+            let iter=0;
             for ( let p in appStatePrev){
                 states.push(
                     <div
+                        key={iter}
                         style={{
                             border : "solid thin lightgrey"
                         }}
                     >
                         {p}
                     </div>
-                )
+                );
+                iter++;
             }
 
             return (
@@ -4740,7 +4749,7 @@ export const Views=(props)=>{
                     style.background="DarkCyan";
                 }                
                 
-                let ni2=i+ni1;
+                let ni2=i+ "_" +ni1;
                 arrE.push(
                     <div
                         key={ni2}
@@ -4819,7 +4828,7 @@ export const Views=(props)=>{
             let arrE=[]
 
             let multiselectmode=vmodesMultiMode
-
+            let iter=0;
             for (let p in vmodesTypes.modes){
                 let selected=false
                 if (vmodes[p]){
@@ -4837,13 +4846,14 @@ export const Views=(props)=>{
                 arrE.push(
                     <option
                         style={style}
-                        key={p}
+                        key={iter}
                         value={p}
                         //{p}
                     >
                         {p}
                     </option>
-                )
+                );
+                iter++;
 
             }
 

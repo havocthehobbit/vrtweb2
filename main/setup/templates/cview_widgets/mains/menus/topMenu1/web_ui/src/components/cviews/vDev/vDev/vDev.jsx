@@ -19,6 +19,9 @@ import { Notes } from "./notes/notes"
 import { Cmpt } from "./cmpt/cmpt"
 import { Schemas } from "./schemas/schema"
 import { Projects } from "./projects/projects"
+import { Plugins } from "./plugins/plugins";
+
+import { IDE } from "./ide/ide";
 
 export const VDev=(props)=>{
 
@@ -33,12 +36,18 @@ export const VDev=(props)=>{
         "Cmpt" : { "show" : true, "display" : "inline-block" },
         "Schemas" : { "show" : true, "display" : "inline-block" },
         "Projects" : { "show" : true, "display" : "inline-block" },
+        "Plugins" : { "show" : true, "display" : "inline-block" },
+        "IDE" : { "show" : true, "display" : "inline-block" },
         
     });    
     let [stylesStAll,setStylesStAll]=useState({ "show" : true})
 
+    let [allActive,setAllActive]=useState(true);
+    let [singleActive,setSingleActive]=useState("Db");
 
-    
+    let [projectNameCurr,setProjectNameCurr]=useState("");
+
+
     
     let wSize=useWindowSize();
 
@@ -67,6 +76,9 @@ export const VDev=(props)=>{
         "Cmpt" : {position : "relative"},
         "Schemas" : {position : "relative"},
         "Projects" : {position : "relative"},
+        "Plugins" : {position : "relative"},
+        "IDE" : {position : "IDE"},
+        
     }
   
     
@@ -91,6 +103,13 @@ export const VDev=(props)=>{
         }
     }
 
+
+    
+                
+    let paramsEach={
+        allActive : allActive
+    }
+
     return (
         <div
             style={style}
@@ -112,6 +131,8 @@ export const VDev=(props)=>{
                                 bg="grey"
                             }
 
+                            
+
                             arrE.push(
                                 <div
                                     key={p}
@@ -131,15 +152,34 @@ export const VDev=(props)=>{
                                     }}
                                     onClick={()=>{
                                         // stylesSt["Db"].show
-                                        let tmp=p; //"Db";
-                                        let show=!stylesSt[tmp].show;
-                                        setStylesSt((st)=>{
-                                            let nst={...st};
+                                        if  ( !allActive ){
+                                            let tmp=p; //"Db";
+                                            let show=!stylesSt[tmp].show;
+                                            setStylesSt((st)=>{
+                                                let nst={...st};
 
-                                            nst[tmp].show=show;
+                                                nst[tmp].show=show;
 
-                                            return nst;
-                                        })
+                                                return nst;
+                                            })
+                                        }else{
+                                            let curr=p;                                            
+
+                                            setStylesSt((st)=>{
+                                                let nst={...st};                                                
+                                          
+                                                for (let p3 in nst ){
+                                                    if (curr!==p3){
+                                                        nst[p3].show=false;
+                                                    }else{
+                                                        nst[p3].show=true;
+                                                    }
+                                                };
+    
+                                                return nst;
+                                            })
+                                            setSingleActive(curr);
+                                        }
                                     }}
                                 >
                                     {p}
@@ -151,6 +191,13 @@ export const VDev=(props)=>{
                         if (setStylesStAll.show===false){
                             bg="grey"
                         }
+                        if (allActive){
+                            bg="darkblue"
+                        }else{
+
+                        }
+
+
                         let p2="allconts"
                         arrE.push(
                             <div
@@ -169,22 +216,26 @@ export const VDev=(props)=>{
                                     fontSize : 9,
 
                                 }}
-                                onClick={()=>{                                    
-                                    let show=!stylesStAll.show;
-                                    setStylesStAll((st)=>{
-                                        let nst={...st};
-                                        nst.show=show;
-                                        return nst;
-                                    });
-                                    setStylesSt((st)=>{
-                                        let nst={...st};
+                                onClick={()=>{       
+                                    
+                                        let show=!stylesStAll.show;
+                                        setStylesStAll((st)=>{
+                                            let nst={...st};
+                                            nst.show=show;
+                                            return nst;
+                                        });
+                                        setStylesSt((st)=>{
+                                            let nst={...st};
 
-                                        for (let p3 in nst ){
-                                            nst[p3].show=show;
-                                        };
+                                            for (let p3 in nst ){
+                                                nst[p3].show=show;
+                                            };
 
-                                        return nst;
-                                    })
+                                            return nst;
+                                        })
+                                    
+                                    setAllActive( !allActive );
+                                    
                                     
                                 }}
                             >
@@ -206,6 +257,8 @@ export const VDev=(props)=>{
                     display : "inline-block",
                     margin : 5 
                 },...styles["Db"]}}
+                
+                params={paramsEach}
             />
 
             <Server
@@ -214,6 +267,8 @@ export const VDev=(props)=>{
                     display : "inline-block",
                     margin : 5 
                 },...styles["Server"]}}
+                
+                params={paramsEach}
             />
             
             <CiCd
@@ -222,6 +277,8 @@ export const VDev=(props)=>{
                     display : "inline-block",
                     margin : 5 
                 },...styles["CiCd"]}}
+                
+                params={paramsEach}
             />  
 
             <Features
@@ -230,6 +287,8 @@ export const VDev=(props)=>{
                     display : "inline-block",
                     margin : 5 
                 },...styles["Features"]}}
+                
+                params={paramsEach}
             /> 
             
             <Bugs
@@ -238,6 +297,8 @@ export const VDev=(props)=>{
                     display : "inline-block",
                     margin : 5 
                 },...styles["Bugs"]}}
+                
+                params={paramsEach}
             />  
 
             <Notes
@@ -246,11 +307,14 @@ export const VDev=(props)=>{
                     display : "inline-block",
                     margin : 5 
                 },...styles["Notes"]}}
+                
+                params={paramsEach}
             />  
 
             <br/>
 
             <Views
+                projectNameCurr
                 style={
                     {...{ 
                         position : "relaive",
@@ -259,6 +323,10 @@ export const VDev=(props)=>{
                         width : 600,
                     },...styles["Views"]}
                 }
+                
+                params={paramsEach}
+
+                projName={projectNameCurr}
             />
             <br/>
 
@@ -269,6 +337,10 @@ export const VDev=(props)=>{
                     margin : 5 ,
                     height : 600
                 },...styles["Cmpt"]}}
+                
+                params={paramsEach}
+
+                projName={projectNameCurr}
             />
             
             <br/>
@@ -281,6 +353,10 @@ export const VDev=(props)=>{
                     margin : 5 ,
                     height : 600
                 },...styles["Schemas"]}}
+                
+                params={paramsEach}
+
+                projName={projectNameCurr}
             />
 
 
@@ -290,7 +366,40 @@ export const VDev=(props)=>{
                     display : "inline-block",
                     margin : 5 
                 },...styles["Projects"]}}
+                
+                params={paramsEach}
+                
+                projName={projectNameCurr}
+
+                onChangeName={(dt)=>{
+                    //alert(JSON.stringify(dt));
+                    setProjectNameCurr(dt.name)
+                }}
             />
+
+            <Plugins
+                style={{...{ 
+                    position : "relaive",
+                    display : "inline-block",
+                    margin : 5 
+                },...styles["Plugins"]}}
+                
+                params={paramsEach}
+            />
+
+
+            <IDE
+                style={{...{ 
+                    position : "relaive",
+                    display : "inline-block",
+                    margin : 5 
+                },...styles["IDE"]}}
+                
+                params={paramsEach}
+            />
+
+
+        
 
             
             
