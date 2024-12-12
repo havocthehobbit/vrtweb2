@@ -1,0 +1,12 @@
+.excalidraw-toolbar {
+    position: relative;
+    z-index: 9999;
+    background:  red;
+  }
+
+
+  .App-toolbar{
+    position: relative;
+    z-index: 9999;
+    background:  red;
+  }
