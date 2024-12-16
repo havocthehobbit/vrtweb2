@@ -10,7 +10,7 @@
     "__version_code_state" : "alpha,beta,release,rc",
     "by" : "vrtweb",
     "dependencies" : [],
-    "install_post_message" : [ { "message" : "" }],
+    "install_post_message" : [ { "message" : "" }],    
     "files" :{ 
         "base_main_path" : "../",
         "all" : [

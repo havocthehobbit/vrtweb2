@@ -11,8 +11,20 @@
     "by" : "vrtweb",
     "dependencies" : [],
     "install_post_message" : [ { "message" : "" }],
+    "scripts" : [],
+    "runseq" : [],
     "files" :{ 
         "base_main_path" : "../",
+        "destFolderIncludingPluginFolder" : [ 
+            { 
+                "path" :"web_ui/src/components/cviews/vScratchpad",
+                "type" : "reactjsCview"
+            },
+            { 
+                "path" :"node_serv/modules/custom_vScratchPad",
+                "type" : "nodejsModule"
+            }
+        ],
         "all" : [
             
         ]
@@ -20,13 +32,67 @@
     "modules" : [],
     "__modules_eg" : [
         { 
-            "name" : "uuid",
-            "install_name" : "uuid",
+            "name" : "excalidraw",
+            "install_name" : "@excalidraw/excalidraw",
             "install_prog" : "npm",
             "install_args" : ["i" ,"--s","-f"],
-            "version" : "^9.0.0",
-            "type" : "nodejs"
-        }
+            "version" : "^0.17.0",
+            "type" : "reactjs",
+            "packageDependancyPropVal" : "\"@excalidraw/excalidraw\": \"0.17.0\"",
+            "note" : "issues with react 19 and 0.17.x versions , had to rever to 0.17.0 from 0.17.6 , works for react 18.2"
+        },
+        { 
+            "name" : "mermaid",
+            "install_name" : "mermaid",
+            "install_prog" : "npm",
+            "install_args" : ["i" ,"--s","-f"],
+            "version" : "^11.4.0",
+            "type" : "reactjs",
+            "packageDependancyPropVal" : "\"mermaid\": \"^11.4.0\"",
+            "note" : ""
+        },        
+        { 
+            "name" : "gantt-task-react",
+            "install_name" : "gantt-task-react",
+            "install_prog" : "npm",
+            "install_args" : ["i" ,"--s","-f"],
+            "version" : "^0.3.9",
+            "type" : "reactjs",
+            "packageDependancyPropVal" : "\"gantt-task-react\": \"^0.3.9\"",
+            "note" : ""
+        },
+        { 
+            "name" : "reactgrid",
+            "install_name" : "@silevis/reactgrid",
+            "install_prog" : "npm",
+            "install_args" : ["i" ,"--s","-f"],
+            "version" : "^4.1.1",
+            "type" : "reactjs",
+            "packageDependancyPropVal" : "\"@silevis/reactgrid\": \"^4.1.1\"",
+            "note" : ""
+        },
+        { 
+            "name" : "react-markdown-preview",
+            "install_name" : "@uiw/react-markdown-preview",
+            "install_prog" : "npm",
+            "install_args" : ["i" ,"--s","-f"],
+            "version" : "^4.1.16",
+            "type" : "reactjs",
+            "packageDependancyPropVal" : "\"@uiw/react-markdown-preview\": \"^4.1.16\"",
+            "note" : ""
+        },
+        { 
+            "name" : "react-markdown-editor",
+            "install_name" : "@uiw/react-markdown-editor",
+            "install_prog" : "npm",
+            "install_args" : ["i" ,"--s","-f"],
+            "version" : "^5.13.0",
+            "type" : "reactjs",
+            "packageDependancyPropVal" : "\"@uiw/react-markdown-editor\": \"^5.13.0\"",
+            "note" : ""
+        }        
+        
+    
     ]
 
 }
