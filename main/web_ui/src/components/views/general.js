@@ -14,9 +14,13 @@ import "./general.css"
 //import Item1 from '../cviews/old/menus/item1';
 
 var Main=lazy(() =>{    
-    let file='cviews/main.jsx';
-     return import(`../${ file}`) // only works with template ticks that lookup a variable , wont work with literals    
-    .catch(() => ({ default: () => <div></div> }))
+        let file='cviews/main.jsx';
+        let retProm=import(`../${ file}`); // only works with template ticks that lookup a variable , wont work with literals    
+        return retProm 
+    .catch((error) => { 
+        console.log("cviews/main component load error : ",error);
+        return ({ default: () => <div></div> })
+    })
 })
 
 var RightBar=lazy(() =>{    
