@@ -1064,7 +1064,7 @@ feach( mds, (r,p)=>{
                             schemas : schemas,
                         }
                         //nf.apply(this,[nr])
-                        nf(nr,...args)
+                        return nf(nr,...args);
                     }
                 }
               
