@@ -79,6 +79,9 @@
 /main/node_serv/startdevc.sh
 /main/node_serv/cstartdev.sh
 
+/main/node_serv/babel.config.js
+/main/node_serv/webpack.config.js
+
 
 /main/node_serv/modules/custom_*
 /main/node_serv/modules/customdb_*
