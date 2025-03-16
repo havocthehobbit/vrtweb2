@@ -31,57 +31,58 @@ let mainAppFn=async ()=>{
     if (settings.dbtype==="mongodb" ){
             let MongoInst=require('./l_node_modules/mongodb.js').MongoInst
             await MongoInst.initAdmin({ "host" : settings.dbHost, "dbname" : settings.dbName , consolelogdebug : false},async (dt)=>{
-            let dbName=settings.dbName;
-            
-            if (MongoInst.statusAdmin===true ){ 
-                let dbA=MongoInst.dbAdmin;
-                gdb.dbA=dbA;
-                gdb.dbAdmin=dbA;
+                let dbName=settings.dbName;
                 
-                DnMain.dbA=dbA;
-                DnMain.dbAdmin=dbA;
-                
-                await dbA.listDatabases()
-                .then(async (dbrs)=>{
-                    let dbExists=false;
-                    dbrs.databases.forEach((r,i) => {
-                        if (r.name===dbName){
-                            dbExists=true;
+                if (MongoInst.statusAdmin===true ){ 
+                    let dbA=MongoInst.dbAdmin;
+                    gdb.dbA=dbA;
+                    gdb.dbAdmin=dbA;
+                    
+                    DnMain.dbA=dbA;
+                    DnMain.dbAdmin=dbA;
+                    
+                    await dbA.listDatabases()
+                    .then(async (dbrs)=>{
+                        let dbExists=false;
+                        dbrs.databases.forEach((r,i) => {
+                            if (r.name===dbName){
+                                dbExists=true;
+                            }
+                        });                    
+                        
+                        //MongoInst.client.close();
+                        //MongoInst.clientAdmin.close();
+                        
+                    }).catch((err)=>{
+                        console.log( "list db error", err);
+                    });
+                    
+                }
+            });
+
+            await MongoInst.init({ "host" : settings.dbHost, "dbname" : settings.dbName , consolelogdebug : true}, async (dt1)=>{
+
+                if (MongoInst.status===true){
+                    let db=MongoInst.db ;                      
+                    gdb.db=MongoInst.db;
+                    DnMain.db=db;                
+
+                    
+                    var users = await db.collection('users');
+
+                    users.find({ userid : "admin"}).toArray()
+                    .then((dt)=>{ 
+                        if (dt.length===0){ 
+                            users.updateOne( { "userid" : "admin" , "group" : "admin" , "password" : "admin123"} ,{ "$set" : { "email" : "...@....com"}}, {upsert : true })
+                            .then((dt)=>{
+                                console.log("\n\admin user inserted") 
+                            })
+                            .catch((err)=>{ cl("err : ", dt) });
                         }
-                    });                    
-                    
-                    //MongoInst.client.close();
-                    //MongoInst.clientAdmin.close();
-                    
-                }).catch((err)=>{
-                    console.log( "list db error", err);
-                });
-                
-            }
-        });
-        await MongoInst.init({ "host" : settings.dbHost, "dbname" : settings.dbName , consolelogdebug : true}, async (dt1)=>{
-
-            if (MongoInst.status===true){
-                let db=MongoInst.db ;                      
-                gdb.db=MongoInst.db;
-                DnMain.db=db;                
-
-                
-                var users = await db.collection('users');
-
-                users.find({ userid : "admin"}).toArray()
-                .then((dt)=>{ 
-                    if (dt.length===0){ 
-                        users.updateOne( { "userid" : "admin" , "group" : "admin" , "password" : "admin123"} ,{ "$set" : { "email" : "...@....com"}}, {upsert : true })
-                        .then((dt)=>{
-                            console.log("\n\admin user inserted") 
-                        })
-                        .catch((err)=>{ cl("err : ", dt) });
-                    }
-                })
-                .catch((err)=>{ cl("err : ", dt) });
-            }
-        });
+                    })
+                    .catch((err)=>{ cl("err : ", dt) });
+                }
+            });
     }
 
     let httpAppParams= { useHttpServer : true}
@@ -95,7 +96,7 @@ let mainAppFn=async ()=>{
     
     if (httpAppParams.useHttpServer===true){ // prevent starting https server if a prog parameter requires something , like prompt input
         // initlise http server               
-        ApiInst.init({ db : gdb.db, dbA : gdb.dbA, dbAdmin : gdb.dbA, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs ,plugins }, ()=>{
+        await ApiInst.init({ db : gdb.db, dbA : gdb.dbA, dbAdmin : gdb.dbA, gdb : gdb, lgs : lgs, "$cnn" : $cnn ,progargs : progargs ,plugins }, ()=>{
             // initialisation of listener complete        
         })
         app=ApiInst.app
@@ -137,16 +138,18 @@ let mainAppFn=async ()=>{
         } )
     })
 
-    var loginUser=function( params ){
+    var loginUser=function( ...args ){
         let cb=function(){}
         var fn1 = function(){}
         var reqres={}
 
-        if (arguments.length >2 ){
-            fn1=arguments[2]
+        let params=args[0]
+
+        if (args.length >2 ){
+            fn1=args[2]
         }
-        if (arguments.length >1 ){
-            reqres=arguments[1]
+        if (args.length >1 ){
+            reqres=args[1]
         }
 
         if (!$cn.isUndefined(fn1)){
@@ -290,7 +293,7 @@ let mainAppFn=async ()=>{
     }
 
     
-    app.post("/isAuth", verifyJWTroute ,function(req,res){
+    app.post("/isAuth", ApiInst.verifyJWTroute ,function(req,res){
         let ret_data={
             data : { loggedin : false  , auth : false },
             status : 0,
